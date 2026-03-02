@@ -39,7 +39,7 @@ contract URDTest is Test {
 
         address prevAccount;
 
-        // 6) Claim for everyone
+        // 5) Claim for everyone
         for (uint256 i = 0; i < claimKeys.length; i++) {
             address account = vm.parseAddress(claimKeys[i]);
             if (account <= prevAccount) {
@@ -68,7 +68,7 @@ contract URDTest is Test {
             assertEq(paid, claimableTotal); // because first claim; claimedTotal starts at 0
         }
 
-        // 7) URD should have zero tokens left if totals were correct
+        // 6) URD should have zero tokens left if totals were correct
         assertEq(IERC20(rewardToken).balanceOf(address(urd)), 0);
     }
 
