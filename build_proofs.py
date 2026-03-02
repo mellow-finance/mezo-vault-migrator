@@ -125,23 +125,24 @@ def collect_unique_accounts(w3, contract_address, start_block, end_block):
         print(f"Scanning blocks {current} → {to_block} logs found: {len(logs)}")
 
         for log in logs:
-            account = Web3.to_checksum_address("0x" + log["topics"][2].hex()[-40:])
-            unique_accounts.add(account)
+            #account = ("0x" + log["topics"][2].hex()[-40:]).lower() #Web3.to_checksum_address("0x" + log["topics"][2].hex()[-40:])
+            unique_accounts.add(("0x" + log["topics"][2].hex()[-40:]).lower())
 
         current = to_block + 1
     
-    unique_accounts = sorted(unique_accounts)
+    accounts = sorted(list(unique_accounts))
+    accounts = [to_checksum_address(a) for a in accounts]
     result = {
         "contract": SHARE_MANAGER,
-        "unique_accounts_count": len(unique_accounts),
-        "accounts": unique_accounts
+        "unique_accounts_count": len(accounts),
+        "accounts": accounts
     }
 
     HOLDERS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(HOLDERS_PATH, "w") as f:
         json.dump(result, f, indent=2)
 
-    return unique_accounts
+    return accounts
 
 def urd_leaf(account: str, reward: str, claimable: int) -> bytes:
     # leaf = keccak256( abi.encodePacked( keccak256( abi.encode(account, reward, claimable) ) ) )
@@ -259,6 +260,8 @@ def main() -> None:
     # proofs
     claims: Dict[str, Dict[str, object]] = {}
     for i, (acct, amt) in enumerate(zip(accounts, amounts)):
+        if amt == 0:
+            continue
         proof = proof_for_index(layers, i)
         claims[acct] = {
             "amount": str(amt),
@@ -267,6 +270,7 @@ def main() -> None:
 
     out = {
         "rewardToken": reward_token,
+        "totalShares": str(total_shares),
         "root": "0x" + root.hex(),
         "claims": claims,
     }

@@ -2,11 +2,11 @@
   "name": "mezo-migrator",
   "license": "UNLICENSED",
   "version": "1.0.0",
-  "repository": "https://github.com/mellow-finance/???",
+  "repository": "https://github.com/mellow-finance/mezo-migrator",
   "scripts": {
     "prettier": "forge fmt ./src/* ./test/* ./scripts/*",
     "build": "python3 build_proofs.py",
-    "test": "forge script ./script/merkle.s.sol:BuildUrdMerkleFromAccounts --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --gas-limit 10000000000000000",
+    "test": "forge test ./test/URDTest.t.sol --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --gas-limit 10000000000000000",
     "compile": "forge build --use 0.8.25 --cache-path cache"
   }
 }
