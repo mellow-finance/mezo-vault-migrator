@@ -31,15 +31,17 @@ contract URDTest is Test {
         require(claimKeys.length > 0, "NO_CLAIMS");
 
         // 4) Compute total to mint to URD
-        uint256 total;
-        for (uint256 i = 0; i < claimKeys.length; i++) {
-            string memory addrStr = claimKeys[i];
-            string memory amtPath = string.concat('$.claims["', addrStr, '"].amount');
-            uint256 claimableTotal = raw.readUint(amtPath);
-            total += claimableTotal;
+        {
+            uint256 total;
+            for (uint256 i = 0; i < claimKeys.length; i++) {
+                string memory addrStr = claimKeys[i];
+                string memory amtPath = string.concat('$.claims["', addrStr, '"].amount');
+                uint256 claimableTotal = raw.readUint(amtPath);
+                total += claimableTotal;
+            }
+            assertEq(total, totalShares); // sanity check against total shares
+            assertEq(IERC20(rewardToken).balanceOf(address(urd)), total);
         }
-        assertEq(total, totalShares); // sanity check against total shares
-        assertEq(IERC20(rewardToken).balanceOf(address(urd)), total);
 
         address prevAccount;
 
@@ -53,13 +55,14 @@ contract URDTest is Test {
 
             string memory base = string.concat('$.claims["', claimKeys[i], '"]');
             uint256 claimableTotal = raw.readUint(string.concat(base, ".amount"));
+            address recipient = raw.readAddress(string.concat(base, ".recipient"));
             bytes32[] memory proof = raw.readBytes32Array(string.concat(base, ".proof"));
 
             uint256 balBefore = IERC20(rewardToken).balanceOf(account);
             console2.log("Claiming for account %s, claimable total: %d, balance before: %d", account, claimableTotal, balBefore);
             // anyone can submit claim; in Morpho URD it’s permissionless
             uint256 paid;
-            try urd.claim(account, rewardToken, claimableTotal, proof) returns (uint256 paid_) {
+            try urd.claim(recipient, rewardToken, claimableTotal, proof) returns (uint256 paid_) {
                 paid = paid_;
             } catch Error(string memory reason) {
                 revert(string(abi.encodePacked("CLAIM_FAILED: ", reason, " at index ", vm.toString(i))));

@@ -6,6 +6,8 @@ from typing import List, Dict, Tuple
 from eth_utils import event_abi_to_log_topic
 
 from dotenv import load_dotenv
+import requests
+from tables import Enum
 from web3 import Web3
 from eth_abi import encode as abi_encode
 from eth_utils import keccak, to_checksum_address
@@ -112,6 +114,28 @@ MULTICALL3_ABI = [
     }
 ]
 
+class AcctType(str, Enum):
+    EOA = "EOA"
+    EIP7702 = "EIP7702" # still EOA but with code, see https://eips.ethereum.org/EIPS/eip-7702
+    CONTRACT = "CONTRACT"
+
+
+EIP7702_PREFIX = "0xef0100"  # 3 bytes
+EIP7702_CODE_LEN_HEX = 2 + 2 * (3 + 20)  # "0x" + 23 bytes as hex chars = 48
+
+def classify_by_code_hex(code_hex: str) -> Tuple[AcctType]:
+    """
+    code_hex: like '0x' or '0x6080...' or '0xef0100<20-byte-addr>'
+    returns: (type, impl_address_if_7702_else_None)
+    """
+    if not code_hex or code_hex == "0x":
+        return AcctType.EOA
+
+    # exact EIP-7702 designator: 0xef0100 + 20 bytes (address)
+    if code_hex.startswith(EIP7702_PREFIX) and len(code_hex) == EIP7702_CODE_LEN_HEX:
+        return AcctType.EIP7702
+
+    return AcctType.CONTRACT
 
 def collect_unique_accounts(w3, contract_address, symbol, start_block, end_block):
 
@@ -242,6 +266,33 @@ def fetch_shares_multicall3(
 
     return out
 
+def batch_get_code(addrs, block="latest", timeout=60):
+    addrs = [Web3.to_checksum_address(a) for a in addrs]
+
+    payload = []
+    for i, a in enumerate(addrs):
+        payload.append({
+            "jsonrpc": "2.0",
+            "id": i,
+            "method": "eth_getCode",
+            "params": [a, block],
+        })
+
+    r = requests.post(RPC_URL, json=payload, timeout=timeout)
+    r.raise_for_status()
+    resp = r.json()
+
+    # responses may be out-of-order -> map by id
+    by_id = {item["id"]: item for item in resp}
+
+    out = {}
+    for i, a in enumerate(addrs):
+        item = by_id[i]
+        if "error" in item:
+            raise RuntimeError(f"RPC error for {a}: {item['error']}")
+        out[a] = item["result"]  # hex string, "0x" for EOA
+    return out
+
 
 def main() -> None:
 
@@ -279,6 +330,11 @@ def main() -> None:
     layers = build_layers(leaves)
     root = layers[-1][0]
 
+    # detect contracts
+    codes = batch_get_code(accounts)
+    for a, code in codes.items():
+        print(a, "contract" if code != "0x" else "EOA")
+        
     # proofs
     claims: Dict[str, Dict[str, object]] = {}
     for i, (acct, amt) in enumerate(zip(accounts, amounts)):
@@ -288,6 +344,8 @@ def main() -> None:
         claims[acct] = {
             "amount": str(amt),
             "proof": ["0x" + p.hex() for p in proof],
+            "type": classify_by_code_hex(codes[acct]),
+            "recipient": acct
         }
 
     out = {
