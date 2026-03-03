@@ -13,18 +13,23 @@ from eth_utils import keccak, to_checksum_address
 load_dotenv()
 
 RPC_URL = os.environ["RPC_URL"]
-
-HOLDERS_PATH = Path("data/holders.json")
-PROOFS_PATH = Path("data/proofs.json")
+ROOT_PATH = Path("data/")
 SHARE_MANAGER = "0x43f084bdBC99409c637319dD7c544D565165A162"
 MULTICALL3 = "0xcA11bde05977b3631167028862bE2a173976CA11"
 BATCH_SIZE = 1000
 
 START_BLOCK = 24245295 # deployment block of the share manager
 END_BLOCK = 24425112 # pause deposit queues
-STEP = 50000
+STEP = 500
 
 ITOKENIZED_SHARE_MANAGER_ABI = [
+    {
+        "name": "symbol",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "string"}],
+    },
     {
         "name": "sharesOf",
         "type": "function",
@@ -100,7 +105,7 @@ MULTICALL3_ABI = [
 ]
 
 
-def collect_unique_accounts(w3, contract_address, start_block, end_block):
+def collect_unique_accounts(w3, contract_address, symbol, start_block, end_block):
 
     topic0 = event_abi_to_log_topic(TRANSFER_EVENT_ABI)
 
@@ -138,6 +143,7 @@ def collect_unique_accounts(w3, contract_address, start_block, end_block):
         "accounts": accounts
     }
 
+    HOLDERS_PATH = ROOT_PATH.joinpath(symbol, "holders.json")
     HOLDERS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(HOLDERS_PATH, "w") as f:
         json.dump(result, f, indent=2)
@@ -192,6 +198,10 @@ def fetch_total_shares(w3: Web3, SHARE_MANAGER: str) -> int:
     mgr = w3.eth.contract(address=SHARE_MANAGER, abi=ITOKENIZED_SHARE_MANAGER_ABI)
     return mgr.functions.totalShares().call()
 
+def get_symbol(w3: Web3, SHARE_MANAGER: str) -> str:
+    mgr = w3.eth.contract(address=SHARE_MANAGER, abi=ITOKENIZED_SHARE_MANAGER_ABI)
+    return mgr.functions.symbol().call()
+
 
 def fetch_shares_multicall3(
     w3: Web3,
@@ -233,10 +243,13 @@ def main() -> None:
     w3 = Web3(Web3.HTTPProvider(RPC_URL, request_kwargs={"timeout": 120}))
     if not w3.is_connected():
         raise SystemExit("web3: not connected")
+    
+    symbol = get_symbol(w3, SHARE_MANAGER)
 
     accounts = collect_unique_accounts(
         w3,
         SHARE_MANAGER,
+        symbol,
         START_BLOCK,
         END_BLOCK
     )
@@ -274,7 +287,7 @@ def main() -> None:
         "root": "0x" + root.hex(),
         "claims": claims,
     }
-    
+    PROOFS_PATH = ROOT_PATH.joinpath(symbol, "proofs.json")
     PROOFS_PATH.parent.mkdir(parents=True, exist_ok=True)
     PROOFS_PATH.write_text(json.dumps(out, indent=2))
     print(f"shareManager/rewardToken: {SHARE_MANAGER}")
