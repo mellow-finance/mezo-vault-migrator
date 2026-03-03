@@ -4,3 +4,6 @@
 [submodule "lib/morpho-urd"]
 	path = lib/morpho-urd
 	url = git@github.com:morpho-org/universal-rewards-distributor.git
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = git@github.com:OpenZeppelin/openzeppelin-contracts.git

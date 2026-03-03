@@ -4,16 +4,20 @@ pragma solidity ^0.8.19;
 import "forge-std/Test.sol";
 import "forge-std/StdJson.sol";
 import "lib/morpho-urd/src/UniversalRewardsDistributor.sol";
+import {IERC20Metadata} from "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
 contract URDTest is Test {
     using stdJson for string;
 
-    string immutable PROOFS_PATH = "data/proofs.json";
+    address mbhBTC = 0x43f084bdBC99409c637319dD7c544D565165A162;
+    address mbhcbBTC = 0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B;
+
+    address SHARE_MANAGER = mbhcbBTC;
 
     address urd_owner = vm.addr(uint256(keccak256("urd_owner")));
 
     function test_claim_all_from_json() external {
-        string memory raw = vm.readFile(PROOFS_PATH);
+        string memory raw = vm.readFile(getProofPath());
 
         address rewardToken = raw.readAddress("$.rewardToken");
         uint256 totalShares = raw.readUint("$.totalShares");
@@ -73,7 +77,7 @@ contract URDTest is Test {
     }
 
     function test_double_claim_reverts() internal {
-        string memory raw = vm.readFile(PROOFS_PATH);
+        string memory raw = vm.readFile(getProofPath());
 
         address rewardToken = raw.readAddress("$.rewardToken");
         bytes32 root = raw.readBytes32("$.root");
@@ -93,5 +97,10 @@ contract URDTest is Test {
 
         vm.expectRevert("NOTHING_TO_CLAIM");
         urd.claim(account, rewardToken, claimableTotal, proof);
+    }
+    
+    function getProofPath() internal view returns (string memory) {
+        string memory symbol = IERC20Metadata(SHARE_MANAGER).symbol();
+        return string(abi.encodePacked("data/", symbol, "/proofs.json"));
     }
 }

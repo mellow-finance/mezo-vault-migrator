@@ -12,38 +12,25 @@ from eth_utils import keccak, to_checksum_address
 
 load_dotenv()
 
+mbhBTC = {
+    "address": "0x43f084bdBC99409c637319dD7c544D565165A162",
+    "start_block": 24245295
+}
+
+mbhcbBTC =  {
+    "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
+    "start_block": 24245362
+}
+
 RPC_URL = os.environ["RPC_URL"]
 ROOT_PATH = Path("data/")
-SHARE_MANAGER = "0x43f084bdBC99409c637319dD7c544D565165A162"
+SHARE_MANAGER = mbhcbBTC
 MULTICALL3 = "0xcA11bde05977b3631167028862bE2a173976CA11"
 BATCH_SIZE = 1000
 
-START_BLOCK = 24245295 # deployment block of the share manager
-END_BLOCK = 24425112 # pause deposit queues
-STEP = 500
+STEP = 50000
 
 ITOKENIZED_SHARE_MANAGER_ABI = [
-    {
-        "name": "symbol",
-        "type": "function",
-        "stateMutability": "view",
-        "inputs": [],
-        "outputs": [{"name": "", "type": "string"}],
-    },
-    {
-        "name": "sharesOf",
-        "type": "function",
-        "stateMutability": "view",
-        "inputs": [{"name": "account", "type": "address"}],
-        "outputs": [{"name": "", "type": "uint256"}],
-    },
-    {
-        "name": "totalShares",
-        "type": "function",
-        "stateMutability": "view",
-        "inputs": [],
-        "outputs": [{"name": "", "type": "uint256"}],
-    },
     {
         "anonymous": False,
         "inputs": [
@@ -68,11 +55,32 @@ ITOKENIZED_SHARE_MANAGER_ABI = [
         ],
         "name": "Transfer",
         "type": "event"
-    }
+    },
+    {
+        "name": "symbol",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "string"}],
+    },
+    {
+        "name": "sharesOf",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [{"name": "account", "type": "address"}],
+        "outputs": [{"name": "", "type": "uint256"}],
+    },
+    {
+        "name": "totalShares",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "uint256"}],
+    },
 ]
 
 
-TRANSFER_EVENT_ABI = ITOKENIZED_SHARE_MANAGER_ABI[2]
+TRANSFER_EVENT_ABI = ITOKENIZED_SHARE_MANAGER_ABI[0]
 
 # Multicall3 aggregate3 ABI
 MULTICALL3_ABI = [
@@ -244,19 +252,20 @@ def main() -> None:
     if not w3.is_connected():
         raise SystemExit("web3: not connected")
     
-    symbol = get_symbol(w3, SHARE_MANAGER)
+    share_manager_address = to_checksum_address(SHARE_MANAGER["address"])
+    symbol = get_symbol(w3, share_manager_address)
 
     accounts = collect_unique_accounts(
         w3,
-        SHARE_MANAGER,
+        share_manager_address,
         symbol,
-        START_BLOCK,
-        END_BLOCK
+        SHARE_MANAGER["start_block"],
+        "latest"
     )
     accounts = [to_checksum_address(a) for a in accounts]
 
-    total_shares = fetch_total_shares(w3, SHARE_MANAGER)
-    amounts = fetch_shares_multicall3(w3, MULTICALL3, SHARE_MANAGER, accounts, BATCH_SIZE)
+    total_shares = fetch_total_shares(w3, share_manager_address)
+    amounts = fetch_shares_multicall3(w3, MULTICALL3, share_manager_address, accounts, BATCH_SIZE)
 
     # Same invariant as your script: totalShares == sum(sharesOf)
     s = sum(amounts)
@@ -264,7 +273,7 @@ def main() -> None:
         raise SystemExit(f"share total mismatch: sum(sharesOf)={s} totalShares()={total_shares}")
 
     # In your solidity you use SHARE_MANAGER as "rewardToken" in leaf + output
-    reward_token = SHARE_MANAGER
+    reward_token = share_manager_address
 
     leaves = [urd_leaf(a, reward_token, amt) for a, amt in zip(accounts, amounts)]
     layers = build_layers(leaves)
@@ -290,7 +299,7 @@ def main() -> None:
     PROOFS_PATH = ROOT_PATH.joinpath(symbol, "proofs.json")
     PROOFS_PATH.parent.mkdir(parents=True, exist_ok=True)
     PROOFS_PATH.write_text(json.dumps(out, indent=2))
-    print(f"shareManager/rewardToken: {SHARE_MANAGER}")
+    print(f"shareManager/rewardToken: {share_manager_address}")
     print(f"root: 0x{root.hex()}")
     print(f"wrote: {PROOFS_PATH}")
 
