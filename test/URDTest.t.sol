@@ -11,8 +11,9 @@ contract URDTest is Test {
 
     address mbhBTC = 0x43f084bdBC99409c637319dD7c544D565165A162;
     address mbhcbBTC = 0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B;
+    address msvUSD = 0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84;
 
-    address SHARE_MANAGER = mbhcbBTC;
+    address SHARE_MANAGER = msvUSD;
 
     address urd_owner = vm.addr(uint256(keccak256("urd_owner")));
 

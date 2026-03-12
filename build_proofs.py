@@ -24,11 +24,18 @@ mbhcbBTC =  {
     "start_block": 24245362
 }
 
+msvUSD =  {
+    "address": "0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84",
+    "start_block": 23970894
+}
+
+
 RPC_URL = os.environ["RPC_URL"]
 ROOT_PATH = Path("data/")
-SHARE_MANAGER = mbhcbBTC
+SHARE_MANAGER = msvUSD
 MULTICALL3 = "0xcA11bde05977b3631167028862bE2a173976CA11"
 BATCH_SIZE = 1000
+ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 STEP = 50000
 
@@ -79,6 +86,20 @@ ITOKENIZED_SHARE_MANAGER_ABI = [
         "inputs": [],
         "outputs": [{"name": "", "type": "uint256"}],
     },
+    {
+        "name": "activeShares",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "uint256"}],
+    },
+    {
+        "name": "allocatedShares",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "uint256"}],
+    }
 ]
 
 
@@ -162,8 +183,9 @@ def collect_unique_accounts(w3, contract_address, symbol, start_block, end_block
         print(f"Scanning blocks {current} → {to_block} logs found: {len(logs)}")
 
         for log in logs:
-            #account = ("0x" + log["topics"][2].hex()[-40:]).lower() #Web3.to_checksum_address("0x" + log["topics"][2].hex()[-40:])
-            unique_accounts.add(("0x" + log["topics"][2].hex()[-40:]).lower())
+            account = ("0x" + log["topics"][2].hex()[-40:]).lower()
+            if account != ZERO_ADDRESS:
+                unique_accounts.add(account)
 
         current = to_block + 1
     
@@ -228,7 +250,11 @@ def proof_for_index(layers: List[List[bytes]], index: int) -> List[bytes]:
 
 def fetch_total_shares(w3: Web3, SHARE_MANAGER: str) -> int:
     mgr = w3.eth.contract(address=SHARE_MANAGER, abi=ITOKENIZED_SHARE_MANAGER_ABI)
-    return mgr.functions.totalShares().call()
+    active_shares = mgr.functions.activeShares().call()
+    total_shares = mgr.functions.totalShares().call()
+    if active_shares != total_shares:
+        print(f"WARNING: activeShares {active_shares} != totalShares {total_shares}")
+    return active_shares
 
 def get_symbol(w3: Web3, SHARE_MANAGER: str) -> str:
     mgr = w3.eth.contract(address=SHARE_MANAGER, abi=ITOKENIZED_SHARE_MANAGER_ABI)
@@ -321,7 +347,7 @@ def main() -> None:
     # Same invariant as your script: totalShares == sum(sharesOf)
     s = sum(amounts)
     if s != total_shares:
-        raise SystemExit(f"share total mismatch: sum(sharesOf)={s} totalShares()={total_shares}")
+        raise SystemExit(f"ERROR: share total mismatch: sum(sharesOf)={s} totalShares()={total_shares}")
 
     # In your solidity you use SHARE_MANAGER as "rewardToken" in leaf + output
     reward_token = share_manager_address
@@ -332,8 +358,6 @@ def main() -> None:
 
     # detect contracts
     codes = batch_get_code(accounts)
-    for a, code in codes.items():
-        print(a, "contract" if code != "0x" else "EOA")
         
     # proofs
     claims: Dict[str, Dict[str, object]] = {}
