@@ -1,8 +1,5 @@
 {
-  "contract": {
-    "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
-    "start_block": 24245362
-  },
+  "contract": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
   "unique_accounts_count": 224,
   "accounts": [
     "0x00446F19566fD3B1291ce83e43Fef3Be8AE6753b",

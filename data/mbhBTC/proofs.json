@@ -2618,7 +2618,7 @@
         "0xa9ce339fceb97d56fc36c43b8ee2d15affb2624e7d07199058aded91383c75c7",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x489D69939b4Aca357f630055e351A81F1Fbb7Fb6"
     },
     "0x49d87B2d1DFb980788C614509233aE7941DeC69b": {
@@ -2771,7 +2771,7 @@
         "0xa9ce339fceb97d56fc36c43b8ee2d15affb2624e7d07199058aded91383c75c7",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda"
     },
     "0x4Da57Abe152763d7D7090df8160E918dD90fB29D": {
@@ -4165,7 +4165,7 @@
         "0xa9ce339fceb97d56fc36c43b8ee2d15affb2624e7d07199058aded91383c75c7",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x751eAA57075445f44843b8793B64cc23c3De45fC"
     },
     "0x757558E416c44A28f05F87c570e508Ba29928F0b": {
@@ -4182,7 +4182,7 @@
         "0xa9ce339fceb97d56fc36c43b8ee2d15affb2624e7d07199058aded91383c75c7",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x757558E416c44A28f05F87c570e508Ba29928F0b"
     },
     "0x764694FFDC4Bdc598c73B284cD923F47AaCfF86f": {
@@ -4573,7 +4573,7 @@
         "0xd950a51a984df9ace23dfb95926a4c377824ca50dc8b47c79bec8a2ea18587e0",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x7f8917FbE06b5577538Fb8D98367c4aaae4515a6"
     },
     "0x7ff1F7be87d43642951B05bbD227c870464001a7": {
@@ -4998,7 +4998,7 @@
         "0xd950a51a984df9ace23dfb95926a4c377824ca50dc8b47c79bec8a2ea18587e0",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x891c75328Ef30C754049d8C37F853de8F84Bd705"
     },
     "0x89224310bf3ae73E965C8440Ec787b003De73386": {
@@ -5032,7 +5032,7 @@
         "0xd950a51a984df9ace23dfb95926a4c377824ca50dc8b47c79bec8a2ea18587e0",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EIP7702",
+      "type": "EOA",
       "recipient": "0x89329B368589E40613aA6acdf9988F55E0f99D81"
     },
     "0x89C8365E2eA6b67B6A679620ff62c879b37f3873": {
@@ -8211,7 +8211,7 @@
         "0xd950a51a984df9ace23dfb95926a4c377824ca50dc8b47c79bec8a2ea18587e0",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0xe6882A07f8C20BAEF0bbdd85561575fD982Ed384"
     },
     "0xe6AA562F97d6FE3Bfa2D8603eE9737E3C33C2BCF": {
@@ -8687,7 +8687,7 @@
         "0xd950a51a984df9ace23dfb95926a4c377824ca50dc8b47c79bec8a2ea18587e0",
         "0x7ffb94d1b7fef7a3696a1ceb9d713b05baa9b4c1c9b9566295c352b11cec5a49"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0xf35B50DD5db410F61d5902D8599Df5D64Cbff73D"
     },
     "0xf3616E0af36F346B044280bc3dB4ef81e748082a": {
@@ -8739,7 +8739,7 @@
         "0x9d219ef4126c6e91e0b7524936ca84688330ba808a64cd55fd31117a454f5eb6",
         "0x517f1baf17cfc7d6b32c63ecd7b25a43e73bb841e941cc66546473d91a94eac9"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0xf60C1BE48c75E890bF9943C104a0Da5B62A07299"
     },
     "0xF63483B1dd7f091200aD7C5f03EF92a80b644E65": {

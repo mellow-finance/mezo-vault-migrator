@@ -840,7 +840,7 @@
         "0x03d88ad9cdc42dcca9aa3e2a4b2d982d0aeb08369cb6afc0a16327760a21cc55",
         "0x3d7b8c81fdcba61097b8b1bd1ee00ec6f9adc405ad43a7510ce3adaf04a8f17f"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x39Bda5095ED65F1Ad5B9d6ecE617cA0eC09f6c33"
     },
     "0x3a31d9d9120013A2f1F55Ce45068Ed9Ce4795e9F": {
@@ -1080,7 +1080,7 @@
         "0x1eba88aa11522e8c7de866dbc0322a7846c4b8623601c0b1cb13d411d6cc0ad5",
         "0x3d7b8c81fdcba61097b8b1bd1ee00ec6f9adc405ad43a7510ce3adaf04a8f17f"
       ],
-      "type": "EOA",
+      "type": "EIP7702",
       "recipient": "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda"
     },
     "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09": {

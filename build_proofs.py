@@ -14,30 +14,29 @@ from eth_utils import keccak, to_checksum_address
 
 load_dotenv()
 
-mbhBTC = {
-    "address": "0x43f084bdBC99409c637319dD7c544D565165A162",
-    "start_block": 24245295
-}
-
-mbhcbBTC =  {
-    "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
-    "start_block": 24245362
-}
-
-msvUSD =  {
-    "address": "0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84",
-    "start_block": 23970894
+SHARE_MANAGERS = {
+    "mbhBTC": {
+        "address": "0x43f084bdBC99409c637319dD7c544D565165A162",
+        "start_block": 24245295,
+    },
+    "mbhcbBTC": {
+        "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
+        "start_block": 24245362,
+    },
+    "msvUSD": {
+        "address": "0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84",
+        "start_block": 23970894,
+    },
 }
 
 
 RPC_URL = os.environ["RPC_URL"]
 ROOT_PATH = Path("data/")
-SHARE_MANAGER = msvUSD
 MULTICALL3 = "0xcA11bde05977b3631167028862bE2a173976CA11"
 BATCH_SIZE = 1000
 ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
-STEP = 50000
+BATCH_BLOCKS = 50000
 
 ITOKENIZED_SHARE_MANAGER_ABI = [
     {
@@ -171,7 +170,7 @@ def collect_unique_accounts(w3, contract_address, symbol, start_block, end_block
 
     while current <= end_block:
 
-        to_block = min(current + STEP - 1, end_block)
+        to_block = min(current + BATCH_BLOCKS - 1, end_block)
 
 
         logs = w3.eth.get_logs({
@@ -192,7 +191,7 @@ def collect_unique_accounts(w3, contract_address, symbol, start_block, end_block
     accounts = sorted(list(unique_accounts))
     accounts = [to_checksum_address(a) for a in accounts]
     result = {
-        "contract": SHARE_MANAGER,
+        "contract": contract_address,
         "unique_accounts_count": len(accounts),
         "accounts": accounts
     }
@@ -320,23 +319,17 @@ def batch_get_code(addrs, block="latest", timeout=60):
     return out
 
 
-def main() -> None:
-
-    if not RPC_URL:
-        raise SystemExit("RPC_URL missing (set it in env or .env)")
-
-    w3 = Web3(Web3.HTTPProvider(RPC_URL, request_kwargs={"timeout": 120}))
-    if not w3.is_connected():
-        raise SystemExit("web3: not connected")
-    
-    share_manager_address = to_checksum_address(SHARE_MANAGER["address"])
+def process_share_manager(w3: Web3, share_manager: Dict) -> None:
+    share_manager_address = to_checksum_address(share_manager["address"])
     symbol = get_symbol(w3, share_manager_address)
+
+    print(f"\n=== {symbol} ({share_manager_address}) ===")
 
     accounts = collect_unique_accounts(
         w3,
         share_manager_address,
         symbol,
-        SHARE_MANAGER["start_block"],
+        share_manager["start_block"],
         "latest"
     )
     accounts = [to_checksum_address(a) for a in accounts]
@@ -344,22 +337,18 @@ def main() -> None:
     total_shares = fetch_total_shares(w3, share_manager_address)
     amounts = fetch_shares_multicall3(w3, MULTICALL3, share_manager_address, accounts, BATCH_SIZE)
 
-    # Same invariant as your script: totalShares == sum(sharesOf)
     s = sum(amounts)
     if s != total_shares:
         raise SystemExit(f"ERROR: share total mismatch: sum(sharesOf)={s} totalShares()={total_shares}")
 
-    # In your solidity you use SHARE_MANAGER as "rewardToken" in leaf + output
     reward_token = share_manager_address
 
     leaves = [urd_leaf(a, reward_token, amt) for a, amt in zip(accounts, amounts)]
     layers = build_layers(leaves)
     root = layers[-1][0]
 
-    # detect contracts
     codes = batch_get_code(accounts)
-        
-    # proofs
+
     claims: Dict[str, Dict[str, object]] = {}
     for i, (acct, amt) in enumerate(zip(accounts, amounts)):
         if amt == 0:
@@ -384,6 +373,19 @@ def main() -> None:
     print(f"shareManager/rewardToken: {share_manager_address}")
     print(f"root: 0x{root.hex()}")
     print(f"wrote: {PROOFS_PATH}")
+
+
+def main() -> None:
+
+    if not RPC_URL:
+        raise SystemExit("RPC_URL missing (set it in env or .env)")
+
+    w3 = Web3(Web3.HTTPProvider(RPC_URL, request_kwargs={"timeout": 120}))
+    if not w3.is_connected():
+        raise SystemExit("web3: not connected")
+
+    for share_manager in SHARE_MANAGERS.values():
+        process_share_manager(w3, share_manager)
 
 
 if __name__ == "__main__":
