@@ -6,3 +6,17 @@ libs = ["lib"]
 fs_permissions = [
   { access = "read-write", path = "./data" }
 ]
+
+[fmt]
+line_length = 120
+single_line_statement_blocks = 'multi'
+multiline_func_header = 'attributes_first'
+contract_new_lines = false
+override_spacing = false
+tab_width = 4
+bracket_spacing = false
+int_types = 'long'
+quote_style = 'double'
+number_underscore = 'remove'
+sort_imports = true
+ignore=["out/**/*.sol", "lib/**/*.sol"]

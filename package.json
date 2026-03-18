@@ -7,7 +7,7 @@
     "prettier": "forge fmt ./src/* ./test/* ./scripts/*",
     "build": "python3 build_proofs.py",
     "test": "forge test ./test/URDTest.t.sol --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --gas-limit 10000000000000000",
-    "deploy": "forge script ./script/MigrationDeploy.s.sol:MigrationDeploy --fork-url $(grep MEZO_RPC .env | cut -d '=' -f2,3,4,5) --broadcast --slow --verify --verifier custom --verifier-url https://api.explorer.mezo.org/api",
+    "deploy": "forge script ./script/MigrationDeploy.s.sol:MigrationDeploy --fork-url $(grep MEZO_RPC .env | cut -d '=' -f2,3,4,5) --broadcast --slow --verify --verifier custom --verifier-url https://api.explorer.mezo.org/api --gas-limit 10000000000000000",
     "compile": "forge build --use 0.8.25 --cache-path cache"
   }
 }
