@@ -7,3 +7,6 @@
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = git@github.com:OpenZeppelin/openzeppelin-contracts.git
+[submodule "lib/flexible-vaults"]
+	path = lib/flexible-vaults
+	url = git@github.com:mellow-finance/flexible-vaults.git

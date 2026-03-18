@@ -1,230 +1,1344 @@
 {
   "contract": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
-  "unique_accounts_count": 224,
-  "accounts": [
-    "0x00446F19566fD3B1291ce83e43Fef3Be8AE6753b",
-    "0x00850ebb4EF09270519109F59BB98c6249436b2e",
-    "0x01004bEa6919b67C1475756EA75019F3Bdc40679",
-    "0x0198Ab2DCC7fa6159Ff2a2163cb76Ec9cF6b9dAd",
-    "0x0341ab2d783648be716FA78A48eEDF13f151335e",
-    "0x03f8AA4E1A90E713Dc212f97d9931D3bf4236339",
-    "0x0582FFD7773F451b74463e74142e92c3787f0E5c",
-    "0x05d2F8935a55D25c840aC3dA6cCb3C1efD8389cC",
-    "0x066FE3aadFa0Aa8B97f444BCAAc942d80286f278",
-    "0x06b414a17DD70d98DaA882ff491Ef57aC6F741E3",
-    "0x087BeE360Bf196ecc5491E04E0B3F1f3E5847359",
-    "0x092CdF7725475A0a6eAaBdFa96902dCD4296b49f",
-    "0x094cb897736843caaC9772a3Cc0866018A2f609b",
-    "0x0A8d9Ba501b848091D8aCc5eB62891548A42537E",
-    "0x0B870a5333a96AD9e03af2Ac5C5af4199eEaf811",
-    "0x0BF1cfB7b62fD643a65027189F9c4533773d0e36",
-    "0x0d99fa780522A6e85EABdeC04B3066798331852D",
-    "0x0e36828b63A7d1c0D78f59aF0A6592f2F80b65BC",
-    "0x0E9B063789909565CEdA1Fba162474405A151E66",
-    "0x0ec1f47A4874A717D12d02B4966e6a4b2d94683c",
-    "0x115A94038028837Cda8D664B18220DeAE8945A1E",
-    "0x1190f6066ad259D4A74F31CC3D9Eec9E201C56e2",
-    "0x1262656546866f1B735F8E66b8626Ee466ee6b2B",
-    "0x12924049E2D21664E35387C69429c98E9891a820",
-    "0x12fb54BA691f1C79Be2e868C7a254d499A7D3aD5",
-    "0x166bF4302099Bc4F032181FF5917285E67Df4F8a",
-    "0x16E6ca8C23b2B18193f086937D77a83DE4aAb31F",
-    "0x176987A76d999BF117377aaaA6c2E54c44FCF6f7",
-    "0x176B36C9F53884954A591A243d7Ed584190f80b0",
-    "0x1B9da6a404Df58c6BeF6336e207c92B0D330bEa2",
-    "0x1C02f7D2cBE20E2CB42184885a1980BFA54677A8",
-    "0x1dc64149e97FE1318CcBb61fde9226DE44bB9A1f",
-    "0x1F1eE5ff91eF778368AC55180EcEFDF8cFC22D4c",
-    "0x21BF63C0418D4f1D13f884C50498B2259B321b43",
-    "0x21E298405039fb678B1D46C0a358fFDff37D4f71",
-    "0x22b908c2FeA7a1e6043FfcDBc77D660D4D326961",
-    "0x2458C7Cee20429Ab000A09Dac1312946d44423a3",
-    "0x2695F0053d82c623e0112C114ddCA3A4114A5a80",
-    "0x27054Aa6D6D88832022ece6E9981C1ec7a7Ad003",
-    "0x279CAcd54Eb8C029597CF8BDC0F81dCae0F88C25",
-    "0x283c4936D4e763a0FCDC7309F4A178620906C90d",
-    "0x28b89B3eF6D1ebe593AEe6AAaf567AcC8922F943",
-    "0x2A827781AE171D5c84dDBf11251041AB319Ca682",
-    "0x2Fb3CCdA3fB91BA97b765dC8591c5070732dce12",
-    "0x3006E2EEa20371ad25EA6689d0fC345CB297F78b",
-    "0x30e045e5932F5D668592BC334F2d6AD0B23cACDC",
-    "0x31205A66a852f913cbd9cE6508D956ac19357BfE",
-    "0x31a9389E439b7D38249806d2dd64c978541517De",
-    "0x33a7A26d9C6C799a02E4870137dE647674371FfC",
-    "0x345e1A371a0A5A021aC29075FF5F624560bF3821",
-    "0x34BeafbEc28D2281a787BE008cB82a9C55E5bBfD",
-    "0x3575c0d3D30de2D95dB2C965BDd40D25AFFd7cb8",
-    "0x3597c57789289cd6d0621E82684a3D1a5a50Bc8f",
-    "0x35c5CA06d2EfFD7e5AE9c869ffF47843Ce1AeBdc",
-    "0x378cE890f77ba57a830Afd6e2839600187C13861",
-    "0x39Bda5095ED65F1Ad5B9d6ecE617cA0eC09f6c33",
-    "0x3a31d9d9120013A2f1F55Ce45068Ed9Ce4795e9F",
-    "0x3A8878dA199d839eFA70004E76cF7c61DA99946F",
-    "0x3aC1E583cDcf3130CbFC7c6127f991456b689BD8",
-    "0x3Bc3B742aBDca16395E86DEFC5AA08833C686566",
-    "0x3C4CCC30a0428818368848F497b6CdF0F58f3Cb4",
-    "0x3C5501066f049bf00d4C851FAD3EE345c8961484",
-    "0x3E7d81B7B1FAe155201D1A2a6F73b66c97dEde76",
-    "0x40D87C35988D31d7d54cac14E6752162fE3c0499",
-    "0x439AE60bcDaA65905A96dAD9bcd47eA5B0936b05",
-    "0x445cc8Ed94673E7EfA66D1638e447DDc706bC446",
-    "0x45d993393f7B3Fe781935e1155118C7f830d4415",
-    "0x46d668125Eba22Ecc0C43cA90cEa4d8341D44C8d",
-    "0x471DFe95686ea6ea1BbAcc694B350187Dedd1c5B",
-    "0x499E684be29465cca451Fc4A3720cF763Df24f45",
-    "0x4cE7c754abb7a2d55f6516f476c0F506ae5403Dd",
-    "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda",
-    "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09",
-    "0x4F2a4282A2277a81C2462426f592EFD2Cffdcb79",
-    "0x50c516Ad3B9720D2fCBDA68037050d6Ac55eAc40",
-    "0x52a9D93179eD86cb1be116E40172F918c788278c",
-    "0x530E48Cf7288cBd3e64C07f8467Be0eabfe4E3A5",
-    "0x5318e7Ff961285549bC270ce540174451e46baDD",
-    "0x5411f26cf6cCe76F1e3C839a9c84784144EBB946",
-    "0x546001A9b002dEd2361a53427F23969c22834ae4",
-    "0x55B677F7475565b620E9eb79c44847372Fd31340",
-    "0x57314e2e475C2d1B70AD2422cf6A649e6709D69b",
-    "0x58654f05384E90004EC571ce732598C0f0b0eD79",
-    "0x59C7FAf994e7E1bc7aae6872292f9f4E78A24fE3",
-    "0x5C660fDa2Fb669c174dd6D4cA626e9619896620d",
-    "0x5dfc3E75197db67641442086f742FFd58896d97a",
-    "0x5e4BE30AEccb0c4F9811Eb3876D0271ea826eB67",
-    "0x609076BbA6f0a303a5Cac58e900C8ac611cb15b5",
-    "0x6252D023bC6ad7e19c3D7355a71A7AD9c5c15500",
-    "0x640AF57EB6d96780c5265c66Bd0351F47b09a0ad",
-    "0x664a24920464FfA1aFC4Ec75CE514005Af8cd16F",
-    "0x66FE967834Ed29248181331c302A218e1bcB4B6c",
-    "0x6883b2EEDd797cCfda337ccd1847129628F6E8fE",
-    "0x6a81742216906C904E9b94ab9872E50993eae4FE",
-    "0x6b0006FbE596cc087940a8410708Dc7ef0EF9a74",
-    "0x6c31E32Bcfa2C0e7Eacb7a1DE9E61bc267eED6dd",
-    "0x6c834b5f22a883813abdB4C7A83F5eC01eBfFb15",
-    "0x6c84fB26344adB5eA68878811171Ba8aBD32Ee11",
-    "0x6d07Ce8F8E80aD48b80d527B2c20cC8f8B0AED3f",
-    "0x6d7d2d5c5CdfdF4faa2aACe462139b2358f936e4",
-    "0x6f7e861b4Dfc55357360Ad2adA01BB8fC4Eec80f",
-    "0x701b6E449B42D46eCb3CAD6d71941c234aE77137",
-    "0x713f4E56088703e1f6a43fA73E195e2e8C77980a",
-    "0x750aAd3BcDE61d706f83B25b357B4787dFB4aAad",
-    "0x752E17D23A0926E0144aEb42e9aF4BA61F036e15",
-    "0x75cBddFc50aaa5CCc8B9982539aBAce4a501766d",
-    "0x7887727a4cF1566b06E6c3c63Ac88760FEB22727",
-    "0x7bBbCD731CBa881F624e05A00D1A9cC2a9C9eA87",
-    "0x7C5d9942cE476386435258BC48d57d966593178D",
-    "0x7C74a487DA6e2D1D11b57E54880a8C078e01F369",
-    "0x7D431bE16cc6b72FC3b6794b37928e471047E5Ea",
-    "0x801F74C20EC9dE0CDfbD8fe20b767960c9E40F1F",
-    "0x8129AB64D6A32aA3369a2B5eDd9e7D795eB0D3a6",
-    "0x81Db6De760d74b11887D49Bb64e837CDAECF2E67",
-    "0x82cFD5AaC8d874C51954fCbab58a8726A2728c9a",
-    "0x8535a566834BD6D40347f85964F2d5F25D7B1ef9",
-    "0x854c1DE8A20bb0BeDb451733B70887F48B1bEC4e",
-    "0x869CB8d82359696073a0CfFe4ceAE63D5726B9B4",
-    "0x8716eCA6Ac4a59DaB9aBbD95a4a47cCA5334063a",
-    "0x8782aE81419dAB3378159EaD912E707afd5aa9C9",
-    "0x87AE607A7bdCCbDC50C81df12Db5FAA3BFa62a3E",
-    "0x886aCd9AdC7ee3B60Fc43E11EB5cEcF5D6aF58f9",
-    "0x88E80580b186d9678500759989709B59c70E4f94",
-    "0x891D0C4c2CB30e075A718eEbF2843d4DE4F83356",
-    "0x8Aa1443C03999e89cd9C19dA24CD55aF8330058C",
-    "0x8C858eE08Bf8d651bd6220002B22a4dc6572EE51",
-    "0x8D106c747CD21272D4C9Ff0Af8d53A9C9AcA25d2",
-    "0x8d5ca73335c0cA147573f01Ef8dBB6209948957A",
-    "0x8da1D7eEeae0b87A1d9203534f5da804b5d600ba",
-    "0x8E234A6fE4ee15Ea4B15088B64af80Db26C8AE69",
-    "0x8F2E02D2a3048c3712775f12E93b7625F0DbFf88",
-    "0x90D761f06d5C02Ac73877be12A64d670F2EA0F13",
-    "0x9459E5e6f136A15648b79CdEd838D4b56af8F6c8",
-    "0x97c56156d29b3DA7FFbC79116812ef109EB4345B",
-    "0x97D7846316efe4581a5A1ef3DE3E88814ba75e25",
-    "0x99Ea634071C23A8b095B22Bf29b9B5457633c59d",
-    "0x9a2eddc2c03211a697900811BB271C8B0Fcdc881",
-    "0x9AeeCDD83289aCa27afdd88847C578E289014144",
-    "0x9c5D1A971703a3422741Af1F9B8700D437527EC5",
-    "0x9F4aaAd52776dc4cF81c35003beE7942E3D427a9",
-    "0xa0154B50af957DbD1c2a709B57245B8462284E11",
-    "0xa21b23e5f07E5E28cB42d09502227Eb75b0B64B5",
-    "0xa4b24d30313c1DE69312a593cc5F777a74056248",
-    "0xA6390b7538FD485De114b7E0F9323B66d0fEA917",
-    "0xA948A0517BF9507362F5b7FeE31701f8261AEc88",
-    "0xAA09f1D74Af017639035fb141dea56db2946e3b2",
-    "0xaB26A0f19Bba758E61B90caF05aE82871971C90b",
-    "0xabc3aE4E233A2519Abbf229807D14671ECa83996",
-    "0xaBD0298c7274Ca61cCB8DeF28F971C4376b430B7",
-    "0xb0513Cd380eC3c27F14747AEF1d175b22b390D17",
-    "0xB1b298D7A7267429e9fb87a18C63F12094D28931",
-    "0xb1deF9E46bF3f5781C64B8b13be094538c1813D7",
-    "0xB763B04A876a45838509CD4d6CA4C63271dA1DB4",
-    "0xb76Eb9f81E5b4d498CCeF407a8F804Fb7718C5fd",
-    "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
-    "0xb881f599701be72A4Ce76C1EeB2aAe54cb9beA19",
-    "0xb89aC56C4F59c7B0eB41D2356fd2ed70dC122fc2",
-    "0xb8a5344Bd9B99ACE185580c15d80cC916c83e2Cc",
-    "0xBB84bB646CCB928529e4b5f42938AaE39a5eFef6",
-    "0xBBF5a035239183918839094eC012c69eeFE67836",
-    "0xbcD6AFc3195e8926b5bbbd02Dfc121f461653711",
-    "0xBE32617D8Fb6cD7ec7eBf30B65a592E76AF5d758",
-    "0xBEd25FA007D0a30Cb04f1B50750d599E89b1A8Ce",
-    "0xC02193F9580c3429DfDeD4E14D1F9e73D477Ba92",
-    "0xc3094cc8795C1f3277Aafa381C1105eed4658Adf",
-    "0xc3673ADCaD9356F1B91ADD3D64D1cfe1f5431d7C",
-    "0xc3c651C32A1845191BD8Eb46571c94557a94520f",
-    "0xc634D9CF17A1352b9D0b5395aD20c4117c16CAaA",
-    "0xc6943Dd138901bD219d2e7B4bFCdD6668a19FAeB",
-    "0xC6f0F6E69b07Db21aE188F10ba4d71De234c14cC",
-    "0xC8499D0311CA31A60e11D58A5A7e4F1C24B95575",
-    "0xC866A22d1d9c49c07DF4bAB7D71aF18731D4CEee",
-    "0xC8D46eb7881975F9aE15216FeEBa2ff58E55803c",
-    "0xc9BCEc43B9453aeD2bac9c496b30b740B6a04073",
-    "0xCa2D6159BbC9444e5f78210cE9a50818D287C47a",
-    "0xca7CF16C69317689CC73fB3792031cE97a642d1f",
-    "0xcA933d146E4aa74908df8f21f9E17Ed6EdfA6b6c",
-    "0xcbdcB14D4963a045d6517A89AaB07a097230C9BC",
-    "0xcc2Cc53bAA6BFfbFeA9012855A50b39640fAC575",
-    "0xCd0D28D3b82e2Dcaf6AB13cA95761CE848b46b8C",
-    "0xCD46234Eee488298B8cD3Aa8F643d97040b5Ec2c",
-    "0xcDe7594DE889CB537975c715FD9754A7aCb2dDCc",
-    "0xcdE8325C3128abc81e235D7191d5671D875c818B",
-    "0xCFCCCC2A36020b959cBEad12ef904a0b4f36F8Cc",
-    "0xD0bcAE56a25B9b385CD332a7903Ed3cAf646561E",
-    "0xd0C0338BaaC9cE09C1d1caAb88B4360507061e37",
-    "0xd0C7a59e3Ce5a289b553ebF7659F5C3316eCFBB9",
-    "0xD3C151B114F5045483d153E19414466679d61B14",
-    "0xd3f5C0c0eBDC23ffFB3DD74b939f51EC27A97D0e",
-    "0xd4f6a31AC34e988A1A22A2030cB777BEfe0905e1",
-    "0xd5597936dBBD1B31f70D7a2024409b7a4d032680",
-    "0xd727d010Cc170ABEC7Ba59409a5549d0817a0471",
-    "0xdA3CB1F73fE9E478556956D71d24eD726e8F9162",
-    "0xdb4938968c2AdBDb4b130C1BF90dFd038699097f",
-    "0xDC02781Bd75Fa9102E00440A7E6176985430074D",
-    "0xdC23E53922bA649a4f6Ea76d7294B10D480ACf5f",
-    "0xdc64ffb5c6C5bB032244A656c95C6a1296B6953a",
-    "0xe1b0B6Dc8d5E216622f2115d5A61BC243d607467",
-    "0xe2Dcbb2f369791dc2de9E415EfCfb55248A2E628",
-    "0xe3a765b8Ec067Ae89A6CB6Ecddf1FB52003CE6aF",
-    "0xe448d9D70eFe95714e38d210E58d458dab0A77d5",
-    "0xE5aaC2c9dF70aB5d4a012659085c4Cf2F55bcCCc",
-    "0xE5cF73F96F57d56d6E44BD82D8AF95727A2FAb04",
-    "0xE62026AD972284CAA01A0952199dfD5030119585",
-    "0xE6691c58e175552D1448e462b29651378D76aA74",
-    "0xE6fFC66882beE87DB6CFbb8DfBb5Bb2568f8BE1b",
-    "0xE93c14611eF4D296bD3dc7C9f9b9be559bfF4D90",
-    "0xEc0A13c8688D022D2aF08d664b70Cf14d956C373",
-    "0xEdd57Ab12F54dEDC9DFbb91a7048BFe0db7d534E",
-    "0xeE83ae872F88554A00fc9FAE7052823CB4C07f80",
-    "0xeeDb07ae31191e8E803685887Bf653754f2f6F52",
-    "0xF12BD23F179435169C4bfCCe7dA2a39F229CE9f0",
-    "0xF2D06C9C87951Cdc4AE17Af23f23E0734C5974FF",
-    "0xF368d43f148e1803eC793670183b0CA6a07d3898",
-    "0xf45f9Bcab950067918c3c616606355AFD3525939",
-    "0xF495C8BEca7016674F67BE25e485DbF41dc5A151",
-    "0xf532729D2384a5f510DBb1ACF66750f2f1efdEdA",
-    "0xf6438666A1594B58Ef025995FeC6655E2b36fCA1",
-    "0xF729394443C48e6ca71EEE639d6A16da7b566F3b",
-    "0xF79a5CA63B6B3CD8f061036e8859F8458dfc678E",
-    "0xfc0fAA8718Fb0bB316A48BeB3Aca10306EfB5bb8",
-    "0xFd69A5D0b8330dC86e266304B3D1ABE3F57b9D09",
-    "0xfe4e1CE049c35999179d01f9a82925162976bB1f",
-    "0xfF86d3818a11208B19439F0a0d8A542d920722B7"
-  ]
+  "unique_accounts_count": 223,
+  "holders": {
+    "0x00446F19566fD3B1291ce83e43Fef3Be8AE6753b": {
+      "shares": "30734390000000000",
+      "recipient": "0x00446F19566fD3B1291ce83e43Fef3Be8AE6753b",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x00850ebb4EF09270519109F59BB98c6249436b2e": {
+      "shares": "12000000000000",
+      "recipient": "0x00850ebb4EF09270519109F59BB98c6249436b2e",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x01004bEa6919b67C1475756EA75019F3Bdc40679": {
+      "shares": "200000000000000",
+      "recipient": "0x01004bEa6919b67C1475756EA75019F3Bdc40679",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0198Ab2DCC7fa6159Ff2a2163cb76Ec9cF6b9dAd": {
+      "shares": "13100000000000",
+      "recipient": "0x0198Ab2DCC7fa6159Ff2a2163cb76Ec9cF6b9dAd",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0341ab2d783648be716FA78A48eEDF13f151335e": {
+      "shares": "222900000000000",
+      "recipient": "0x0341ab2d783648be716FA78A48eEDF13f151335e",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x03f8AA4E1A90E713Dc212f97d9931D3bf4236339": {
+      "shares": "5430000000000",
+      "recipient": "0x03f8AA4E1A90E713Dc212f97d9931D3bf4236339",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0582FFD7773F451b74463e74142e92c3787f0E5c": {
+      "shares": "16450000000000",
+      "recipient": "0x0582FFD7773F451b74463e74142e92c3787f0E5c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x05d2F8935a55D25c840aC3dA6cCb3C1efD8389cC": {
+      "shares": "1003946190000000000",
+      "recipient": "0x05d2F8935a55D25c840aC3dA6cCb3C1efD8389cC",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x066FE3aadFa0Aa8B97f444BCAAc942d80286f278": {
+      "shares": "1110150000000000",
+      "recipient": "0x066FE3aadFa0Aa8B97f444BCAAc942d80286f278",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x06b414a17DD70d98DaA882ff491Ef57aC6F741E3": {
+      "shares": "12010000000000",
+      "recipient": "0x06b414a17DD70d98DaA882ff491Ef57aC6F741E3",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x087BeE360Bf196ecc5491E04E0B3F1f3E5847359": {
+      "shares": "15190000000000",
+      "recipient": "0x087BeE360Bf196ecc5491E04E0B3F1f3E5847359",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x092CdF7725475A0a6eAaBdFa96902dCD4296b49f": {
+      "shares": "39650000000000",
+      "recipient": "0x092CdF7725475A0a6eAaBdFa96902dCD4296b49f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x094cb897736843caaC9772a3Cc0866018A2f609b": {
+      "shares": "537500000000000",
+      "recipient": "0x094cb897736843caaC9772a3Cc0866018A2f609b",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x0A8d9Ba501b848091D8aCc5eB62891548A42537E": {
+      "shares": "330000000000",
+      "recipient": "0x0A8d9Ba501b848091D8aCc5eB62891548A42537E",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0B870a5333a96AD9e03af2Ac5C5af4199eEaf811": {
+      "shares": "13070000000000",
+      "recipient": "0x0B870a5333a96AD9e03af2Ac5C5af4199eEaf811",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0BF1cfB7b62fD643a65027189F9c4533773d0e36": {
+      "shares": "18550000000000",
+      "recipient": "0x0BF1cfB7b62fD643a65027189F9c4533773d0e36",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0d99fa780522A6e85EABdeC04B3066798331852D": {
+      "shares": "13240000000000",
+      "recipient": "0x0d99fa780522A6e85EABdeC04B3066798331852D",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0e36828b63A7d1c0D78f59aF0A6592f2F80b65BC": {
+      "shares": "16700000000000",
+      "recipient": "0x0e36828b63A7d1c0D78f59aF0A6592f2F80b65BC",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0E9B063789909565CEdA1Fba162474405A151E66": {
+      "shares": "558010000000000",
+      "recipient": "0x0E9B063789909565CEdA1Fba162474405A151E66",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x0ec1f47A4874A717D12d02B4966e6a4b2d94683c": {
+      "shares": "46790000000000",
+      "recipient": "0x0ec1f47A4874A717D12d02B4966e6a4b2d94683c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x115A94038028837Cda8D664B18220DeAE8945A1E": {
+      "shares": "200000000000000",
+      "recipient": "0x115A94038028837Cda8D664B18220DeAE8945A1E",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x1190f6066ad259D4A74F31CC3D9Eec9E201C56e2": {
+      "shares": "145690000000000",
+      "recipient": "0x1190f6066ad259D4A74F31CC3D9Eec9E201C56e2",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x1262656546866f1B735F8E66b8626Ee466ee6b2B": {
+      "shares": "4390000000000",
+      "recipient": "0x1262656546866f1B735F8E66b8626Ee466ee6b2B",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x12924049E2D21664E35387C69429c98E9891a820": {
+      "shares": "109850000000000",
+      "recipient": "0x12924049E2D21664E35387C69429c98E9891a820",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x12fb54BA691f1C79Be2e868C7a254d499A7D3aD5": {
+      "shares": "15000000000000",
+      "recipient": "0x12fb54BA691f1C79Be2e868C7a254d499A7D3aD5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x166bF4302099Bc4F032181FF5917285E67Df4F8a": {
+      "shares": "18290000000000",
+      "recipient": "0x166bF4302099Bc4F032181FF5917285E67Df4F8a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x16E6ca8C23b2B18193f086937D77a83DE4aAb31F": {
+      "shares": "13540000000000",
+      "recipient": "0x16E6ca8C23b2B18193f086937D77a83DE4aAb31F",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x176987A76d999BF117377aaaA6c2E54c44FCF6f7": {
+      "shares": "4220000000000",
+      "recipient": "0x176987A76d999BF117377aaaA6c2E54c44FCF6f7",
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
+    },
+    "0x176B36C9F53884954A591A243d7Ed584190f80b0": {
+      "shares": "11970000000000",
+      "recipient": "0x176B36C9F53884954A591A243d7Ed584190f80b0",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x1B9da6a404Df58c6BeF6336e207c92B0D330bEa2": {
+      "shares": "1293780000000000",
+      "recipient": "0x1B9da6a404Df58c6BeF6336e207c92B0D330bEa2",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x1C02f7D2cBE20E2CB42184885a1980BFA54677A8": {
+      "shares": "57550000000000",
+      "recipient": "0x1C02f7D2cBE20E2CB42184885a1980BFA54677A8",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x1dc64149e97FE1318CcBb61fde9226DE44bB9A1f": {
+      "shares": "18000000000000",
+      "recipient": "0x1dc64149e97FE1318CcBb61fde9226DE44bB9A1f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x1F1eE5ff91eF778368AC55180EcEFDF8cFC22D4c": {
+      "shares": "13500000000000",
+      "recipient": "0x1F1eE5ff91eF778368AC55180EcEFDF8cFC22D4c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x21BF63C0418D4f1D13f884C50498B2259B321b43": {
+      "shares": "5700410000000000",
+      "recipient": "0x21BF63C0418D4f1D13f884C50498B2259B321b43",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x21E298405039fb678B1D46C0a358fFDff37D4f71": {
+      "shares": "1261440000000000",
+      "recipient": "0x21E298405039fb678B1D46C0a358fFDff37D4f71",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x22b908c2FeA7a1e6043FfcDBc77D660D4D326961": {
+      "shares": "23316760000000000",
+      "recipient": "0x22b908c2FeA7a1e6043FfcDBc77D660D4D326961",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x2458C7Cee20429Ab000A09Dac1312946d44423a3": {
+      "shares": "52764440000000000",
+      "recipient": "0x2458C7Cee20429Ab000A09Dac1312946d44423a3",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x2695F0053d82c623e0112C114ddCA3A4114A5a80": {
+      "shares": "13960000000000",
+      "recipient": "0x2695F0053d82c623e0112C114ddCA3A4114A5a80",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x27054Aa6D6D88832022ece6E9981C1ec7a7Ad003": {
+      "shares": "13340000000000",
+      "recipient": "0x27054Aa6D6D88832022ece6E9981C1ec7a7Ad003",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x279CAcd54Eb8C029597CF8BDC0F81dCae0F88C25": {
+      "shares": "20830000000000",
+      "recipient": "0x279CAcd54Eb8C029597CF8BDC0F81dCae0F88C25",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x283c4936D4e763a0FCDC7309F4A178620906C90d": {
+      "shares": "2510590000000000",
+      "recipient": "0x283c4936D4e763a0FCDC7309F4A178620906C90d",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x28b89B3eF6D1ebe593AEe6AAaf567AcC8922F943": {
+      "shares": "14470000000000",
+      "recipient": "0x28b89B3eF6D1ebe593AEe6AAaf567AcC8922F943",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x2A827781AE171D5c84dDBf11251041AB319Ca682": {
+      "shares": "111700000000000",
+      "recipient": "0x2A827781AE171D5c84dDBf11251041AB319Ca682",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x2Fb3CCdA3fB91BA97b765dC8591c5070732dce12": {
+      "shares": "161782150000000000",
+      "recipient": "0x2Fb3CCdA3fB91BA97b765dC8591c5070732dce12",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3006E2EEa20371ad25EA6689d0fC345CB297F78b": {
+      "shares": "3310000000000",
+      "recipient": "0x3006E2EEa20371ad25EA6689d0fC345CB297F78b",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x30e045e5932F5D668592BC334F2d6AD0B23cACDC": {
+      "shares": "20000000000000",
+      "recipient": "0x30e045e5932F5D668592BC334F2d6AD0B23cACDC",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x31205A66a852f913cbd9cE6508D956ac19357BfE": {
+      "shares": "1654322290000000000",
+      "recipient": "0x31205A66a852f913cbd9cE6508D956ac19357BfE",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x31a9389E439b7D38249806d2dd64c978541517De": {
+      "shares": "52810000000000",
+      "recipient": "0x31a9389E439b7D38249806d2dd64c978541517De",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x33a7A26d9C6C799a02E4870137dE647674371FfC": {
+      "shares": "215210000000000",
+      "recipient": "0x33a7A26d9C6C799a02E4870137dE647674371FfC",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x345e1A371a0A5A021aC29075FF5F624560bF3821": {
+      "shares": "211960000000000",
+      "recipient": "0x345e1A371a0A5A021aC29075FF5F624560bF3821",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x34BeafbEc28D2281a787BE008cB82a9C55E5bBfD": {
+      "shares": "13340000000000",
+      "recipient": "0x34BeafbEc28D2281a787BE008cB82a9C55E5bBfD",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3575c0d3D30de2D95dB2C965BDd40D25AFFd7cb8": {
+      "shares": "17770000000000",
+      "recipient": "0x3575c0d3D30de2D95dB2C965BDd40D25AFFd7cb8",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3597c57789289cd6d0621E82684a3D1a5a50Bc8f": {
+      "shares": "364982150000000000",
+      "recipient": "0x3597c57789289cd6d0621E82684a3D1a5a50Bc8f",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x35c5CA06d2EfFD7e5AE9c869ffF47843Ce1AeBdc": {
+      "shares": "16590000000000",
+      "recipient": "0x35c5CA06d2EfFD7e5AE9c869ffF47843Ce1AeBdc",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x378cE890f77ba57a830Afd6e2839600187C13861": {
+      "shares": "13820000000000",
+      "recipient": "0x378cE890f77ba57a830Afd6e2839600187C13861",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x39Bda5095ED65F1Ad5B9d6ecE617cA0eC09f6c33": {
+      "shares": "6976230000000000",
+      "recipient": "0x39Bda5095ED65F1Ad5B9d6ecE617cA0eC09f6c33",
+      "type": "EIP7702",
+      "code": "0x36d3CBD83961868398d056EfBf50f5CE15528c0D"
+    },
+    "0x3a31d9d9120013A2f1F55Ce45068Ed9Ce4795e9F": {
+      "shares": "8450820000000000",
+      "recipient": "0x3a31d9d9120013A2f1F55Ce45068Ed9Ce4795e9F",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3A8878dA199d839eFA70004E76cF7c61DA99946F": {
+      "shares": "14810000000000",
+      "recipient": "0x3A8878dA199d839eFA70004E76cF7c61DA99946F",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3aC1E583cDcf3130CbFC7c6127f991456b689BD8": {
+      "shares": "12920000000000",
+      "recipient": "0x3aC1E583cDcf3130CbFC7c6127f991456b689BD8",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3Bc3B742aBDca16395E86DEFC5AA08833C686566": {
+      "shares": "13090000000000",
+      "recipient": "0x3Bc3B742aBDca16395E86DEFC5AA08833C686566",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3C4CCC30a0428818368848F497b6CdF0F58f3Cb4": {
+      "shares": "175190000000000",
+      "recipient": "0x3C4CCC30a0428818368848F497b6CdF0F58f3Cb4",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3C5501066f049bf00d4C851FAD3EE345c8961484": {
+      "shares": "551260000000000",
+      "recipient": "0x3C5501066f049bf00d4C851FAD3EE345c8961484",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x3E7d81B7B1FAe155201D1A2a6F73b66c97dEde76": {
+      "shares": "1082940000000000",
+      "recipient": "0x3E7d81B7B1FAe155201D1A2a6F73b66c97dEde76",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x40D87C35988D31d7d54cac14E6752162fE3c0499": {
+      "shares": "12550000000000",
+      "recipient": "0x40D87C35988D31d7d54cac14E6752162fE3c0499",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x439AE60bcDaA65905A96dAD9bcd47eA5B0936b05": {
+      "shares": "47726050000000000",
+      "recipient": "0x439AE60bcDaA65905A96dAD9bcd47eA5B0936b05",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x445cc8Ed94673E7EfA66D1638e447DDc706bC446": {
+      "shares": "140280000000000",
+      "recipient": "0x445cc8Ed94673E7EfA66D1638e447DDc706bC446",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x45d993393f7B3Fe781935e1155118C7f830d4415": {
+      "shares": "142650000000000",
+      "recipient": "0x45d993393f7B3Fe781935e1155118C7f830d4415",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x46d668125Eba22Ecc0C43cA90cEa4d8341D44C8d": {
+      "shares": "129520000000000",
+      "recipient": "0x46d668125Eba22Ecc0C43cA90cEa4d8341D44C8d",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x471DFe95686ea6ea1BbAcc694B350187Dedd1c5B": {
+      "shares": "12320000000000",
+      "recipient": "0x471DFe95686ea6ea1BbAcc694B350187Dedd1c5B",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x499E684be29465cca451Fc4A3720cF763Df24f45": {
+      "shares": "13220000000000",
+      "recipient": "0x499E684be29465cca451Fc4A3720cF763Df24f45",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x4cE7c754abb7a2d55f6516f476c0F506ae5403Dd": {
+      "shares": "19820000000000",
+      "recipient": "0x4cE7c754abb7a2d55f6516f476c0F506ae5403Dd",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda": {
+      "shares": "35100000000000",
+      "recipient": "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09": {
+      "shares": "110690000000000",
+      "recipient": "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09",
+      "type": "EIP7702",
+      "code": "0x7702cb554e6bFb442cb743A7dF23154544a7176C"
+    },
+    "0x4F2a4282A2277a81C2462426f592EFD2Cffdcb79": {
+      "shares": "20850000000000",
+      "recipient": "0x4F2a4282A2277a81C2462426f592EFD2Cffdcb79",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x50c516Ad3B9720D2fCBDA68037050d6Ac55eAc40": {
+      "shares": "101000000000000",
+      "recipient": "0x50c516Ad3B9720D2fCBDA68037050d6Ac55eAc40",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x52a9D93179eD86cb1be116E40172F918c788278c": {
+      "shares": "8480000000000",
+      "recipient": "0x52a9D93179eD86cb1be116E40172F918c788278c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x530E48Cf7288cBd3e64C07f8467Be0eabfe4E3A5": {
+      "shares": "31110000000000",
+      "recipient": "0x530E48Cf7288cBd3e64C07f8467Be0eabfe4E3A5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x5318e7Ff961285549bC270ce540174451e46baDD": {
+      "shares": "14980000000000",
+      "recipient": "0x5318e7Ff961285549bC270ce540174451e46baDD",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x5411f26cf6cCe76F1e3C839a9c84784144EBB946": {
+      "shares": "105404600000000000",
+      "recipient": "0x5411f26cf6cCe76F1e3C839a9c84784144EBB946",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x546001A9b002dEd2361a53427F23969c22834ae4": {
+      "shares": "66960980000000000",
+      "recipient": "0x546001A9b002dEd2361a53427F23969c22834ae4",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x55B677F7475565b620E9eb79c44847372Fd31340": {
+      "shares": "12340000000000",
+      "recipient": "0x55B677F7475565b620E9eb79c44847372Fd31340",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x57314e2e475C2d1B70AD2422cf6A649e6709D69b": {
+      "shares": "1310000000000",
+      "recipient": "0x57314e2e475C2d1B70AD2422cf6A649e6709D69b",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x58654f05384E90004EC571ce732598C0f0b0eD79": {
+      "shares": "225262750000000000",
+      "recipient": "0x58654f05384E90004EC571ce732598C0f0b0eD79",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x59C7FAf994e7E1bc7aae6872292f9f4E78A24fE3": {
+      "shares": "16140000000000",
+      "recipient": "0x59C7FAf994e7E1bc7aae6872292f9f4E78A24fE3",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x5C660fDa2Fb669c174dd6D4cA626e9619896620d": {
+      "shares": "2690000000000",
+      "recipient": "0x5C660fDa2Fb669c174dd6D4cA626e9619896620d",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x5dfc3E75197db67641442086f742FFd58896d97a": {
+      "shares": "14200000000000",
+      "recipient": "0x5dfc3E75197db67641442086f742FFd58896d97a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x5e4BE30AEccb0c4F9811Eb3876D0271ea826eB67": {
+      "shares": "558670000000000",
+      "recipient": "0x5e4BE30AEccb0c4F9811Eb3876D0271ea826eB67",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x609076BbA6f0a303a5Cac58e900C8ac611cb15b5": {
+      "shares": "20860000000000",
+      "recipient": "0x609076BbA6f0a303a5Cac58e900C8ac611cb15b5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6252D023bC6ad7e19c3D7355a71A7AD9c5c15500": {
+      "shares": "348270000000000",
+      "recipient": "0x6252D023bC6ad7e19c3D7355a71A7AD9c5c15500",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x640AF57EB6d96780c5265c66Bd0351F47b09a0ad": {
+      "shares": "100000000000000",
+      "recipient": "0x640AF57EB6d96780c5265c66Bd0351F47b09a0ad",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x664a24920464FfA1aFC4Ec75CE514005Af8cd16F": {
+      "shares": "5404130000000000",
+      "recipient": "0x664a24920464FfA1aFC4Ec75CE514005Af8cd16F",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x66FE967834Ed29248181331c302A218e1bcB4B6c": {
+      "shares": "13170000000000",
+      "recipient": "0x66FE967834Ed29248181331c302A218e1bcB4B6c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6883b2EEDd797cCfda337ccd1847129628F6E8fE": {
+      "shares": "14500000000000",
+      "recipient": "0x6883b2EEDd797cCfda337ccd1847129628F6E8fE",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6a81742216906C904E9b94ab9872E50993eae4FE": {
+      "shares": "409348860000000000",
+      "recipient": "0x6a81742216906C904E9b94ab9872E50993eae4FE",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6b0006FbE596cc087940a8410708Dc7ef0EF9a74": {
+      "shares": "17080000000000",
+      "recipient": "0x6b0006FbE596cc087940a8410708Dc7ef0EF9a74",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6c31E32Bcfa2C0e7Eacb7a1DE9E61bc267eED6dd": {
+      "shares": "14050000000000",
+      "recipient": "0x6c31E32Bcfa2C0e7Eacb7a1DE9E61bc267eED6dd",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6c834b5f22a883813abdB4C7A83F5eC01eBfFb15": {
+      "shares": "14440000000000",
+      "recipient": "0x6c834b5f22a883813abdB4C7A83F5eC01eBfFb15",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6c84fB26344adB5eA68878811171Ba8aBD32Ee11": {
+      "shares": "256101730000000000",
+      "recipient": "0x6c84fB26344adB5eA68878811171Ba8aBD32Ee11",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6d07Ce8F8E80aD48b80d527B2c20cC8f8B0AED3f": {
+      "shares": "17230000000000",
+      "recipient": "0x6d07Ce8F8E80aD48b80d527B2c20cC8f8B0AED3f",
+      "type": "EIP7702",
+      "code": "0x80296FF8D1ED46f8e3C7992664D13B833504c2Bb"
+    },
+    "0x6d7d2d5c5CdfdF4faa2aACe462139b2358f936e4": {
+      "shares": "18430000000000",
+      "recipient": "0x6d7d2d5c5CdfdF4faa2aACe462139b2358f936e4",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x6f7e861b4Dfc55357360Ad2adA01BB8fC4Eec80f": {
+      "shares": "228380000000000",
+      "recipient": "0x6f7e861b4Dfc55357360Ad2adA01BB8fC4Eec80f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x701b6E449B42D46eCb3CAD6d71941c234aE77137": {
+      "shares": "19820000000000",
+      "recipient": "0x701b6E449B42D46eCb3CAD6d71941c234aE77137",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x713f4E56088703e1f6a43fA73E195e2e8C77980a": {
+      "shares": "14130000000000",
+      "recipient": "0x713f4E56088703e1f6a43fA73E195e2e8C77980a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x750aAd3BcDE61d706f83B25b357B4787dFB4aAad": {
+      "shares": "880351000000000000",
+      "recipient": "0x750aAd3BcDE61d706f83B25b357B4787dFB4aAad",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x752E17D23A0926E0144aEb42e9aF4BA61F036e15": {
+      "shares": "3070176460000000000",
+      "recipient": "0x752E17D23A0926E0144aEb42e9aF4BA61F036e15",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x75cBddFc50aaa5CCc8B9982539aBAce4a501766d": {
+      "shares": "2432020000000000",
+      "recipient": "0x75cBddFc50aaa5CCc8B9982539aBAce4a501766d",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x7887727a4cF1566b06E6c3c63Ac88760FEB22727": {
+      "shares": "100000000000000",
+      "recipient": "0x7887727a4cF1566b06E6c3c63Ac88760FEB22727",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x7bBbCD731CBa881F624e05A00D1A9cC2a9C9eA87": {
+      "shares": "30660000000000",
+      "recipient": "0x7bBbCD731CBa881F624e05A00D1A9cC2a9C9eA87",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x7C5d9942cE476386435258BC48d57d966593178D": {
+      "shares": "10050000000000",
+      "recipient": "0x7C5d9942cE476386435258BC48d57d966593178D",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x7C74a487DA6e2D1D11b57E54880a8C078e01F369": {
+      "shares": "6450000000000",
+      "recipient": "0x7C74a487DA6e2D1D11b57E54880a8C078e01F369",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x7D431bE16cc6b72FC3b6794b37928e471047E5Ea": {
+      "shares": "7824470000000000",
+      "recipient": "0x7D431bE16cc6b72FC3b6794b37928e471047E5Ea",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x801F74C20EC9dE0CDfbD8fe20b767960c9E40F1F": {
+      "shares": "23700000000000",
+      "recipient": "0x801F74C20EC9dE0CDfbD8fe20b767960c9E40F1F",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8129AB64D6A32aA3369a2B5eDd9e7D795eB0D3a6": {
+      "shares": "386120000000000",
+      "recipient": "0x8129AB64D6A32aA3369a2B5eDd9e7D795eB0D3a6",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x81Db6De760d74b11887D49Bb64e837CDAECF2E67": {
+      "shares": "1318235690000000000",
+      "recipient": "0x81Db6De760d74b11887D49Bb64e837CDAECF2E67",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x82cFD5AaC8d874C51954fCbab58a8726A2728c9a": {
+      "shares": "88876370000000000",
+      "recipient": "0x82cFD5AaC8d874C51954fCbab58a8726A2728c9a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8535a566834BD6D40347f85964F2d5F25D7B1ef9": {
+      "shares": "12710000000000",
+      "recipient": "0x8535a566834BD6D40347f85964F2d5F25D7B1ef9",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x854c1DE8A20bb0BeDb451733B70887F48B1bEC4e": {
+      "shares": "19260000000000",
+      "recipient": "0x854c1DE8A20bb0BeDb451733B70887F48B1bEC4e",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x869CB8d82359696073a0CfFe4ceAE63D5726B9B4": {
+      "shares": "12950000000000",
+      "recipient": "0x869CB8d82359696073a0CfFe4ceAE63D5726B9B4",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8716eCA6Ac4a59DaB9aBbD95a4a47cCA5334063a": {
+      "shares": "1096070000000000",
+      "recipient": "0x8716eCA6Ac4a59DaB9aBbD95a4a47cCA5334063a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8782aE81419dAB3378159EaD912E707afd5aa9C9": {
+      "shares": "13290000000000",
+      "recipient": "0x8782aE81419dAB3378159EaD912E707afd5aa9C9",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x87AE607A7bdCCbDC50C81df12Db5FAA3BFa62a3E": {
+      "shares": "12870000000000",
+      "recipient": "0x87AE607A7bdCCbDC50C81df12Db5FAA3BFa62a3E",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x886aCd9AdC7ee3B60Fc43E11EB5cEcF5D6aF58f9": {
+      "shares": "20340000000000",
+      "recipient": "0x886aCd9AdC7ee3B60Fc43E11EB5cEcF5D6aF58f9",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x88E80580b186d9678500759989709B59c70E4f94": {
+      "shares": "13420000000000",
+      "recipient": "0x88E80580b186d9678500759989709B59c70E4f94",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x891D0C4c2CB30e075A718eEbF2843d4DE4F83356": {
+      "shares": "13960000000000",
+      "recipient": "0x891D0C4c2CB30e075A718eEbF2843d4DE4F83356",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8Aa1443C03999e89cd9C19dA24CD55aF8330058C": {
+      "shares": "12950000000000",
+      "recipient": "0x8Aa1443C03999e89cd9C19dA24CD55aF8330058C",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8C858eE08Bf8d651bd6220002B22a4dc6572EE51": {
+      "shares": "12360000000000",
+      "recipient": "0x8C858eE08Bf8d651bd6220002B22a4dc6572EE51",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8D106c747CD21272D4C9Ff0Af8d53A9C9AcA25d2": {
+      "shares": "2083390000000000",
+      "recipient": "0x8D106c747CD21272D4C9Ff0Af8d53A9C9AcA25d2",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0x8d5ca73335c0cA147573f01Ef8dBB6209948957A": {
+      "shares": "18090000000000",
+      "recipient": "0x8d5ca73335c0cA147573f01Ef8dBB6209948957A",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8da1D7eEeae0b87A1d9203534f5da804b5d600ba": {
+      "shares": "36400000000000",
+      "recipient": "0x8da1D7eEeae0b87A1d9203534f5da804b5d600ba",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8E234A6fE4ee15Ea4B15088B64af80Db26C8AE69": {
+      "shares": "9993301060000000000",
+      "recipient": "0x8E234A6fE4ee15Ea4B15088B64af80Db26C8AE69",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x8F2E02D2a3048c3712775f12E93b7625F0DbFf88": {
+      "shares": "12780000000000",
+      "recipient": "0x8F2E02D2a3048c3712775f12E93b7625F0DbFf88",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x90D761f06d5C02Ac73877be12A64d670F2EA0F13": {
+      "shares": "19570000000000",
+      "recipient": "0x90D761f06d5C02Ac73877be12A64d670F2EA0F13",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x9459E5e6f136A15648b79CdEd838D4b56af8F6c8": {
+      "shares": "12130000000000",
+      "recipient": "0x9459E5e6f136A15648b79CdEd838D4b56af8F6c8",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x97c56156d29b3DA7FFbC79116812ef109EB4345B": {
+      "shares": "21300000000000",
+      "recipient": "0x97c56156d29b3DA7FFbC79116812ef109EB4345B",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x97D7846316efe4581a5A1ef3DE3E88814ba75e25": {
+      "shares": "3737220000000000",
+      "recipient": "0x97D7846316efe4581a5A1ef3DE3E88814ba75e25",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x99Ea634071C23A8b095B22Bf29b9B5457633c59d": {
+      "shares": "18100000000000",
+      "recipient": "0x99Ea634071C23A8b095B22Bf29b9B5457633c59d",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x9a2eddc2c03211a697900811BB271C8B0Fcdc881": {
+      "shares": "13440000000000",
+      "recipient": "0x9a2eddc2c03211a697900811BB271C8B0Fcdc881",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x9AeeCDD83289aCa27afdd88847C578E289014144": {
+      "shares": "13560000000000",
+      "recipient": "0x9AeeCDD83289aCa27afdd88847C578E289014144",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x9c5D1A971703a3422741Af1F9B8700D437527EC5": {
+      "shares": "14370000000000",
+      "recipient": "0x9c5D1A971703a3422741Af1F9B8700D437527EC5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0x9F4aaAd52776dc4cF81c35003beE7942E3D427a9": {
+      "shares": "19940000000000",
+      "recipient": "0x9F4aaAd52776dc4cF81c35003beE7942E3D427a9",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xa0154B50af957DbD1c2a709B57245B8462284E11": {
+      "shares": "35530000000000",
+      "recipient": "0xa0154B50af957DbD1c2a709B57245B8462284E11",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xa21b23e5f07E5E28cB42d09502227Eb75b0B64B5": {
+      "shares": "506547780000000000",
+      "recipient": "0xa21b23e5f07E5E28cB42d09502227Eb75b0B64B5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xa4b24d30313c1DE69312a593cc5F777a74056248": {
+      "shares": "170000000000000",
+      "recipient": "0xa4b24d30313c1DE69312a593cc5F777a74056248",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xA6390b7538FD485De114b7E0F9323B66d0fEA917": {
+      "shares": "20801290000000000",
+      "recipient": "0xA6390b7538FD485De114b7E0F9323B66d0fEA917",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xA948A0517BF9507362F5b7FeE31701f8261AEc88": {
+      "shares": "360016440000000000",
+      "recipient": "0xA948A0517BF9507362F5b7FeE31701f8261AEc88",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xAA09f1D74Af017639035fb141dea56db2946e3b2": {
+      "shares": "20150000000000",
+      "recipient": "0xAA09f1D74Af017639035fb141dea56db2946e3b2",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xaB26A0f19Bba758E61B90caF05aE82871971C90b": {
+      "shares": "12100000000000",
+      "recipient": "0xaB26A0f19Bba758E61B90caF05aE82871971C90b",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xabc3aE4E233A2519Abbf229807D14671ECa83996": {
+      "shares": "9381300000000000",
+      "recipient": "0xabc3aE4E233A2519Abbf229807D14671ECa83996",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xaBD0298c7274Ca61cCB8DeF28F971C4376b430B7": {
+      "shares": "117420000000000",
+      "recipient": "0xaBD0298c7274Ca61cCB8DeF28F971C4376b430B7",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xb0513Cd380eC3c27F14747AEF1d175b22b390D17": {
+      "shares": "3000000000000",
+      "recipient": "0xb0513Cd380eC3c27F14747AEF1d175b22b390D17",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xB1b298D7A7267429e9fb87a18C63F12094D28931": {
+      "shares": "91742350000000000",
+      "recipient": "0xB1b298D7A7267429e9fb87a18C63F12094D28931",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xb1deF9E46bF3f5781C64B8b13be094538c1813D7": {
+      "shares": "12610000000000",
+      "recipient": "0xb1deF9E46bF3f5781C64B8b13be094538c1813D7",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xB763B04A876a45838509CD4d6CA4C63271dA1DB4": {
+      "shares": "13601900000000000",
+      "recipient": "0xB763B04A876a45838509CD4d6CA4C63271dA1DB4",
+      "type": "EIP7702",
+      "code": "0x80296FF8D1ED46f8e3C7992664D13B833504c2Bb"
+    },
+    "0xb76Eb9f81E5b4d498CCeF407a8F804Fb7718C5fd": {
+      "shares": "499611400000000000",
+      "recipient": "0xb76Eb9f81E5b4d498CCeF407a8F804Fb7718C5fd",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xb881f599701be72A4Ce76C1EeB2aAe54cb9beA19": {
+      "shares": "16560000000000",
+      "recipient": "0xb881f599701be72A4Ce76C1EeB2aAe54cb9beA19",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xb89aC56C4F59c7B0eB41D2356fd2ed70dC122fc2": {
+      "shares": "21020000000000",
+      "recipient": "0xb89aC56C4F59c7B0eB41D2356fd2ed70dC122fc2",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xb8a5344Bd9B99ACE185580c15d80cC916c83e2Cc": {
+      "shares": "1120000000000",
+      "recipient": "0xb8a5344Bd9B99ACE185580c15d80cC916c83e2Cc",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xBB84bB646CCB928529e4b5f42938AaE39a5eFef6": {
+      "shares": "14780000000000",
+      "recipient": "0xBB84bB646CCB928529e4b5f42938AaE39a5eFef6",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xBBF5a035239183918839094eC012c69eeFE67836": {
+      "shares": "165090000000000",
+      "recipient": "0xBBF5a035239183918839094eC012c69eeFE67836",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xbcD6AFc3195e8926b5bbbd02Dfc121f461653711": {
+      "shares": "13720000000000",
+      "recipient": "0xbcD6AFc3195e8926b5bbbd02Dfc121f461653711",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xBE32617D8Fb6cD7ec7eBf30B65a592E76AF5d758": {
+      "shares": "145570000000000",
+      "recipient": "0xBE32617D8Fb6cD7ec7eBf30B65a592E76AF5d758",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xBEd25FA007D0a30Cb04f1B50750d599E89b1A8Ce": {
+      "shares": "330000000000",
+      "recipient": "0xBEd25FA007D0a30Cb04f1B50750d599E89b1A8Ce",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xC02193F9580c3429DfDeD4E14D1F9e73D477Ba92": {
+      "shares": "125380000000000",
+      "recipient": "0xC02193F9580c3429DfDeD4E14D1F9e73D477Ba92",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc3094cc8795C1f3277Aafa381C1105eed4658Adf": {
+      "shares": "12310000000000",
+      "recipient": "0xc3094cc8795C1f3277Aafa381C1105eed4658Adf",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc3673ADCaD9356F1B91ADD3D64D1cfe1f5431d7C": {
+      "shares": "111050000000000",
+      "recipient": "0xc3673ADCaD9356F1B91ADD3D64D1cfe1f5431d7C",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc3c651C32A1845191BD8Eb46571c94557a94520f": {
+      "shares": "14730000000000",
+      "recipient": "0xc3c651C32A1845191BD8Eb46571c94557a94520f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc634D9CF17A1352b9D0b5395aD20c4117c16CAaA": {
+      "shares": "98620000000000",
+      "recipient": "0xc634D9CF17A1352b9D0b5395aD20c4117c16CAaA",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc6943Dd138901bD219d2e7B4bFCdD6668a19FAeB": {
+      "shares": "10000000000000",
+      "recipient": "0xc6943Dd138901bD219d2e7B4bFCdD6668a19FAeB",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xC6f0F6E69b07Db21aE188F10ba4d71De234c14cC": {
+      "shares": "1000000000000000",
+      "recipient": "0xC6f0F6E69b07Db21aE188F10ba4d71De234c14cC",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xC8499D0311CA31A60e11D58A5A7e4F1C24B95575": {
+      "shares": "5312620000000000",
+      "recipient": "0xC8499D0311CA31A60e11D58A5A7e4F1C24B95575",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0xC866A22d1d9c49c07DF4bAB7D71aF18731D4CEee": {
+      "shares": "13270000000000",
+      "recipient": "0xC866A22d1d9c49c07DF4bAB7D71aF18731D4CEee",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xC8D46eb7881975F9aE15216FeEBa2ff58E55803c": {
+      "shares": "648000000000000",
+      "recipient": "0xC8D46eb7881975F9aE15216FeEBa2ff58E55803c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xc9BCEc43B9453aeD2bac9c496b30b740B6a04073": {
+      "shares": "31000690000000000",
+      "recipient": "0xc9BCEc43B9453aeD2bac9c496b30b740B6a04073",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xCa2D6159BbC9444e5f78210cE9a50818D287C47a": {
+      "shares": "14000000000000",
+      "recipient": "0xCa2D6159BbC9444e5f78210cE9a50818D287C47a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xca7CF16C69317689CC73fB3792031cE97a642d1f": {
+      "shares": "1260000000000",
+      "recipient": "0xca7CF16C69317689CC73fB3792031cE97a642d1f",
+      "type": "EIP7702",
+      "code": "0xD2e28229F6f2c235e57De2EbC727025A1D0530FB"
+    },
+    "0xcA933d146E4aa74908df8f21f9E17Ed6EdfA6b6c": {
+      "shares": "1994993350000000000",
+      "recipient": "0xcA933d146E4aa74908df8f21f9E17Ed6EdfA6b6c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xcbdcB14D4963a045d6517A89AaB07a097230C9BC": {
+      "shares": "10910000000000",
+      "recipient": "0xcbdcB14D4963a045d6517A89AaB07a097230C9BC",
+      "type": "EIP7702",
+      "code": "0x80296FF8D1ED46f8e3C7992664D13B833504c2Bb"
+    },
+    "0xcc2Cc53bAA6BFfbFeA9012855A50b39640fAC575": {
+      "shares": "2057598960000000000",
+      "recipient": "0xcc2Cc53bAA6BFfbFeA9012855A50b39640fAC575",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xCd0D28D3b82e2Dcaf6AB13cA95761CE848b46b8C": {
+      "shares": "199554070000000000",
+      "recipient": "0xCd0D28D3b82e2Dcaf6AB13cA95761CE848b46b8C",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xCD46234Eee488298B8cD3Aa8F643d97040b5Ec2c": {
+      "shares": "148670000000000",
+      "recipient": "0xCD46234Eee488298B8cD3Aa8F643d97040b5Ec2c",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xcDe7594DE889CB537975c715FD9754A7aCb2dDCc": {
+      "shares": "21410000000000",
+      "recipient": "0xcDe7594DE889CB537975c715FD9754A7aCb2dDCc",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xcdE8325C3128abc81e235D7191d5671D875c818B": {
+      "shares": "36220000000000",
+      "recipient": "0xcdE8325C3128abc81e235D7191d5671D875c818B",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xCFCCCC2A36020b959cBEad12ef904a0b4f36F8Cc": {
+      "shares": "13680000000000",
+      "recipient": "0xCFCCCC2A36020b959cBEad12ef904a0b4f36F8Cc",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xD0bcAE56a25B9b385CD332a7903Ed3cAf646561E": {
+      "shares": "17590000000000",
+      "recipient": "0xD0bcAE56a25B9b385CD332a7903Ed3cAf646561E",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd0C0338BaaC9cE09C1d1caAb88B4360507061e37": {
+      "shares": "5343050000000000",
+      "recipient": "0xd0C0338BaaC9cE09C1d1caAb88B4360507061e37",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd0C7a59e3Ce5a289b553ebF7659F5C3316eCFBB9": {
+      "shares": "565860000000000",
+      "recipient": "0xd0C7a59e3Ce5a289b553ebF7659F5C3316eCFBB9",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xD3C151B114F5045483d153E19414466679d61B14": {
+      "shares": "13000000000000",
+      "recipient": "0xD3C151B114F5045483d153E19414466679d61B14",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd3f5C0c0eBDC23ffFB3DD74b939f51EC27A97D0e": {
+      "shares": "13700000000000",
+      "recipient": "0xd3f5C0c0eBDC23ffFB3DD74b939f51EC27A97D0e",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd4f6a31AC34e988A1A22A2030cB777BEfe0905e1": {
+      "shares": "142590000000000",
+      "recipient": "0xd4f6a31AC34e988A1A22A2030cB777BEfe0905e1",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd5597936dBBD1B31f70D7a2024409b7a4d032680": {
+      "shares": "9004863610000000000",
+      "recipient": "0xd5597936dBBD1B31f70D7a2024409b7a4d032680",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xd727d010Cc170ABEC7Ba59409a5549d0817a0471": {
+      "shares": "12700000000000",
+      "recipient": "0xd727d010Cc170ABEC7Ba59409a5549d0817a0471",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xdA3CB1F73fE9E478556956D71d24eD726e8F9162": {
+      "shares": "574410000000000",
+      "recipient": "0xdA3CB1F73fE9E478556956D71d24eD726e8F9162",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xdb4938968c2AdBDb4b130C1BF90dFd038699097f": {
+      "shares": "20050000000000",
+      "recipient": "0xdb4938968c2AdBDb4b130C1BF90dFd038699097f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xDC02781Bd75Fa9102E00440A7E6176985430074D": {
+      "shares": "206600000000000",
+      "recipient": "0xDC02781Bd75Fa9102E00440A7E6176985430074D",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xdC23E53922bA649a4f6Ea76d7294B10D480ACf5f": {
+      "shares": "12890000000000",
+      "recipient": "0xdC23E53922bA649a4f6Ea76d7294B10D480ACf5f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xdc64ffb5c6C5bB032244A656c95C6a1296B6953a": {
+      "shares": "581030000000000",
+      "recipient": "0xdc64ffb5c6C5bB032244A656c95C6a1296B6953a",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xe1b0B6Dc8d5E216622f2115d5A61BC243d607467": {
+      "shares": "136310000000000",
+      "recipient": "0xe1b0B6Dc8d5E216622f2115d5A61BC243d607467",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xe2Dcbb2f369791dc2de9E415EfCfb55248A2E628": {
+      "shares": "23110000000000",
+      "recipient": "0xe2Dcbb2f369791dc2de9E415EfCfb55248A2E628",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xe3a765b8Ec067Ae89A6CB6Ecddf1FB52003CE6aF": {
+      "shares": "598303470000000000",
+      "recipient": "0xe3a765b8Ec067Ae89A6CB6Ecddf1FB52003CE6aF",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xe448d9D70eFe95714e38d210E58d458dab0A77d5": {
+      "shares": "1933610000000000",
+      "recipient": "0xe448d9D70eFe95714e38d210E58d458dab0A77d5",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xE5aaC2c9dF70aB5d4a012659085c4Cf2F55bcCCc": {
+      "shares": "12110000000000",
+      "recipient": "0xE5aaC2c9dF70aB5d4a012659085c4Cf2F55bcCCc",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xE5cF73F96F57d56d6E44BD82D8AF95727A2FAb04": {
+      "shares": "270000000000000",
+      "recipient": "0xE5cF73F96F57d56d6E44BD82D8AF95727A2FAb04",
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+    },
+    "0xE62026AD972284CAA01A0952199dfD5030119585": {
+      "shares": "13230000000000",
+      "recipient": "0xE62026AD972284CAA01A0952199dfD5030119585",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xE6691c58e175552D1448e462b29651378D76aA74": {
+      "shares": "12210000000000",
+      "recipient": "0xE6691c58e175552D1448e462b29651378D76aA74",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xE6fFC66882beE87DB6CFbb8DfBb5Bb2568f8BE1b": {
+      "shares": "1000000000000",
+      "recipient": "0xE6fFC66882beE87DB6CFbb8DfBb5Bb2568f8BE1b",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xE93c14611eF4D296bD3dc7C9f9b9be559bfF4D90": {
+      "shares": "3010730000000000",
+      "recipient": "0xE93c14611eF4D296bD3dc7C9f9b9be559bfF4D90",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xEc0A13c8688D022D2aF08d664b70Cf14d956C373": {
+      "shares": "2000000000000",
+      "recipient": "0xEc0A13c8688D022D2aF08d664b70Cf14d956C373",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xEdd57Ab12F54dEDC9DFbb91a7048BFe0db7d534E": {
+      "shares": "70000000000000000",
+      "recipient": "0xEdd57Ab12F54dEDC9DFbb91a7048BFe0db7d534E",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xeE83ae872F88554A00fc9FAE7052823CB4C07f80": {
+      "shares": "123240000000000",
+      "recipient": "0xeE83ae872F88554A00fc9FAE7052823CB4C07f80",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xeeDb07ae31191e8E803685887Bf653754f2f6F52": {
+      "shares": "64140000000000",
+      "recipient": "0xeeDb07ae31191e8E803685887Bf653754f2f6F52",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xF12BD23F179435169C4bfCCe7dA2a39F229CE9f0": {
+      "shares": "92100000000000",
+      "recipient": "0xF12BD23F179435169C4bfCCe7dA2a39F229CE9f0",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xF2D06C9C87951Cdc4AE17Af23f23E0734C5974FF": {
+      "shares": "13150000000000",
+      "recipient": "0xF2D06C9C87951Cdc4AE17Af23f23E0734C5974FF",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xF368d43f148e1803eC793670183b0CA6a07d3898": {
+      "shares": "12000000000000000000",
+      "recipient": "0xF368d43f148e1803eC793670183b0CA6a07d3898",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xf45f9Bcab950067918c3c616606355AFD3525939": {
+      "shares": "118440000000000",
+      "recipient": "0xf45f9Bcab950067918c3c616606355AFD3525939",
+      "type": "EIP7702",
+      "code": "0x36d3CBD83961868398d056EfBf50f5CE15528c0D"
+    },
+    "0xF495C8BEca7016674F67BE25e485DbF41dc5A151": {
+      "shares": "2472760000000000",
+      "recipient": "0xF495C8BEca7016674F67BE25e485DbF41dc5A151",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xf532729D2384a5f510DBb1ACF66750f2f1efdEdA": {
+      "shares": "13200000000000",
+      "recipient": "0xf532729D2384a5f510DBb1ACF66750f2f1efdEdA",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xf6438666A1594B58Ef025995FeC6655E2b36fCA1": {
+      "shares": "110190000000000",
+      "recipient": "0xf6438666A1594B58Ef025995FeC6655E2b36fCA1",
+      "type": "EIP7702",
+      "code": "0x80296FF8D1ED46f8e3C7992664D13B833504c2Bb"
+    },
+    "0xF729394443C48e6ca71EEE639d6A16da7b566F3b": {
+      "shares": "69910000000000",
+      "recipient": "0xF729394443C48e6ca71EEE639d6A16da7b566F3b",
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
+    },
+    "0xF79a5CA63B6B3CD8f061036e8859F8458dfc678E": {
+      "shares": "116470000000000",
+      "recipient": "0xF79a5CA63B6B3CD8f061036e8859F8458dfc678E",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xfc0fAA8718Fb0bB316A48BeB3Aca10306EfB5bb8": {
+      "shares": "116840000000000",
+      "recipient": "0xfc0fAA8718Fb0bB316A48BeB3Aca10306EfB5bb8",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xFd69A5D0b8330dC86e266304B3D1ABE3F57b9D09": {
+      "shares": "33210000000000",
+      "recipient": "0xFd69A5D0b8330dC86e266304B3D1ABE3F57b9D09",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xfe4e1CE049c35999179d01f9a82925162976bB1f": {
+      "shares": "13320000000000",
+      "recipient": "0xfe4e1CE049c35999179d01f9a82925162976bB1f",
+      "type": "EOA",
+      "code": "0x"
+    },
+    "0xfF86d3818a11208B19439F0a0d8A542d920722B7": {
+      "shares": "15070000000000",
+      "recipient": "0xfF86d3818a11208B19439F0a0d8A542d920722B7",
+      "type": "EOA",
+      "code": "0x"
+    }
+  }
 }

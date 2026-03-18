@@ -13,7 +13,7 @@ contract URDTest is Test {
     address mbhcbBTC = 0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B;
     address msvUSD = 0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84;
 
-    address SHARE_MANAGER = msvUSD;
+    address SHARE_MANAGER = mbhcbBTC;
 
     address urd_owner = vm.addr(uint256(keccak256("urd_owner")));
 
@@ -24,7 +24,8 @@ contract URDTest is Test {
         uint256 totalShares = raw.readUint("$.totalShares");
 
         // 1) Deploy URD and set root
-        UniversalRewardsDistributor urd = new UniversalRewardsDistributor(urd_owner, 0, raw.readBytes32("$.root"), bytes32(0));
+        UniversalRewardsDistributor urd =
+            new UniversalRewardsDistributor(urd_owner, 0, raw.readBytes32("$.root"), bytes32(0));
         deal(rewardToken, address(urd), totalShares);
 
         // 3) Read all claim keys under $.claims
@@ -60,7 +61,9 @@ contract URDTest is Test {
             bytes32[] memory proof = raw.readBytes32Array(string.concat(base, ".proof"));
 
             uint256 balBefore = IERC20(rewardToken).balanceOf(account);
-            console2.log("Claiming for account %s, claimable total: %d, balance before: %d", account, claimableTotal, balBefore);
+            console2.log(
+                "Claiming for account %s, claimable total: %d, balance before: %d", account, claimableTotal, balBefore
+            );
             // anyone can submit claim; in Morpho URD it’s permissionless
             uint256 paid;
             try urd.claim(recipient, rewardToken, claimableTotal, proof) returns (uint256 paid_) {
@@ -102,7 +105,7 @@ contract URDTest is Test {
         vm.expectRevert("NOTHING_TO_CLAIM");
         urd.claim(account, rewardToken, claimableTotal, proof);
     }
-    
+
     function getProofPath() internal view returns (string memory) {
         string memory symbol = IERC20Metadata(SHARE_MANAGER).symbol();
         return string(abi.encodePacked("data/", symbol, "/proofs.json"));
