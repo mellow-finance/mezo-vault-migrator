@@ -33,13 +33,13 @@ SHARE_MANAGERS = {
         "address": "0x43f084bdBC99409c637319dD7c544D565165A162",
         "fee_recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
         "start_block": 24245295,
-        "price_delta": 0.13954566/100, # delta price of base asset since inception
+        "price_delta": 0.139284798705/100, # delta price of base asset since inception
     },
     "mbhcbBTC": {
         "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
         "fee_recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
         "start_block": 24245362,
-        "price_delta": 0.17238356/100, # delta price of base asset since inception
+        "price_delta": 0.172389112893/100, # delta price of base asset since inception
     },
 }
 
