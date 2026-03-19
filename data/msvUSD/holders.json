@@ -4319,8 +4319,8 @@
     "0x555B2aDE68C716Fe0e2FA043B9C177bd9D42Eb01": {
       "shares": "999969940236832764",
       "recipient": "0x555B2aDE68C716Fe0e2FA043B9C177bd9D42Eb01",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
     },
     "0x556F2ab00F585b1f77099bffb72ff8279D11AF75": {
       "shares": "9999699402368327",
@@ -6431,8 +6431,8 @@
     "0x8335a2690490f558f2182f7efc7b61a8b7f3d558": {
       "shares": "988666988510019231",
       "recipient": "0x8335a2690490f558f2182f7efc7b61a8b7f3d558",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0x36d3CBD83961868398d056EfBf50f5CE15528c0D"
     },
     "0x833fA2CCceeeDd6F7B7e7CA01BC0Eb4f31F8D985": {
       "shares": "604513827911252984",
@@ -7391,8 +7391,8 @@
     "0x97c0e228750E2050937925A682478123443741fF": {
       "shares": "49998497011841638",
       "recipient": "0x97c0e228750E2050937925A682478123443741fF",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
     },
     "0x9816d79EAfb415934388c0cEF52e7C9913C24DFA": {
       "shares": "9945701025595538",
@@ -8010,7 +8010,7 @@
       "shares": "999969940236832764",
       "recipient": "0xa31d18d235cDd185d3d7F57BaCC094c62D82c865",
       "type": "EIP7702",
-      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+      "code": "0x7702cb554e6bFb442cb743A7dF23154544a7176C"
     },
     "0xa361ff98Ec383F7a99389D059Db1518955dd9b98": {
       "shares": "5042848408614347",

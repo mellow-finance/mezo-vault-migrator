@@ -10,125 +10,140 @@ import {PermissionedMinter} from "lib/flexible-vaults/src/utils/PermissionedMint
 
 import {Vault} from "lib/flexible-vaults/src/vaults/Vault.sol";
 import {Integration, VaultState} from "lib/flexible-vaults/test/PermissionedBuilderTest.s.sol";
-import "lib/morpho-urd/src/UniversalRewardsDistributor.sol";
+import {IERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {IERC20Metadata} from "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
+
+
+interface IUniversalRewardsDistributor {
+    function root() external view returns (bytes32);
+    function owner() external view returns (address);
+    function timelock() external view returns (uint256);
+    function ipfsHash() external view returns (bytes32);
+    function isUpdater(address) external view returns (bool);
+    function claimed(address, address) external view returns (uint256);
+
+    function acceptRoot() external;
+    function setRoot(bytes32 newRoot, bytes32 newIpfsHash) external;
+    function setTimelock(uint256 newTimelock) external;
+    function setRootUpdater(address updater, bool active) external;
+    function revokePendingRoot() external;
+    function setOwner(address newOwner) external;
+
+    function submitRoot(bytes32 newRoot, bytes32 ipfsHash) external;
+
+    function claim(address account, address reward, uint256 claimable, bytes32[] memory proof)
+        external
+        returns (uint256 amount);
+}
 
 contract MigrationDeploy is Script, Integration {
     using Strings for string;
     using stdJson for string;
 
     struct VaultData {
-        address mainnetVault;
+        string symbol;
         address mezoVault;
         address mezoAdmin;
-        string symbol;
-        UniversalRewardsDistributor urd;
+        IUniversalRewardsDistributor urd;
         PermissionedMinter minter;
         string proofJson;
     }
 
-    /// @notice An array of Vaults
-    VaultData[] public vaultsData;
+    bytes32 DEFAULT_ADMIN_ROLE = 0x00;
 
     function run() external {
         uint256 deployerPk = uint256(bytes32(vm.envBytes("HOT_DEPLOYER")));
 
+        VaultData[] memory vaultsData = _setUp();
+
         vm.startBroadcast(deployerPk);
         for (uint256 i = 0; i < vaultsData.length; i++) {
             VaultData memory vault = vaultsData[i];
-            (vault.urd, vault.minter) = deploy(vault);
-            console2.log(
-                "Deployed URD at %s and PermissionedMinter at %s for vault %s",
-                address(vault.urd),
-                address(vault.minter),
-                vault.symbol
-            );
+            vault.minter = _deploy(vault);
             vaultsData[i] = vault;
         }
         vm.stopBroadcast();
+        
+        revert("Deployment complete");
 
         for (uint256 i = 0; i < vaultsData.length; i++) {
-            mint(vaultsData[i]);
-            randomClaimTest(vaultsData[i]);
+            _mint(vaultsData[i]);
+            _randomClaimTest(vaultsData[i]);
+        }
+        
+        for (uint256 i = 0; i < vaultsData.length; i++) {
+            console2.log(
+                "Deployed URD at %s and PermissionedMinter at %s for vault %s",
+                address(vaultsData[i].urd),
+                address(vaultsData[i].minter),
+                vaultsData[i].symbol
+            );
         }
 
-        revert("Deployment complete");
     }
 
-    function setUp() external {
-        // mbhBTC
-        pushVault(
-            VaultData({
-                mainnetVault: 0xa8A3De0c5594A09d0cD4C8abc4e3AaB9BaE03F36,
-                mezoVault: 0x807D4778abA870e4222904f5b528F68B350cE0E0,
-                mezoAdmin: 0xd5aA2D083642e8Dec06a5e930144d0Af5a97496d,
-                symbol: "mbhBTC",
-                urd: UniversalRewardsDistributor(address(0)),
-                minter: PermissionedMinter(address(0)),
-                proofJson: ""
-            })
-        );
+    function _setUp() internal view returns (VaultData[] memory vaultsData) {
+        /*
+            URD mbhBTC   0xF73C154c1F57329A2c9C04C406470E8be14B0c3C
+            URD mbhcbBTC 0x9F947e74b3DB089f480c7E2cA914777f6b07D286
+            URD msvUSD   0x1A7ADC1d931D400B69f3CEd0C91B62d1af0B0712
+        */
+        vaultsData = new VaultData[](3);
+        // mbhBTC mainnetVault = 0xa8A3De0c5594A09d0cD4C8abc4e3AaB9BaE03F36
+        vaultsData[0].mezoVault = 0x807D4778abA870e4222904f5b528F68B350cE0E0;
+        vaultsData[0].urd = IUniversalRewardsDistributor(0xF73C154c1F57329A2c9C04C406470E8be14B0c3C);
+        vaultsData[0].symbol = "mbhBTC";
 
-        // mbhcbBTC
-        pushVault(
-            VaultData({
-                mainnetVault: 0x63a76a4a94cAB1DD49fcf0d7E3FC53a78AC8Ec5C,
-                mezoVault: 0x06ED1E2167AA7FBf2476c5A2D220Bf702559Dcf8,
-                mezoAdmin: 0xd5aA2D083642e8Dec06a5e930144d0Af5a97496d,
-                symbol: "mbhcbBTC",
-                urd: UniversalRewardsDistributor(address(0)),
-                minter: PermissionedMinter(address(0)),
-                proofJson: ""
-            })
-        );
+        // mbhcbBTC mainnetVault 0x63a76a4a94cAB1DD49fcf0d7E3FC53a78AC8Ec5C
+        vaultsData[1].mezoVault = 0x06ED1E2167AA7FBf2476c5A2D220Bf702559Dcf8;
+        vaultsData[1].urd = IUniversalRewardsDistributor(0x9F947e74b3DB089f480c7E2cA914777f6b07D286);
+        vaultsData[1].symbol = "mbhcbBTC";
 
-        // msvUSD
-        pushVault(
-            VaultData({
-                mainnetVault: 0x7207595E4c18a9A829B9dc868F11F3ADd8FCF626,
-                mezoVault: 0x07AFFA6754458f88db83A72859948d9b794E131b,
-                mezoAdmin: 0xC6174983e96D508054cE1DBD778bE8F9f8007Ab3,
-                symbol: "msvUSD",
-                urd: UniversalRewardsDistributor(address(0)),
-                minter: PermissionedMinter(address(0)),
-                proofJson: ""
-            })
-        );
+        // msvUSD mainnetVault 0x7207595E4c18a9A829B9dc868F11F3ADd8FCF626
+        vaultsData[2].mezoVault = 0x07AFFA6754458f88db83A72859948d9b794E131b;
+        vaultsData[2].urd = IUniversalRewardsDistributor(0x1A7ADC1d931D400B69f3CEd0C91B62d1af0B0712);
+        vaultsData[2].symbol = "msvUSD";
+
+        for (uint256 i = 0; i < vaultsData.length; i++) {
+            vaultsData[i] = _fillVault(vaultsData[i]);
+        }
     }
 
-    function pushVault(VaultData memory vaultData) internal {
+    function _fillVault(VaultData memory vaultData) internal view returns (VaultData memory) {
+        Vault vault = Vault(payable(vaultData.mezoVault));
         address shareManagerAddr = address(IShareModule(vaultData.mezoVault).shareManager());
+        vaultData.mezoAdmin = vault.getRoleMembers(DEFAULT_ADMIN_ROLE)[0];
         console2.log("Pushing vault with share manager at %s", shareManagerAddr);
         IERC20Metadata shareManager = IERC20Metadata(shareManagerAddr);
         require(IShareManager(shareManagerAddr).activeShares() == 0, "ACTIVE_SHARES_PRESENT");
         require(IShareManager(shareManagerAddr).totalShares() == 0, "TOTAL_SHARES_PRESENT");
         require(shareManager.symbol().equal(vaultData.symbol), "SYMBOL_MISMATCH");
 
-        vaultData.proofJson = vm.readFile(getProofPath(vaultData.symbol));
-        vaultsData.push(vaultData);
+        vaultData.proofJson = vm.readFile(_getProofPath(vaultData.symbol));
+
+        return vaultData;
     }
 
-    function deploy(VaultData memory vaultData) internal returns (UniversalRewardsDistributor, PermissionedMinter) {
-        UniversalRewardsDistributor urd =
-            new UniversalRewardsDistributor(vaultData.mezoAdmin, 0, bytes32(0), bytes32(0));
+    function _deploy(VaultData memory vaultData) internal returns (PermissionedMinter) {
         PermissionedMinter minter = new PermissionedMinter(
             Vault(payable(vaultData.mezoVault)),
             vaultData.mezoAdmin,
-            address(urd),
+            address(vaultData.urd),
             uint224(vaultData.proofJson.readUint("$.totalShares")),
             3
         );
-        return (urd, minter);
+        return minter;
     }
 
-    function mint(VaultData memory vaultData) internal {
+    function _mint(VaultData memory vaultData) internal {
         Vault vault = Vault(payable(vaultData.mezoVault));
+        IShareManager shareManager = vault.shareManager();
 
         VaultState memory stateBefore = getVaultState(vault);
 
         vm.startPrank(vaultData.mezoAdmin);
-        vault.grantRole(vault.DEFAULT_ADMIN_ROLE(), address(vaultData.minter));
+        vault.grantRole(DEFAULT_ADMIN_ROLE, address(vaultData.minter));
         vaultData.minter.mint();
         vm.stopPrank();
 
@@ -136,7 +151,10 @@ contract MigrationDeploy is Script, Integration {
 
         compareVaultStates(stateBefore, stateAfter);
 
-        console2.log(vault.shareManager().sharesOf(address(vaultData.urd)));
+        require(
+            shareManager.sharesOf(address(vaultData.urd)) == vaultData.proofJson.readUint("$.totalShares"),
+            "SHARES_MINTED_MISMATCH"
+        );
 
         for (uint256 roleIndex = 0; roleIndex < vault.supportedRoles(); roleIndex++) {
             bytes32 role = vault.supportedRoleAt(roleIndex);
@@ -144,7 +162,7 @@ contract MigrationDeploy is Script, Integration {
         }
     }
 
-    function randomClaimTest(VaultData memory vaultData) internal {
+    function _randomClaimTest(VaultData memory vaultData) internal {
         address rewardToken = address(IShareModule(vaultData.mezoVault).shareManager());
 
         vm.prank(vaultData.mezoAdmin);
@@ -179,7 +197,7 @@ contract MigrationDeploy is Script, Integration {
         }
     }
 
-    function getProofPath(string memory symbol) internal pure returns (string memory) {
+    function _getProofPath(string memory symbol) internal pure returns (string memory) {
         return string(abi.encodePacked("data/", symbol, "/proofs.json"));
     }
 }

@@ -1475,8 +1475,8 @@
     "0x757558E416c44A28f05F87c570e508Ba29928F0b": {
       "shares": "10830000000000",
       "recipient": "0x757558E416c44A28f05F87c570e508Ba29928F0b",
-      "type": "EIP7702",
-      "code": "0x36d3CBD83961868398d056EfBf50f5CE15528c0D"
+      "type": "EOA",
+      "code": "0x"
     },
     "0x764694FFDC4Bdc598c73B284cD923F47AaCfF86f": {
       "shares": "5000000000000",
