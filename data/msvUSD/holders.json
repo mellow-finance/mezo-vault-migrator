@@ -2063,8 +2063,8 @@
     "0x284BD4aF3e1C88ea63f6dDb51a7870A000DCE89a": {
       "shares": "199993988047366552",
       "recipient": "0x284BD4aF3e1C88ea63f6dDb51a7870A000DCE89a",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
     },
     "0x285F2ae06137Ca5780A369Fa0fF354534590cFf9": {
       "shares": "1001535893163243644",
@@ -4883,8 +4883,8 @@
     "0x60Cd12f55339251313BA6a33194C81F8d05d36cf": {
       "shares": "9999699402368327647",
       "recipient": "0x60Cd12f55339251313BA6a33194C81F8d05d36cf",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
     },
     "0x61124B13b82B004885101c025EC33c0ADA74B995": {
       "shares": "59998196414209965",
@@ -6419,8 +6419,8 @@
     "0x8335a2690490f558f2182f7efc7b61a8b7f3d558": {
       "shares": "988666988510019231",
       "recipient": "0x8335a2690490f558f2182f7efc7b61a8b7f3d558",
-      "type": "EIP7702",
-      "code": "0x36d3CBD83961868398d056EfBf50f5CE15528c0D"
+      "type": "EOA",
+      "code": "0x"
     },
     "0x833fA2CCceeeDd6F7B7e7CA01BC0Eb4f31F8D985": {
       "shares": "604513827911252984",
@@ -7691,8 +7691,8 @@
     "0x9e5b5E43892658e8f9193d9F4A07f2165026E714": {
       "shares": "149995491035524914",
       "recipient": "0x9e5b5E43892658e8f9193d9F4A07f2165026E714",
-      "type": "EIP7702",
-      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
+      "type": "EOA",
+      "code": "0x"
     },
     "0x9e745a01Da297C99783A681f54767CF9BE91DE49": {
       "shares": "99996994023683276",
@@ -10151,8 +10151,8 @@
     "0xCcF1A73086C375E10D81A9D0c4c12B3561648b07": {
       "shares": "99996994023683276",
       "recipient": "0xCcF1A73086C375E10D81A9D0c4c12B3561648b07",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0x63c0c19a282a1B52b07dD5a65b58948A07DAE32B"
     },
     "0xcCF4beef5E9Bf67f0b3Aa7ce5259354c2382379C": {
       "shares": "49998497011841638",
@@ -10655,8 +10655,8 @@
     "0xd73a86638C4B087C564a4e8005ec5b17783A3256": {
       "shares": "9999699402368327",
       "recipient": "0xd73a86638C4B087C564a4e8005ec5b17783A3256",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
     },
     "0xd749c90eA6df47cCC4a8d223F4b5cfA3699EA6bf": {
       "shares": "2158554112424091705",

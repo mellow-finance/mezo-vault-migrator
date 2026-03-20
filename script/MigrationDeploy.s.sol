@@ -12,8 +12,6 @@ import {Vault} from "lib/flexible-vaults/src/vaults/Vault.sol";
 import {Integration, VaultState} from "lib/flexible-vaults/test/PermissionedBuilderTest.s.sol";
 import {IERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {IERC20Metadata} from "lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "lib/openzeppelin-contracts/contracts/utils/Strings.sol";
-
 
 interface IUniversalRewardsDistributor {
     function root() external view returns (bytes32);
@@ -38,7 +36,6 @@ interface IUniversalRewardsDistributor {
 }
 
 contract MigrationDeploy is Script, Integration {
-    using Strings for string;
     using stdJson for string;
 
     struct VaultData {
@@ -53,6 +50,11 @@ contract MigrationDeploy is Script, Integration {
     bytes32 DEFAULT_ADMIN_ROLE = 0x00;
 
     function run() external {
+        _deploymsvUSD();
+        // revert("Deployment complete");
+    }
+
+    function _run() internal {
         uint256 deployerPk = uint256(bytes32(vm.envBytes("HOT_DEPLOYER")));
 
         VaultData[] memory vaultsData = _setUp();
@@ -64,8 +66,7 @@ contract MigrationDeploy is Script, Integration {
             vaultsData[i] = vault;
         }
         vm.stopBroadcast();
-        
-        revert("Deployment complete");
+
 
         for (uint256 i = 0; i < vaultsData.length; i++) {
             _mint(vaultsData[i]);
@@ -81,6 +82,7 @@ contract MigrationDeploy is Script, Integration {
             );
         }
 
+        revert("Deployment complete");
     }
 
     function _setUp() internal view returns (VaultData[] memory vaultsData) {
@@ -118,7 +120,7 @@ contract MigrationDeploy is Script, Integration {
         IERC20Metadata shareManager = IERC20Metadata(shareManagerAddr);
         require(IShareManager(shareManagerAddr).activeShares() == 0, "ACTIVE_SHARES_PRESENT");
         require(IShareManager(shareManagerAddr).totalShares() == 0, "TOTAL_SHARES_PRESENT");
-        require(shareManager.symbol().equal(vaultData.symbol), "SYMBOL_MISMATCH");
+        require(keccak256(abi.encodePacked(shareManager.symbol())) == keccak256(abi.encodePacked(vaultData.symbol)), "SYMBOL_MISMATCH");
 
         vaultData.proofJson = vm.readFile(_getProofPath(vaultData.symbol));
 
@@ -136,6 +138,31 @@ contract MigrationDeploy is Script, Integration {
         return minter;
     }
 
+    function _deploymsvUSD() internal {
+        VaultData memory vaultData;
+        // msvUSD mainnetVault 0x7207595E4c18a9A829B9dc868F11F3ADd8FCF626
+        vaultData.mezoVault = 0x07AFFA6754458f88db83A72859948d9b794E131b;
+        vaultData.urd = IUniversalRewardsDistributor(0x1A7ADC1d931D400B69f3CEd0C91B62d1af0B0712);
+        vaultData.symbol = "msvUSD";
+
+        _fillVault(vaultData);
+
+        uint256 deployerPk = uint256(bytes32(vm.envBytes("HOT_DEPLOYER")));
+        vm.startBroadcast(deployerPk);
+        vaultData.minter = new PermissionedMinter(
+            Vault(payable(vaultData.mezoVault)),
+            vaultData.mezoAdmin,
+            address(vaultData.urd),
+            uint224(vaultData.proofJson.readUint("$.totalShares")),
+            3
+        );
+        vm.stopBroadcast();
+        console2.log("msvUSD Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol);
+
+        //_mint(vaultData);
+        //_randomClaimTest(vaultData);
+    }
+
     function _mint(VaultData memory vaultData) internal {
         Vault vault = Vault(payable(vaultData.mezoVault));
         IShareManager shareManager = vault.shareManager();
@@ -150,9 +177,10 @@ contract MigrationDeploy is Script, Integration {
         VaultState memory stateAfter = getVaultState(vault);
 
         compareVaultStates(stateBefore, stateAfter);
+        uint256 mintedShares = shareManager.sharesOf(address(vaultData.urd));
 
         require(
-            shareManager.sharesOf(address(vaultData.urd)) == vaultData.proofJson.readUint("$.totalShares"),
+            mintedShares == vaultData.proofJson.readUint("$.totalShares"),
             "SHARES_MINTED_MISMATCH"
         );
 
@@ -160,6 +188,13 @@ contract MigrationDeploy is Script, Integration {
             bytes32 role = vault.supportedRoleAt(roleIndex);
             assertFalse(vault.hasRole(role, address(vaultData.minter)), "minter should not have any role");
         }
+
+        string[] memory claimKeys = vm.parseJsonKeys(vaultData.proofJson, "$.claims");
+        for (uint256 i = 0; i < claimKeys.length; i ++) {
+            string memory base = string.concat('$.claims["', claimKeys[i], '"]');
+            mintedShares -= vaultData.proofJson.readUint(string.concat(base, ".amount"));
+        }
+        require(mintedShares == 0, "TOTAL_SHARES_MISMATCH");
     }
 
     function _randomClaimTest(VaultData memory vaultData) internal {
