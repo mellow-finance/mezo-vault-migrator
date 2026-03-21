@@ -554,11 +554,18 @@ def generate_proofs_for_share_manager(w3: Web3, share_manager: Dict) -> None:
     holders_doc = read_holders_file(symbol)
     out = build_claims_from_holders(w3, holders_doc, symbol)
 
+    total_from_claims = sum(int(c["amount"]) for c in out["claims"].values())
+    if int(out["totalShares"]) != total_from_claims:
+        raise SystemExit(
+            f"totalShares mismatch: top-level={out['totalShares']} != sum(claims.amount)={total_from_claims}"
+        )
+
     PROOFS_PATH = ROOT_PATH.joinpath(symbol, "proofs.json")
     PROOFS_PATH.parent.mkdir(parents=True, exist_ok=True)
     PROOFS_PATH.write_text(json.dumps(out, indent=2))
     print(f"shareManager/rewardToken: {share_manager_address}")
     print(f"root: {out['root']}")
+    print(f"totalShares: {out['totalShares']} (verified == sum of claims)")
     print(f"wrote: {PROOFS_PATH}")
 
 

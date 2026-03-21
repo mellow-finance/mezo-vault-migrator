@@ -33,13 +33,15 @@ SHARE_MANAGERS = {
         "address": "0x43f084bdBC99409c637319dD7c544D565165A162",
         "fee_recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
         "start_block": 24245295,
-        "price_delta": 0.139284798705/100, # delta price of base asset since inception
+        "lock_block": 24375362, # inception block for protocol fee calculation
+        "price_delta": 0.06641630228651081/100, # delta price of base asset since inception
     },
     "mbhcbBTC": {
         "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
         "fee_recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
         "start_block": 24245362,
-        "price_delta": 0.172389112893/100, # delta price of base asset since inception
+        "lock_block": 24375362, # inception block for protocol fee calculation
+        "price_delta": 0.154653063/100, # delta price of base asset since inception
     },
 }
 
@@ -91,10 +93,12 @@ def process_share_manager(symbol, latest_block):
     cfg = SHARE_MANAGERS[symbol]
     contract = cfg["address"]
     start_block = cfg["start_block"]
+    lock_block = cfg["lock_block"]
+    fee_start_block = max(start_block, lock_block)
     price_delta = cfg["price_delta"]
 
     print(f"\n{'='*60}")
-    print(f"Processing {symbol} (contract {contract}, start block {start_block})")
+    print(f"Processing {symbol} (contract {contract}, start block {start_block}, fee start block {fee_start_block})")
     print(f"Fetching Mint events from block {start_block} to {latest_block}...")
 
     # Collect all logs in chunks
@@ -147,25 +151,31 @@ def process_share_manager(symbol, latest_block):
     # Use step function: value holds from its timestamp until next event
     # Final value holds until the latest block timestamp
     final_ts = w3.eth.get_block('latest')["timestamp"]
-    # Also get timestamp of start block for reference
+    # Timestamp of start block for event fetching reference
     start_ts = w3.eth.get_block(start_block)["timestamp"]
+    # Timestamp of fee_start_block (max of start_block and lock_block) for protocol fee calculation
+    fee_start_ts = w3.eth.get_block(fee_start_block)["timestamp"] if fee_start_block != start_block else start_ts
 
-    print(f"\nStart block timestamp: {start_ts}")
-    print(f"End block timestamp:     {final_ts}")
-    print(f"Total duration:          {final_ts - start_ts} seconds")
+    print(f"\nStart block timestamp:     {start_ts}")
+    print(f"Fee start block timestamp: {fee_start_ts}")
+    print(f"End block timestamp:       {final_ts}")
+    print(f"Total duration (fee):      {final_ts - fee_start_ts} seconds")
 
-    # Compute TWA over the range [start_ts, final_ts]
+    # Compute TWA over the range [fee_start_ts, final_ts]
     # Before any event, sum(shares) = 0
-    total_time = final_ts - start_ts
+    total_time = final_ts - fee_start_ts
     if total_time == 0:
         print("All events in same block, cannot compute TWA.")
         return
 
     weighted_sum = Decimal(0)
-    prev_ts = start_ts
+    prev_ts = fee_start_ts
     prev_value = Decimal(0)
 
     for ts, value in series:
+        if ts <= fee_start_ts:
+            prev_value = Decimal(value)
+            continue
         if ts > prev_ts:
             weighted_sum += prev_value * Decimal(ts - prev_ts)
         prev_ts = ts
@@ -181,14 +191,17 @@ def process_share_manager(symbol, latest_block):
 
     save_tvl_plot(symbol, series, start_ts, final_ts, twa)
 
-    #print(f"\nPer-event breakdown:")
-    #print(f"  {'Block':>10}  {'Timestamp':>12}  {'Shares':>30}  {'Cumulative':>30}")
-    #for i, ((block_number, shares), (ts, cum)) in enumerate(zip(events, series)):
-    #    account = "0x" + logs[i]["topics"][1].hex()[-40:]
-    #    print(f"  {block_number:>10}  {ts:>12}  {shares:>30}  {cum:>30}  {account}")
+    print(f"\nPer-event breakdown:")
+    print(f"  {'Block':>10}  {'Timestamp':>12}  {'Shares':>30}  {'Cumulative':>30}")
+    for i, ((block_number, shares), (ts, cum)) in enumerate(zip(events, series)):
+        account = "0x" + logs[i]["topics"][1].hex()[-40:]
+        print(f"  {block_number:>10}  {ts:>12}  {shares:>30}  {cum:>30}  {account}")
     fee_integral = Decimal(0)
-    _prev_ts, _prev_val = start_ts, Decimal(0)
+    _prev_ts, _prev_val = fee_start_ts, Decimal(0)
     for ts, value in series:
+        if ts <= fee_start_ts:
+            _prev_val = Decimal(value)
+            continue
         if ts > _prev_ts:
             fee_integral += _prev_val * Decimal(ts - _prev_ts)
         _prev_ts, _prev_val = ts, Decimal(value)
