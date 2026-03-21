@@ -1,6 +1,6 @@
 {
   "contract": "0x43f084bdBC99409c637319dD7c544D565165A162",
-  "unique_accounts_count": 536,
+  "unique_accounts_count": 537,
   "holders": {
     "0x01a073D8DcC52ae66710251Ac85811F8D833Df86": {
       "shares": "11222773936336",
@@ -2183,8 +2183,8 @@
     "0xa63BE622E3308Ce8E078ae45A850b5AD4b4c867c": {
       "shares": "11297880465374",
       "recipient": "0xa63BE622E3308Ce8E078ae45A850b5AD4b4c867c",
-      "type": "EOA",
-      "code": "0x"
+      "type": "EIP7702",
+      "code": "0xa845C74344Fc9405b1Fcf712f04668979573c1bf"
     },
     "0xa8a1623F04B212f001D382930226FE9582c08525": {
       "shares": "10010000000000",
@@ -3217,6 +3217,12 @@
       "recipient": "0xff966cF8861e4cA47Fb4ea6D649820FE861ef418",
       "type": "EOA",
       "code": "0x"
+    },
+    "0xb7b2ee53731Fc80080ED2906431e08452BC58786": {
+      "shares": "132222680456961584",
+      "recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
+      "type": "CONTRACT",
+      "code": "0x60a08060"
     }
   }
 }
