@@ -91,14 +91,32 @@ contract MigrationDeploy is Script, Integration {
     function run() external {
         //_testUnsignedSafeMultiSend();
         //_deploymbhBTC();
-        //_acceptance_msvUSD();
+       // _acceptance_msvUSD();
+       // revert("Deployment complete");
         uint256 deployerPk = uint256(bytes32(vm.envBytes("HOT_DEPLOYER")));
-        vm.startBroadcast(deployerPk);
         address deployer = vm.addr(deployerPk);
         //_claimForAccount_msvUSD(deployer);
-        _claimBatch_msvUSD(0, 10);
+
+        // ================================================
+        uint64 batchId = 5;
+        uint256 length = 537;
+        // ================================================
+
+        vm.setNonce(deployer, 300 + batchId); // set nonce to the first claim tx for the batch; adjust if you change batch size or batchId
+        uint256 batch = 90;
+        uint256 start = batchId * batch;
+        uint256 end = start + batch;
+        if (end > length) {
+            end = length;
+        }
+        console2.log("Claiming batch for accounts %d to %d", start, end - 1);
+        //_checkSum_msvUSD();
+
+        vm.startBroadcast(deployerPk);
+        _claimBatch(start, end);
         vm.stopBroadcast();
-        revert("Deployment complete");
+
+       // revert("Deployment complete");
     }
 
     function _run() internal {
@@ -114,12 +132,11 @@ contract MigrationDeploy is Script, Integration {
         }
         vm.stopBroadcast();
 
-
         for (uint256 i = 0; i < vaultsData.length; i++) {
             _mint(vaultsData[i]);
             _randomClaimTest(vaultsData[i]);
         }
-        
+
         for (uint256 i = 0; i < vaultsData.length; i++) {
             console2.log(
                 "Deployed URD at %s and PermissionedMinter at %s for vault %s",
@@ -167,7 +184,10 @@ contract MigrationDeploy is Script, Integration {
         IERC20Metadata shareManager = IERC20Metadata(shareManagerAddr);
         require(IShareManager(shareManagerAddr).activeShares() == 0, "ACTIVE_SHARES_PRESENT");
         require(IShareManager(shareManagerAddr).totalShares() == 0, "TOTAL_SHARES_PRESENT");
-        require(keccak256(abi.encodePacked(shareManager.symbol())) == keccak256(abi.encodePacked(vaultData.symbol)), "SYMBOL_MISMATCH");
+        require(
+            keccak256(abi.encodePacked(shareManager.symbol())) == keccak256(abi.encodePacked(vaultData.symbol)),
+            "SYMBOL_MISMATCH"
+        );
 
         vaultData.proofJson = vm.readFile(_getProofPath(vaultData.symbol));
 
@@ -184,7 +204,6 @@ contract MigrationDeploy is Script, Integration {
         );
         return minter;
     }
-    
 
     function _deploymbhBTC() internal {
         VaultData memory vaultData;
@@ -205,7 +224,9 @@ contract MigrationDeploy is Script, Integration {
             3
         );
         vm.stopBroadcast();
-        console2.log("mbhBTC Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol);
+        console2.log(
+            "mbhBTC Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol
+        );
 
         //_mint(vaultData);
         //_randomClaimTest(vaultData);
@@ -230,7 +251,9 @@ contract MigrationDeploy is Script, Integration {
             3
         );
         vm.stopBroadcast();
-        console2.log("mbhcbBTC Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol);
+        console2.log(
+            "mbhcbBTC Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol
+        );
 
         //_mint(vaultData);
         //_randomClaimTest(vaultData);
@@ -250,13 +273,29 @@ contract MigrationDeploy is Script, Integration {
             3
         );
         vm.stopBroadcast();
-        console2.log("msvUSD Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol);
+        console2.log(
+            "msvUSD Deployed PermissionedMinter at %s for vault %s", address(vaultData.minter), vaultData.symbol
+        );
 
         //_mint(vaultData);
         //_randomClaimTest(vaultData);
     }
 
-    function _acceptance_msvUSD() internal {
+    function _acceptance_msvUSD() internal view {
+        (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) = _msvUSD_vaultData();
+
+        for (uint256 i = 0; i < claimKeys.length; i++) {
+            address account = vm.parseAddress(claimKeys[i]);
+
+            string memory base = string.concat('$.claims["', claimKeys[i], '"]');
+            uint256 claimableTotal = vaultData.proofJson.readUint(string.concat(base, ".amount"));
+
+            uint256 balance = IERC20(rewardToken).balanceOf(account);
+            assertEq(balance, claimableTotal, string(abi.encodePacked("Initial balance mismatch for account ", vm.toString(account))));
+        }
+    }
+
+    function _checkSum_msvUSD() internal view {
         (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) = _msvUSD_vaultData();
         uint256 totalShares = vaultData.proofJson.readUint("$.totalShares");
         require(totalShares == IShareManager(rewardToken).activeShares(), "TOTAL_SHARES_MISMATCH");
@@ -264,37 +303,47 @@ contract MigrationDeploy is Script, Integration {
         uint256 totalRewarded;
 
         for (uint256 i = 0; i < claimKeys.length; i++) {
-            address account = vm.parseAddress(claimKeys[i]);
-
             string memory base = string.concat('$.claims["', claimKeys[i], '"]');
             uint256 claimableTotal = vaultData.proofJson.readUint(string.concat(base, ".amount"));
-            address recipient = vaultData.proofJson.readAddress(string.concat(base, ".recipient"));
-            bytes32[] memory proof = vaultData.proofJson.readBytes32Array(string.concat(base, ".proof"));
-
-            uint256 balBefore = IERC20(rewardToken).balanceOf(account);
-            console2.log(
-                "Claiming for account %s, claimable total: %d, balance before: %d", account, claimableTotal, balBefore
-            );
-            // anyone can submit claim; in Morpho URD it’s permissionless
-            uint256 paid;
-            try vaultData.urd.claim(recipient, rewardToken, claimableTotal, proof) returns (uint256 paid_) {
-                paid = paid_;
-            } catch Error(string memory reason) {
-                revert(string(abi.encodePacked("CLAIM_FAILED: ", reason, " at index ", vm.toString(i))));
-            } catch {
-                revert(string(abi.encodePacked("CLAIM_FAILED with unknown error at index ", vm.toString(i))));
-            }
-
-            uint256 balAfter = IERC20(rewardToken).balanceOf(account);
-            totalRewarded += paid;
-            assertEq(balAfter - balBefore, paid);
-            assertEq(paid, claimableTotal); // because first claim; claimedTotal starts at 0
+            totalRewarded += claimableTotal;
         }
-        require(IERC20(rewardToken).balanceOf(address(vaultData.urd)) == 0, "URD_BALANCE_NOT_ZERO");
         require(totalRewarded == totalShares, "TOTAL_REWARDED_MISMATCH");
     }
 
-    function _msvUSD_vaultData() internal view returns (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) {
+    function _mbhBTC_vaultData()
+        internal
+        view
+        returns (VaultData memory vaultData, address rewardToken, string[] memory claimKeys)
+    {
+        // mbhBTC mainnetVault = 0xa8A3De0c5594A09d0cD4C8abc4e3AaB9BaE03F36
+        vaultData.mezoVault = 0x807D4778abA870e4222904f5b528F68B350cE0E0;
+        vaultData.urd = IUniversalRewardsDistributor(0xF73C154c1F57329A2c9C04C406470E8be14B0c3C);
+        vaultData.symbol = "mbhBTC";
+        vaultData.proofJson = vm.readFile(_getProofPath(vaultData.symbol));
+        rewardToken = address(IShareModule(vaultData.mezoVault).shareManager());
+        claimKeys = vm.parseJsonKeys(vaultData.proofJson, "$.claims");
+    }
+
+    function _mbhcbBTC_vaultData()
+        internal
+        view
+        returns (VaultData memory vaultData, address rewardToken, string[] memory claimKeys)
+    {
+        // mbhcbBTC mainnetVault 0x63a76a4a94cAB1DD49fcf0d7E3FC53a78AC8Ec5C
+        vaultData.mezoVault = 0x06ED1E2167AA7FBf2476c5A2D220Bf702559Dcf8;
+        vaultData.urd = IUniversalRewardsDistributor(0x9F947e74b3DB089f480c7E2cA914777f6b07D286);
+        vaultData.symbol = "mbhcbBTC";
+        vaultData.proofJson = vm.readFile(_getProofPath(vaultData.symbol));
+        rewardToken = address(IShareModule(vaultData.mezoVault).shareManager());
+        claimKeys = vm.parseJsonKeys(vaultData.proofJson, "$.claims");
+    }
+
+    function _msvUSD_vaultData()
+        internal
+        view
+        returns (VaultData memory vaultData, address rewardToken, string[] memory claimKeys)
+    {
+        // msvUSD mainnetVault 0x7207595E4c18a9A829B9dc868F11F3ADd8FCF626
         vaultData.mezoVault = 0x07AFFA6754458f88db83A72859948d9b794E131b;
         vaultData.urd = IUniversalRewardsDistributor(0x1A7ADC1d931D400B69f3CEd0C91B62d1af0B0712);
         vaultData.symbol = "msvUSD";
@@ -307,7 +356,9 @@ contract MigrationDeploy is Script, Integration {
         (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) = _msvUSD_vaultData();
 
         for (uint256 i = 0; i < claimKeys.length; i++) {
-            if (vm.parseAddress(claimKeys[i]) != account) continue;
+            if (vm.parseAddress(claimKeys[i]) != account) {
+                continue;
+            }
 
             string memory base = string.concat('$.claims["', claimKeys[i], '"]');
             uint256 claimable = vaultData.proofJson.readUint(string.concat(base, ".amount"));
@@ -321,33 +372,39 @@ contract MigrationDeploy is Script, Integration {
         revert("account not found in msvUSD proofs");
     }
 
-    function _claimBatch_msvUSD(uint256 startIdx, uint256 endIdx) internal {
-        (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) = _msvUSD_vaultData();
-        require(endIdx <= claimKeys.length && startIdx < endIdx, "invalid range");
-
-        IMulticall3 multicall = IMulticall3(0xcA11bde05977b3631167028862bE2a173976CA11);
+    function _claimBatch(uint256 startIdx, uint256 endIdx) internal {
         uint256 count = endIdx - startIdx;
-        IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](count);
 
+        (VaultData memory vaultData, address rewardToken, string[] memory claimKeys) = _mbhBTC_vaultData();
+       //require(endIdx <= claimKeys.length && startIdx < endIdx, "invalid range");
+        IMulticall3.Result[] memory results;
+        {
+            IMulticall3 multicall = IMulticall3(0xcA11bde05977b3631167028862bE2a173976CA11);
+            IMulticall3.Call3[] memory calls = new IMulticall3.Call3[](count);
+
+            for (uint256 i = 0; i < count; i++) {
+                string memory base = string.concat('$.claims["', claimKeys[startIdx + i], '"]');
+                uint256 claimable = vaultData.proofJson.readUint(string.concat(base, ".amount"));
+                address recipient = vaultData.proofJson.readAddress(string.concat(base, ".recipient"));
+                bytes32[] memory proof = vaultData.proofJson.readBytes32Array(string.concat(base, ".proof"));
+
+                calls[i] = IMulticall3.Call3({
+                    target: address(vaultData.urd),
+                    allowFailure: false,
+                    callData: abi.encodeCall(IUniversalRewardsDistributor.claim, (recipient, rewardToken, claimable, proof))
+                });
+            }
+            results = multicall.aggregate3{gas: 10_000_000}(calls);
+        }
         for (uint256 i = 0; i < count; i++) {
-            string memory key = claimKeys[startIdx + i];
-            string memory base = string.concat('$.claims["', key, '"]');
+            string memory base = string.concat('$.claims["', claimKeys[startIdx + i], '"]');
             uint256 claimable = vaultData.proofJson.readUint(string.concat(base, ".amount"));
             address recipient = vaultData.proofJson.readAddress(string.concat(base, ".recipient"));
-            bytes32[] memory proof = vaultData.proofJson.readBytes32Array(string.concat(base, ".proof"));
-
-            calls[i] = IMulticall3.Call3({
-                target: address(vaultData.urd),
-                allowFailure: false,
-                callData: abi.encodeCall(IUniversalRewardsDistributor.claim, (recipient, rewardToken, claimable, proof))
-            });
+            require(results[i].success, string(abi.encodePacked("Claim failed at index ", vm.toString(startIdx + i))));
+            require(IERC20(rewardToken).balanceOf(recipient) == claimable, string(abi.encodePacked("Incorrect payout at index ", vm.toString(startIdx + i))));
+            //uint256 paid = abi.decode(results[i].returnData, (uint256));
+            //console2.log("Claimed for account %s: %d", vm.parseAddress(claimKeys[startIdx + i]), paid);
         }
-
-        IMulticall3.Result[] memory results = multicall.aggregate3(calls);
-        //for (uint256 i = 0; i < results.length; i++) {
-        //    uint256 paid = abi.decode(results[i].returnData, (uint256));
-        //    console2.log("Claimed for account %s: %d", vm.parseAddress(claimKeys[startIdx + i]), paid);
-        //}
     }
 
     function _mint(VaultData memory vaultData) internal {
@@ -366,10 +423,7 @@ contract MigrationDeploy is Script, Integration {
         compareVaultStates(stateBefore, stateAfter);
         uint256 mintedShares = shareManager.sharesOf(address(vaultData.urd));
 
-        require(
-            mintedShares == vaultData.proofJson.readUint("$.totalShares"),
-            "SHARES_MINTED_MISMATCH"
-        );
+        require(mintedShares == vaultData.proofJson.readUint("$.totalShares"), "SHARES_MINTED_MISMATCH");
 
         for (uint256 roleIndex = 0; roleIndex < vault.supportedRoles(); roleIndex++) {
             bytes32 role = vault.supportedRoleAt(roleIndex);
@@ -377,7 +431,7 @@ contract MigrationDeploy is Script, Integration {
         }
 
         string[] memory claimKeys = vm.parseJsonKeys(vaultData.proofJson, "$.claims");
-        for (uint256 i = 0; i < claimKeys.length; i ++) {
+        for (uint256 i = 0; i < claimKeys.length; i++) {
             string memory base = string.concat('$.claims["', claimKeys[i], '"]');
             mintedShares -= vaultData.proofJson.readUint(string.concat(base, ".amount"));
         }
@@ -432,15 +486,13 @@ contract MigrationDeploy is Script, Integration {
         // --- Paste your Safe UI fields here ---
         address to = 0x9641d764fc13c8B624c04430C7356C1C7C8102e2;
         uint256 value = 0;
-        bytes memory data = hex"8d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000022400807d4778aba870e4222904f5b528f68b350ce0e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000442f2ff15d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000002adf0a3234cc9ae4e184c7d379f04a53ae77e0e9002adf0a3234cc9ae4e184c7d379f04a53ae77e0e9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041249c58b00807d4778aba870e4222904f5b528f68b350ce0e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044d547741f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000002adf0a3234cc9ae4e184c7d379f04a53ae77e0e900f73c154c1f57329a2c9c04c406470e8be14b0c3c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004442af83fb09d2f2dc80cf09bc6f2796f121451c0a5879665633ab91c565a357412737c12a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        bytes memory data =
+            hex"8d80ff0a0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000022400807d4778aba870e4222904f5b528f68b350ce0e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000442f2ff15d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000002adf0a3234cc9ae4e184c7d379f04a53ae77e0e9002adf0a3234cc9ae4e184c7d379f04a53ae77e0e9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041249c58b00807d4778aba870e4222904f5b528f68b350ce0e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044d547741f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000002adf0a3234cc9ae4e184c7d379f04a53ae77e0e900f73c154c1f57329a2c9c04c406470e8be14b0c3c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004442af83fb09d2f2dc80cf09bc6f2796f121451c0a5879665633ab91c565a357412737c12a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
         uint8 operation = 1;
         uint256 safeTxNonce = 8;
 
-        bytes32 txHash = safe.getTransactionHash(
-            to, value, data, operation,
-            0, 0, 0, address(0), payable(address(0)),
-            safeTxNonce
-        );
+        bytes32 txHash =
+            safe.getTransactionHash(to, value, data, operation, 0, 0, 0, address(0), payable(address(0)), safeTxNonce);
 
         // Prank threshold owners to approve the hash (no real signatures needed in simulation)
         address[] memory owners = safe.getOwners();
@@ -452,10 +504,14 @@ contract MigrationDeploy is Script, Integration {
 
         // Safe requires signatures sorted by signer address ascending — sort the first `threshold` owners
         address[] memory signers = new address[](threshold);
-        for (uint256 i = 0; i < threshold; i++) signers[i] = owners[i];
+        for (uint256 i = 0; i < threshold; i++) {
+            signers[i] = owners[i];
+        }
         for (uint256 i = 0; i < threshold - 1; i++) {
             for (uint256 j = i + 1; j < threshold; j++) {
-                if (signers[i] > signers[j]) (signers[i], signers[j]) = (signers[j], signers[i]);
+                if (signers[i] > signers[j]) {
+                    (signers[i], signers[j]) = (signers[j], signers[i]);
+                }
             }
         }
 
@@ -465,16 +521,13 @@ contract MigrationDeploy is Script, Integration {
             signatures = abi.encodePacked(
                 signatures,
                 bytes32(uint256(uint160(signers[i]))), // r = owner address
-                bytes32(0),                            // s = 0
-                uint8(1)                               // v = 1 means approvedHash
+                bytes32(0), // s = 0
+                uint8(1) // v = 1 means approvedHash
             );
         }
 
-        bool success = safe.execTransaction(
-            to, value, data, operation,
-            0, 0, 0, address(0), payable(address(0)),
-            signatures
-        );
+        bool success =
+            safe.execTransaction(to, value, data, operation, 0, 0, 0, address(0), payable(address(0)), signatures);
         require(success, "Safe execTransaction failed");
     }
 }
