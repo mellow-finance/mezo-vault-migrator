@@ -10,7 +10,6 @@ from eth_utils import event_abi_to_log_topic
 
 from dotenv import load_dotenv
 import requests
-from tables import Enum
 from web3 import Web3
 from web3.exceptions import BadFunctionCallOutput, ContractLogicError
 from eth_abi import decode as abi_decode
@@ -373,7 +372,8 @@ MULTICALL3_ABI = [
     }
 ]
 
-class AcctType(str, Enum):
+class AcctType:
+    # plain strings, written as-is into the JSON files
     EOA = "EOA"
     EIP7702 = "EIP7702" # still EOA but with code, see https://eips.ethereum.org/EIPS/eip-7702
     CONTRACT = "CONTRACT"

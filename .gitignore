@@ -12,6 +12,10 @@ docs/
 
 # Dotenv file
 .env
+
+# Python virtualenv (npm run setup)
+.venv/
+__pycache__/
 node_modules/.yarn-integrity
 broadcast/
 *.log
