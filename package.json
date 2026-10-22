@@ -8,13 +8,17 @@
     "build": "python3 build_proofs.py",
     "holders": "python3 build_proofs.py holders all",
     "proofs": "python3 build_proofs.py proofs all",
+    "mezo:check": "python3 build_proofs.py mezo-check all",
     "mezo:holders": "python3 build_proofs.py mezo-holders all",
+    "mezo:contracts": "python3 build_proofs.py mezo-contracts all",
     "mezo:diff": "python3 build_proofs.py mezo-diff all",
     "return:proofs": "python3 build_proofs.py return-proofs all",
-    "return:build": "python3 build_proofs.py mezo-holders all && python3 build_proofs.py return-proofs all",
+    "return:build": "npm run mezo:holders && npm run mezo:contracts && npm run return:proofs && npm run mezo:check && npm run test:mezo && npm run test:return",
     "test": "forge test ./test/URDTest.t.sol --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --gas-limit 10000000000000000",
     "deploy": "forge script ./script/MigrationDeploy.s.sol:MigrationDeploy --fork-url $(grep MEZO_RPC .env | cut -d '=' -f2,3,4,5) --evm-version paris --broadcast --slow --verify --verifier custom --verifier-url https://api.explorer.mezo.org/api --gas-limit 10000000000000000",
     "test:return": "forge test ./test/ReturnURDTest.t.sol --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --gas-limit 10000000000000000",
+    "test:mezo": "forge test ./test/MezoFreezeTest.t.sol --fork-url $(grep MEZO_RPC .env | cut -d '=' -f2,3,4,5) --evm-version paris --gas-limit 10000000000000000",
+    "deploy:return:urds": "forge script ./script/DeployReturnURDs.s.sol:DeployReturnURDs --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --broadcast --slow --verify --gas-limit 10000000000000000",
     "deploy:return": "forge script ./script/ReturnDeploy.s.sol:ReturnDeploy --fork-url $(grep RPC_URL .env | cut -d '=' -f2,3,4,5) --broadcast --slow --verify --gas-limit 10000000000000000",
     "compile": "forge build --use 0.8.25 --cache-path cache"
   }

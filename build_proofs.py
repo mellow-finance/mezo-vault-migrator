@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 import time
+from decimal import Decimal
 from pathlib import Path
 from typing import List, Dict, Tuple
 from eth_utils import event_abi_to_log_topic
@@ -11,6 +12,9 @@ from dotenv import load_dotenv
 import requests
 from tables import Enum
 from web3 import Web3
+from web3.exceptions import BadFunctionCallOutput, ContractLogicError
+from eth_abi import decode as abi_decode
+from eth_abi.exceptions import DecodingError
 from eth_abi import encode as abi_encode
 from eth_utils import keccak, to_checksum_address
 
@@ -26,6 +30,7 @@ SHARE_MANAGERS = {
         "mezo_vault": "0x807D4778abA870e4222904f5b528F68B350cE0E0",
         "mezo_price_asset": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",  # native BTC
         "eth_asset": "0x18084fbA666a33d37592fA2633fD49a74DD93a88",  # TBTC 18 decimals
+        "eth_urd": "0xCf4cBB7994e75B7F8e7F7A52e880860bEaA7eE72",  # DeployReturnURDs.RETURN_URD_MBHBTC
     },
     "mbhcbBTC": {
         "address": "0x171b8E43bB751A558b2b1f3C814d3c96D36cCf2B",
@@ -36,6 +41,7 @@ SHARE_MANAGERS = {
         "mezo_vault": "0x06ED1E2167AA7FBf2476c5A2D220Bf702559Dcf8",
         "mezo_price_asset": "0x6a7cd8e1384d49F502b4a4Ce9ac9EB320835c5D7",  # mcbBTC
         "eth_asset": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",  # cbBTC, 8 decimals
+        "eth_urd": "0x0746C70Ec99248Ccc1d6e29010e03C9fa5503653",  # DeployReturnURDs.RETURN_URD_MBHCBBTC
     },
     "msvUSD": {
         "address": "0xe4741d6901C77Da80FAEeD7E2fE10c8b348Bcc84",
@@ -59,6 +65,7 @@ MEZO_RPC_URL = os.environ.get("MEZO_RPC", "")
 MEZO_CHAIN_ID = 31612
 MEZO_BATCH_BLOCKS = 10000  # mezo rpc caps eth_getLogs at 10k blocks per request
 MEZO_MANAGERS = ["mbhBTC", "mbhcbBTC"]
+MEZO_EXPLORER_API = "https://api.explorer.mezo.org/api/v2"
 
 # Return leg: mezo holders claim plain assets from a URD on ethereum.
 RETURN_MANAGERS = ["mbhBTC", "mbhcbBTC"]
@@ -184,6 +191,158 @@ IERC20_METADATA_ABI = [
     },
 ]
 
+def view_fn(name: str, inputs: Tuple[str, ...] = (), outputs: Tuple[str, ...] = ("uint256",)) -> Dict:
+    """ABI entry for a view function with plain (non-tuple) argument and return types."""
+    return {
+        "name": name,
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [{"name": f"arg{i}", "type": t} for i, t in enumerate(inputs)],
+        "outputs": [{"name": "", "type": t} for t in outputs],
+    }
+
+
+# flexible-vaults (lib/flexible-vaults/src): only the views the mezo snapshot and readiness check need.
+IVAULT_ABI = [
+    view_fn("shareManager", outputs=("address",)),
+    view_fn("oracle", outputs=("address",)),
+    view_fn("feeManager", outputs=("address",)),
+    view_fn("riskManager", outputs=("address",)),
+    view_fn("getAssetCount"),
+    view_fn("assetAt", ("uint256",), ("address",)),
+    view_fn("getQueueCount", ("address",)),
+    view_fn("queueAt", ("address", "uint256"), ("address",)),
+    view_fn("isDepositQueue", ("address",), ("bool",)),
+    view_fn("isPausedQueue", ("address",), ("bool",)),
+    view_fn("subvaults"),
+    view_fn("subvaultAt", ("uint256",), ("address",)),
+    view_fn("getRoleMembers", ("bytes32",), ("address[]",)),
+    view_fn("SET_HOOK_ROLE", outputs=("bytes32",)),
+    view_fn("CREATE_QUEUE_ROLE", outputs=("bytes32",)),
+    view_fn("SET_QUEUE_STATUS_ROLE", outputs=("bytes32",)),
+]
+
+ISHARE_MANAGER_EXTRA_ABI = [
+    view_fn("balanceOf", ("address",)),
+    view_fn("SET_FLAGS_ROLE", outputs=("bytes32",)),
+    {
+        "name": "flags",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple",
+                "components": [
+                    {"name": "hasMintPause", "type": "bool"},
+                    {"name": "hasBurnPause", "type": "bool"},
+                    {"name": "hasTransferPause", "type": "bool"},
+                    {"name": "hasWhitelist", "type": "bool"},
+                    {"name": "hasTransferWhitelist", "type": "bool"},
+                    {"name": "globalLockup", "type": "uint32"},
+                ],
+            }
+        ],
+    },
+]
+
+IDEPOSIT_QUEUE_ABI = [
+    view_fn("unclaimedRequests"),
+]
+
+REDEEM_REQUEST_TUPLE = "(uint256,uint256,bool,uint256)"  # IRedeemQueue.Request {timestamp, shares, isClaimable, assets}
+
+IREDEEM_QUEUE_ABI = [
+    view_fn("getState", outputs=("uint256", "uint256", "uint256", "uint256")),
+    {
+        "name": "requestsOf",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [
+            {"name": "account", "type": "address"},
+            {"name": "offset", "type": "uint256"},
+            {"name": "limit", "type": "uint256"},
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple[]",
+                "components": [
+                    {"name": "timestamp", "type": "uint256"},
+                    {"name": "shares", "type": "uint256"},
+                    {"name": "isClaimable", "type": "bool"},
+                    {"name": "assets", "type": "uint256"},
+                ],
+            }
+        ],
+    },
+]
+
+IORACLE_EXTRA_ABI = [
+    view_fn("supportedAssets"),
+    view_fn("supportedAssetAt", ("uint256",), ("address",)),
+    view_fn("SUBMIT_REPORTS_ROLE", outputs=("bytes32",)),
+    view_fn("ACCEPT_REPORT_ROLE", outputs=("bytes32",)),
+    {
+        "name": "securityParams",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple",
+                "components": [
+                    {"name": "maxAbsoluteDeviation", "type": "uint224"},
+                    {"name": "suspiciousAbsoluteDeviation", "type": "uint224"},
+                    {"name": "maxRelativeDeviationD18", "type": "uint64"},
+                    {"name": "suspiciousRelativeDeviationD18", "type": "uint64"},
+                    {"name": "timeout", "type": "uint32"},
+                    {"name": "depositInterval", "type": "uint32"},
+                    {"name": "redeemInterval", "type": "uint32"},
+                ],
+            }
+        ],
+    },
+]
+
+IFEE_MANAGER_ABI = [
+    view_fn("feeRecipient", outputs=("address",)),
+    view_fn("depositFeeD6", outputs=("uint24",)),
+    view_fn("redeemFeeD6", outputs=("uint24",)),
+    view_fn("performanceFeeD6", outputs=("uint24",)),
+    view_fn("protocolFeeD6", outputs=("uint24",)),
+    view_fn("timestamps", ("address",)),
+    view_fn("minPriceD18", ("address",)),
+    view_fn("baseAsset", ("address",), ("address",)),
+    view_fn("calculateFee", ("address", "address", "uint256", "uint256")),
+]
+
+RISK_STATE_OUTPUT = [
+    {
+        "name": "",
+        "type": "tuple",
+        "components": [{"name": "balance", "type": "int256"}, {"name": "limit", "type": "int256"}],
+    }
+]
+
+IRISK_MANAGER_ABI = [
+    {"name": "vaultState", "type": "function", "stateMutability": "view", "inputs": [], "outputs": RISK_STATE_OUTPUT},
+    {
+        "name": "subvaultState",
+        "type": "function",
+        "stateMutability": "view",
+        "inputs": [{"name": "subvault", "type": "address"}],
+        "outputs": RISK_STATE_OUTPUT,
+    },
+    view_fn("pendingAssets", ("address",), ("int256",)),
+]
+
+REDEEM_REQUESTED_TOPIC = keccak(text="RedeemRequested(address,uint256,uint256)")
+REDEEM_REQUESTS_LIMIT = 1000  # requestsOf page size; one request per (account, block timestamp)
+DEFAULT_ADMIN_ROLE = b"\x00" * 32
+
 # Multicall3 aggregate3 ABI
 MULTICALL3_ABI = [
     {
@@ -289,11 +448,13 @@ def write_holders_file(
     contract: str,
     holders: Dict[str, Dict[str, str]],
     filename: str = "holders.json",
+    extra: Dict = None,
 ) -> Path:
     holders_path = ROOT_PATH.joinpath(symbol, filename)
     holders_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "contract": contract,
+        **(extra or {}),
         "unique_accounts_count": len(holders),
         "holders": holders,
     }
@@ -457,6 +618,30 @@ def get_symbol(w3: Web3, SHARE_MANAGER: str) -> str:
     return mgr.functions.symbol().call()
 
 
+def multicall_raw(w3: Web3, calls: List[Tuple[str, bytes]], batch_size: int = BATCH_SIZE) -> List[bytes]:
+    """aggregate3 over (target, calldata) pairs, every call must succeed; returns raw returnData."""
+    mc = w3.eth.contract(address=MULTICALL3, abi=MULTICALL3_ABI)
+    out: List[bytes] = []
+    for base in range(0, len(calls), batch_size):
+        part = calls[base: base + batch_size]
+        res = mc.functions.aggregate3([(t, False, data) for t, data in part]).call()
+        for i, (ok, ret) in enumerate(res):
+            if not ok:
+                raise RuntimeError(f"multicall failed for call #{base + i} to {part[i][0]}")
+            out.append(ret)
+    return out
+
+
+def multicall_uint256(w3: Web3, calls: List[Tuple[str, bytes]], batch_size: int = BATCH_SIZE) -> List[int]:
+    out = []
+    for i, ret in enumerate(multicall_raw(w3, calls, batch_size)):
+        # uint256 return is last 32 bytes
+        if len(ret) < 32:
+            raise RuntimeError(f"bad returnData for call #{i} to {calls[i][0]}: {ret.hex()}")
+        out.append(int.from_bytes(ret[-32:], "big"))
+    return out
+
+
 def fetch_shares_multicall3(
     w3: Web3,
     MULTICALL3: str,
@@ -464,29 +649,9 @@ def fetch_shares_multicall3(
     accounts: List[str],
     batch_size: int,
 ) -> List[int]:
-    mc = w3.eth.contract(address=MULTICALL3, abi=MULTICALL3_ABI)
     mgr = w3.eth.contract(address=SHARE_MANAGER, abi=ITOKENIZED_SHARE_MANAGER_ABI)
-
-    out = [0] * len(accounts)
-
-    for base in range(0, len(accounts), batch_size):
-        part = accounts[base: base + batch_size]
-        calls = []
-        for a in part:
-            calldata = mgr.functions.sharesOf(a)._encode_transaction_data()
-            calls.append((SHARE_MANAGER, False, calldata))
-
-        res = mc.functions.aggregate3(calls).call()
-
-        for i, (ok, ret) in enumerate(res):
-            if not ok:
-                raise RuntimeError(f"multicall sharesOf failed for {part[i]}")
-            # uint256 return is last 32 bytes
-            if len(ret) < 32:
-                raise RuntimeError(f"bad returnData for {part[i]}: {ret.hex()}")
-            out[base + i] = int.from_bytes(ret[-32:], "big")
-
-    return out
+    calls = [(SHARE_MANAGER, mgr.functions.sharesOf(a)._encode_transaction_data()) for a in accounts]
+    return multicall_uint256(w3, calls, batch_size)
 
 def batch_get_code(addrs, block="latest", timeout=60, rpc_url=None, chunk_size=100):
     # chunked: a single batch of a few hundred eth_getCode calls times out on the mezo rpc
@@ -631,10 +796,152 @@ def connect_mezo() -> Web3:
     return w3
 
 
-def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> None:
-    manager_address = to_checksum_address(share_manager["mezo_share_manager"])
+def topic_address(topic) -> str:
+    return to_checksum_address(bytes(topic)[-20:])
 
-    onchain_symbol = get_symbol(mezo_w3, manager_address)
+
+def share_manager_contract(w3: Web3, address: str):
+    return w3.eth.contract(address=address, abi=ITOKENIZED_SHARE_MANAGER_ABI + ISHARE_MANAGER_EXTRA_ABI)
+
+
+def queue_kind(w3: Web3, queue: str, is_deposit: bool) -> str:
+    """deposit/redeem for the request-based queues; sync and signature queues settle instantly and keep no requests."""
+    abi, probe, kind = (IDEPOSIT_QUEUE_ABI, "unclaimedRequests", "deposit") if is_deposit else (
+        IREDEEM_QUEUE_ABI, "getState", "redeem"
+    )
+    try:
+        getattr(w3.eth.contract(address=queue, abi=abi).functions, probe)().call()
+        return kind
+    except (ContractLogicError, BadFunctionCallOutput):
+        return f"instant-{kind}"
+
+
+def read_mezo_vault(mezo_w3: Web3, share_manager: Dict) -> Dict:
+    """Vault wiring: share manager, oracle, fee/risk managers, every queue and every subvault."""
+    vault_address = to_checksum_address(share_manager["mezo_vault"])
+    vault = mezo_w3.eth.contract(address=vault_address, abi=IVAULT_ABI).functions
+
+    manager_address = to_checksum_address(vault.shareManager().call())
+    if manager_address != to_checksum_address(share_manager["mezo_share_manager"]):
+        raise SystemExit(
+            f"vault {vault_address} uses share manager {manager_address}, config says {share_manager['mezo_share_manager']}"
+        )
+
+    queues = []
+    for i in range(vault.getAssetCount().call()):
+        asset = to_checksum_address(vault.assetAt(i).call())
+        for j in range(vault.getQueueCount(asset).call()):
+            queue = to_checksum_address(vault.queueAt(asset, j).call())
+            queues.append({
+                "address": queue,
+                "asset": asset,
+                "kind": queue_kind(mezo_w3, queue, vault.isDepositQueue(queue).call()),
+                "paused": vault.isPausedQueue(queue).call(),
+            })
+
+    return {
+        "vault": vault_address,
+        "share_manager": manager_address,
+        "oracle": to_checksum_address(vault.oracle().call()),
+        "fee_manager": to_checksum_address(vault.feeManager().call()),
+        "risk_manager": to_checksum_address(vault.riskManager().call()),
+        "queues": queues,
+        "subvaults": [to_checksum_address(vault.subvaultAt(i).call()) for i in range(vault.subvaults().call())],
+    }
+
+
+def queues_of_kind(vault: Dict, kind: str) -> List[str]:
+    return [q["address"] for q in vault["queues"] if q["kind"] == kind]
+
+
+def get_logs_with_retry(w3: Web3, params: Dict, attempts: int = 5):
+    # a full mezo scan is ~550 requests; the public rpc sporadically answers 403/429/5xx
+    for attempt in range(1, attempts + 1):
+        try:
+            return w3.eth.get_logs(params)
+        except requests.RequestException as e:
+            if attempt == attempts:
+                raise
+            print(f"get_logs {params['fromBlock']}..{params['toBlock']} failed ({type(e).__name__}), retry {attempt}")
+            time.sleep(2 * attempt)
+
+
+def scan_mezo_accounts(mezo_w3: Web3, vault: Dict, start_block: int):
+    """
+    One pass over the share manager and redeem queue logs, same request count as a share-manager-only scan:
+    - Transfer `to` on the share manager: everyone who ever held active shares;
+    - RedeemRequested on redeem queues: accounts whose shares got locked in the share manager.
+    """
+    manager = vault["share_manager"]
+    redeem_queues = set(queues_of_kind(vault, "redeem"))
+    transfer_topic = event_abi_to_log_topic(TRANSFER_EVENT_ABI)
+
+    recipients, requesters = set(), set()
+
+    current = start_block
+    end_block = mezo_w3.eth.block_number
+    while current <= end_block:
+        to_block = min(current + MEZO_BATCH_BLOCKS - 1, end_block)
+
+        logs = get_logs_with_retry(mezo_w3, {
+            "address": [manager, *sorted(redeem_queues)],
+            "fromBlock": current,
+            "toBlock": to_block,
+            "topics": [["0x" + t.hex() for t in (transfer_topic, REDEEM_REQUESTED_TOPIC)]],
+        })
+        print(f"Scanning blocks {current} → {to_block} logs found: {len(logs)}")
+
+        for log in logs:
+            emitter = to_checksum_address(log["address"])
+            topic0 = bytes(log["topics"][0])
+            if emitter == manager and topic0 == transfer_topic:
+                recipients.add(topic_address(log["topics"][2]))
+            elif emitter in redeem_queues and topic0 == REDEEM_REQUESTED_TOPIC:
+                requesters.add(topic_address(log["topics"][1]))
+
+        current = to_block + 1
+
+    recipients.discard(to_checksum_address(ZERO_ADDRESS))
+    return recipients, requesters
+
+
+def pending_redeem_shares(mezo_w3: Web3, redeem_queues: List[str], requesters: set) -> Dict[str, int]:
+    """Shares each requester has locked in the share manager that no oracle report has priced yet."""
+    accounts = sorted(requesters, key=str.lower)
+    out: Dict[str, int] = {}
+    for queue in redeem_queues:
+        q = mezo_w3.eth.contract(address=queue, abi=IREDEEM_QUEUE_ABI)
+        calls = [
+            (queue, q.functions.requestsOf(a, 0, REDEEM_REQUESTS_LIMIT)._encode_transaction_data()) for a in accounts
+        ]
+        for account, ret in zip(accounts, multicall_raw(mezo_w3, calls)):
+            (requests,) = abi_decode([f"{REDEEM_REQUEST_TUPLE}[]"], ret)
+            if len(requests) == REDEEM_REQUESTS_LIMIT:
+                raise SystemExit(f"{account} has >= {REDEEM_REQUESTS_LIMIT} requests in {queue}, raise the limit")
+            for _timestamp, shares, is_claimable, assets in requests:
+                # priced requests carry assets; unpriced ones are still plain locked shares
+                if shares and not is_claimable and assets == 0:
+                    out[account] = out.get(account, 0) + shares
+    return out
+
+
+def queue_asset_balance(w3: Web3, queue: str, asset: str) -> int:
+    if to_checksum_address(asset) == to_checksum_address(NATIVE_ASSET):
+        return w3.eth.get_balance(queue)
+    erc20 = w3.eth.contract(address=to_checksum_address(asset), abi=ISHARE_MANAGER_EXTRA_ABI)
+    return erc20.functions.balanceOf(queue).call()
+
+
+def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> None:
+    """
+    Active shares only (balanceOf). Left out, both settled on mezo:
+    - claimable deposit shares (allocatedShares): depositors claim them on mezo;
+    - shares locked by pending redeems (the share manager's own balance): redeemed on mezo.
+    """
+    manager_address = to_checksum_address(share_manager["mezo_share_manager"])
+    mgr = share_manager_contract(mezo_w3, manager_address)
+
+    onchain_symbol = mgr.functions.symbol().call()
     if onchain_symbol != symbol:
         raise SystemExit(
             f"mezo share manager {manager_address} reports symbol {onchain_symbol}, expected {symbol}"
@@ -642,30 +949,483 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
 
     print(f"\n=== fetch mezo holders: {symbol} ({manager_address}) ===")
 
-    holders = collect_holders(
-        mezo_w3,
-        manager_address,
+    vault = read_mezo_vault(mezo_w3, share_manager)
+    redeem_queues = queues_of_kind(vault, "redeem")
+
+    recipients, requesters = scan_mezo_accounts(mezo_w3, vault, share_manager["mezo_start_block"])
+
+    accounts = sorted(recipients, key=str.lower)
+    calls = [(manager_address, mgr.functions.balanceOf(a)._encode_transaction_data()) for a in accounts]
+    balances = {a: amt for a, amt in zip(accounts, multicall_uint256(mezo_w3, calls)) if amt}
+
+    # Shares sitting on the vault, a subvault or a queue would have no owner on ethereum.
+    protocol = {vault["vault"], *vault["subvaults"], *(q["address"] for q in vault["queues"])}
+    stray = {a: amt for a, amt in balances.items() if a in protocol}
+    if stray:
+        raise SystemExit(f"protocol addresses hold {symbol} shares: {stray}")
+    locked = balances.pop(manager_address, 0)
+
+    codes = batch_get_code(list(balances), rpc_url=MEZO_RPC_URL)
+    holders: Dict[str, Dict[str, str]] = {}
+    for acct, amt in balances.items():
+        holders[acct] = {
+            "shares": str(amt),
+            "recipient": acct,
+            "type": str(classify_by_code_hex(codes[acct])),
+            "code": holder_code_hint(codes[acct]),
+        }
+
+    # Pending redeems: locked in the share manager, not priced yet. Not paid on ethereum, recorded for the team.
+    total_pending = 0
+    for queue in redeem_queues:
+        q = mezo_w3.eth.contract(address=queue, abi=IREDEEM_QUEUE_ABI)
+        batch_iterator, batches, total_demand_assets, total_pending_shares = q.functions.getState().call()
+        if batch_iterator < batches or total_demand_assets:
+            raise SystemExit(
+                f"redeem queue {queue} has priced but unfunded batches ({batch_iterator}/{batches}, "
+                f"demand {total_demand_assets}): those shares are burned but their assets are still in the vault"
+            )
+        total_pending += total_pending_shares
+    excluded = pending_redeem_shares(mezo_w3, redeem_queues, requesters)
+    excluded_total = sum(excluded.values())
+    if not excluded_total == total_pending == locked:
+        raise SystemExit(
+            f"locked shares mismatch: requesters {excluded_total}, totalPendingShares {total_pending}, "
+            f"share manager balance {locked}"
+        )
+
+    # Completeness: activeShares is the sum of every balance, so the snapshot plus the locked shares must match it.
+    active_shares = mgr.functions.activeShares().call()
+    total_shares = mgr.functions.totalShares().call()
+    allocated = mgr.functions.allocatedShares().call()
+    snapshot_shares = sum(balances.values())
+    if snapshot_shares + locked != active_shares:
+        raise SystemExit(
+            f"snapshot {snapshot_shares} + locked {locked} != activeShares {active_shares}: "
+            f"holders are missing, or shares moved during the scan (rerun)"
+        )
+
+    holders_path = write_holders_file(
         symbol,
-        share_manager["mezo_start_block"],
-        MEZO_RPC_URL,
-        MEZO_BATCH_BLOCKS,
+        manager_address,
+        holders,
+        filename="mezo_holders.json",
+        extra={
+            "totalShares": str(total_shares),
+            "activeShares": str(active_shares),
+            "snapshotShares": str(snapshot_shares),
+            "excludedAllocatedShares": str(allocated),
+            "excludedPendingRedeem": {
+                "total": str(locked),
+                "requesters": {a: str(s) for a, s in sorted(excluded.items(), key=lambda kv: kv[0].lower())},
+            },
+        },
     )
 
-    holders_path = write_holders_file(symbol, manager_address, holders, filename="mezo_holders.json")
-
-    mgr = mezo_w3.eth.contract(address=manager_address, abi=ITOKENIZED_SHARE_MANAGER_ABI)
-    total_shares = sum(int(v["shares"]) for v in holders.values())
-    active_shares = mgr.functions.activeShares().call()
-    onchain_total = mgr.functions.totalShares().call()
-
-    print(f"mezo holders with non-zero shares: {len(holders)}")
-    print(f"sum(shares): {total_shares}")
-    print(f"onchain activeShares(): {active_shares}")
-    print(f"onchain totalShares(): {onchain_total}")
-    # activeShares != totalShares is normal on mezo (allocated/queued shares), so warn only.
-    if total_shares != active_shares:
-        print(f"WARNING: sum of shares {total_shares} != onchain activeShares {active_shares}")
+    print(f"mezo holders with non-zero active shares: {len(holders)}")
+    print(f"sum(shares): {snapshot_shares}")
+    print(f"onchain activeShares(): {active_shares}  totalShares(): {total_shares}")
+    print(f"excluded pending-redeem shares (locked in share manager): {locked} from {len(excluded)} requesters")
+    print(f"excluded claimable deposit shares (allocatedShares): {allocated}")
+    print(f"invariant ok: activeShares == snapshot + locked")
     print(f"wrote: {holders_path}")
+
+
+# ========= Mezo readiness check =========
+
+def explorer_token_balances(address: str) -> List[Tuple[str, str, float]]:
+    """Non-zero token balances from the mezo explorer."""
+    r = requests.get(f"{MEZO_EXPLORER_API}/addresses/{address}/token-balances", timeout=30)
+    r.raise_for_status()
+    out = []
+    for item in r.json():
+        token = item["token"]
+        value = int(item["value"] or 0)
+        if not value:
+            continue
+        decimals = int(token.get("decimals") or 0)
+        out.append((token.get("symbol") or "?", token.get("address") or token.get("address_hash"), value / 10**decimals))
+    return out
+
+
+def print_positions(mezo_w3: Web3, vault: Dict) -> None:
+    risk = mezo_w3.eth.contract(address=vault["risk_manager"], abi=IRISK_MANAGER_ABI)
+    balance, limit = risk.functions.vaultState().call()
+    print(f"  riskManager.vaultState: balance {balance} limit {limit}")
+
+    labelled = [("vault", vault["vault"])]
+    for sv in vault["subvaults"]:
+        sv_balance, sv_limit = risk.functions.subvaultState(sv).call()
+        print(f"  riskManager.subvaultState({sv}): balance {sv_balance} limit {sv_limit}")
+        labelled.append(("subvault", sv))
+    labelled += [(f"{q['kind']} queue", q["address"]) for q in vault["queues"]]
+
+    for label, address in labelled:
+        native = mezo_w3.eth.get_balance(address)
+        try:
+            tokens = explorer_token_balances(address)
+        except (requests.RequestException, ValueError, KeyError) as e:
+            tokens = [("explorer unavailable", str(e), 0.0)]
+        if not native and not tokens:
+            print(f"  {label} {address}: empty")
+            continue
+        print(f"  {label} {address}: native {native / 10**NATIVE_ASSET_DECIMALS:.8f}")
+        for symbol, token, amount in tokens:
+            print(f"      {symbol:14} {amount:.8f}  {token}")
+
+
+def check_snapshot_freshness(mezo_w3: Web3, symbol: str, share_manager: Dict, mgr, oracle) -> List[str]:
+    """
+    Compares data/<symbol>/mezo_*.json with the latest state. With transfers and queues paused, holder balances can
+    only move through a report (fees, redeem burn) or a new redeem lock, and both show up in these totals.
+    """
+    changes = []
+    holders_path = ROOT_PATH.joinpath(symbol, "mezo_holders.json")
+    if holders_path.exists():
+        doc = json.loads(holders_path.read_text())
+        if "activeShares" not in doc:
+            return ["mezo_holders.json is in the old format: regenerate it"]
+        now = {
+            "activeShares": mgr.functions.activeShares().call(),
+            "excludedPendingRedeem": mgr.functions.balanceOf(mgr.address).call(),
+        }
+        then = {"activeShares": int(doc["activeShares"]), "excludedPendingRedeem": int(doc["excludedPendingRedeem"]["total"])}
+        changes += [f"{k} {then[k]} -> {now[k]}" for k in now if now[k] != then[k]]
+
+    proofs_path = ROOT_PATH.joinpath(symbol, "mezo_proofs.json")
+    if proofs_path.exists() and holders_path.exists():
+        proofs = json.loads(proofs_path.read_text())
+        # amounts come from the URD balance, not the price: the proofs only have to sit on this snapshot
+        if proofs.get("totalShares") != doc.get("snapshotShares"):
+            changes.append(f"mezo_proofs.json totalShares {proofs.get('totalShares')} != snapshot {doc.get('snapshotShares')}")
+        if proofs.get("amountSource") != "urd_balance":
+            print(f"  mezo_proofs.json is a TEST tree ({proofs.get('amountSource')}): rebuild it once the URD is funded")
+
+    print(f"  mezo_holders.json / mezo_proofs.json: {'match the latest state' if not changes else 'STALE'}")
+    for change in changes:
+        print(f"    {change}")
+    return changes
+
+
+def check_mezo_vault(mezo_w3: Web3, symbol: str, share_manager: Dict) -> Tuple[List[str], List[str]]:
+    """Prints the vault state that decides whether a snapshot is final; returns (blockers, warnings)."""
+    blockers: List[str] = []
+    warnings: List[str] = []
+
+    block = mezo_w3.eth.get_block("latest")
+    print(f"\n=== mezo readiness: {symbol} at block {block['number']} ===")
+    vault = read_mezo_vault(mezo_w3, share_manager)
+    vault_contract = mezo_w3.eth.contract(address=vault["vault"], abi=IVAULT_ABI)
+    mgr = share_manager_contract(mezo_w3, vault["share_manager"])
+    oracle = mezo_w3.eth.contract(address=vault["oracle"], abi=IORACLE_ABI + IORACLE_EXTRA_ABI)
+    fees = mezo_w3.eth.contract(address=vault["fee_manager"], abi=IFEE_MANAGER_ABI)
+    risk = mezo_w3.eth.contract(address=vault["risk_manager"], abi=IRISK_MANAGER_ABI)
+
+    print(f"vault {vault['vault']}  share manager {vault['share_manager']}  oracle {vault['oracle']}")
+
+    # --- share manager ---
+    flags = mgr.functions.flags().call()
+    total_shares = mgr.functions.totalShares().call()
+    active_shares = mgr.functions.activeShares().call()
+    allocated = mgr.functions.allocatedShares().call()
+    locked = mgr.functions.balanceOf(vault["share_manager"]).call()
+    print("\n[share manager]")
+    print(
+        f"  flags: mintPause={flags[0]} burnPause={flags[1]} transferPause={flags[2]} "
+        f"whitelist={flags[3]} transferWhitelist={flags[4]} globalLockup={flags[5]}"
+    )
+    print(f"  totalShares {total_shares}  activeShares {active_shares}  allocatedShares {allocated}")
+    print(f"  locked in share manager (pending redeems): {locked}")
+    if not flags[2]:
+        warnings.append("share transfers are not paused: holder balances can move between each other")
+
+    # --- queues ---
+    print("\n[queues]")
+    for q in vault["queues"]:
+        balance = queue_asset_balance(mezo_w3, q["address"], q["asset"])
+        line = f"  {q['kind']:15} {q['address']} asset {q['asset']} paused={q['paused']} asset balance {balance}"
+        if not q["paused"]:
+            blockers.append(f"{q['kind']} queue {q['address']} is not paused")
+        if q["kind"] == "deposit":
+            unclaimed = mezo_w3.eth.contract(address=q["address"], abi=IDEPOSIT_QUEUE_ABI).functions.unclaimedRequests().call()
+            line += f" unclaimedRequests {unclaimed}"
+            if balance:
+                blockers.append(f"deposit queue {q['address']} holds {balance} of unprocessed deposits")
+        elif q["kind"] == "redeem":
+            state = mezo_w3.eth.contract(address=q["address"], abi=IREDEEM_QUEUE_ABI).functions.getState().call()
+            batch_iterator, batches, total_demand_assets, total_pending_shares = state
+            line += (
+                f" batches {batch_iterator}/{batches} demandAssets {total_demand_assets} "
+                f"pendingShares {total_pending_shares}"
+            )
+            if batch_iterator < batches or total_demand_assets:
+                blockers.append(f"redeem queue {q['address']} has priced but unfunded batches")
+            if total_pending_shares:
+                warnings.append(
+                    f"redeem queue {q['address']}: {total_pending_shares} shares pending redeem, locked in the "
+                    f"share manager; excluded from the payout, the next report burns them"
+                )
+            if balance:
+                warnings.append(
+                    f"redeem queue {q['address']} holds {balance} of handled but unclaimed redemptions (claimed on mezo)"
+                )
+        print(line)
+    for asset in sorted({q["asset"] for q in vault["queues"]}):
+        pending_assets = risk.functions.pendingAssets(asset).call()
+        if pending_assets:
+            blockers.append(f"riskManager.pendingAssets({asset}) = {pending_assets}")
+    if allocated:
+        warnings.append(f"{allocated} claimable deposit shares are excluded from the payout (claimed on mezo)")
+
+    # --- oracle ---
+    print("\n[oracle]")
+    params = oracle.functions.securityParams().call()
+    print(f"  timeout {params[4]}s  depositInterval {params[5]}s  redeemInterval {params[6]}s")
+    reports = {}
+    for i in range(oracle.functions.supportedAssets().call()):
+        asset = to_checksum_address(oracle.functions.supportedAssetAt(i).call())
+        price_d18, timestamp, is_suspicious = oracle.functions.getReport(asset).call()
+        reports[asset] = (price_d18, timestamp, is_suspicious)
+        age_days = (block["timestamp"] - timestamp) / 86400 if timestamp else float("nan")
+        print(f"  {asset}: priceD18 {price_d18}  ts {timestamp} ({age_days:.1f} days ago)  suspicious={is_suspicious}")
+
+    # --- fees ---
+    print("\n[fees]")
+    base_asset = to_checksum_address(fees.functions.baseAsset(vault["vault"]).call())
+    recipient = to_checksum_address(fees.functions.feeRecipient().call())
+    print(
+        f"  recipient {recipient}  deposit {fees.functions.depositFeeD6().call()}  "
+        f"redeem {fees.functions.redeemFeeD6().call()}  performance {fees.functions.performanceFeeD6().call()}  "
+        f"protocol {fees.functions.protocolFeeD6().call()} (D6)"
+    )
+    print(f"  base asset {base_asset}  last fee update {fees.functions.timestamps(vault['vault']).call()}")
+    if base_asset in reports:
+        fee_shares = fees.functions.calculateFee(
+            vault["vault"], base_asset, reports[base_asset][0], total_shares - mgr.functions.balanceOf(recipient).call()
+        ).call()
+        print(f"  a report now at the last price would mint {fee_shares} fee shares to {recipient}")
+        if fee_shares:
+            warnings.append(f"next base-asset report mints {fee_shares} fee shares: snapshot only after the last report")
+
+    # --- roles that can still move shares ---
+    print("\n[roles]")
+    roles = {
+        "DEFAULT_ADMIN_ROLE": DEFAULT_ADMIN_ROLE,
+        "SET_QUEUE_STATUS_ROLE": vault_contract.functions.SET_QUEUE_STATUS_ROLE().call(),
+        "CREATE_QUEUE_ROLE": vault_contract.functions.CREATE_QUEUE_ROLE().call(),
+        "SET_HOOK_ROLE": vault_contract.functions.SET_HOOK_ROLE().call(),
+        "SET_FLAGS_ROLE": mgr.functions.SET_FLAGS_ROLE().call(),
+        "SUBMIT_REPORTS_ROLE": oracle.functions.SUBMIT_REPORTS_ROLE().call(),
+        "ACCEPT_REPORT_ROLE": oracle.functions.ACCEPT_REPORT_ROLE().call(),
+    }
+    for name, role in roles.items():
+        members = vault_contract.functions.getRoleMembers(role).call()
+        print(f"  {name}: {', '.join(members) or '-'}")
+        if name == "SUBMIT_REPORTS_ROLE" and members:
+            warnings.append(f"reports can still be submitted by {', '.join(members)}: stop them before the final snapshot")
+
+    # --- positions (reference) ---
+    print("\n[positions]")
+    if base_asset in reports and reports[base_asset][0]:
+        decimals = get_decimals(mezo_w3, base_asset)
+        implied = total_shares * 10**18 // reports[base_asset][0]
+        print(f"  implied NAV: totalShares / price = {implied / 10**decimals:.8f} of {base_asset}")
+    print_positions(mezo_w3, vault)
+
+    # --- snapshot freshness ---
+    print("\n[snapshot]")
+    changes = check_snapshot_freshness(mezo_w3, symbol, share_manager, mgr, oracle)
+    if changes:
+        blockers.append(f"snapshot is stale: {'; '.join(changes)}")
+
+    print(f"\n[verdict] {symbol}: {'READY' if not blockers else 'NOT READY'}")
+    for b in blockers:
+        print(f"  BLOCKER: {b}")
+    for w in warnings:
+        print(f"  WARNING: {w}")
+    return blockers, warnings
+
+
+# ========= Contract holders on ethereum =========
+#
+# The URD pays a holder's own address on ethereum. For a contract holder that only works if the same people
+# can operate that address there, i.e. it is a Safe and the signers it has on mezo today can reach the quorum of:
+# - the Safe already deployed at that address on ethereum, or
+# - the Safe that replaying its mezo creation (same factory, singleton, initializer, salt nonce) deploys on
+#   ethereum at the same address: that one starts with the owners and threshold of the original initializer,
+#   whatever the owners became on mezo afterwards.
+
+ISAFE_ABI = [
+    view_fn("VERSION", outputs=("string",)),
+    view_fn("getOwners", outputs=("address[]",)),
+    view_fn("getThreshold"),
+]
+
+ISAFE_PROXY_FACTORY_ABI = [
+    view_fn("proxyCreationCode", outputs=("bytes",)),
+    {
+        "name": "createProxyWithNonce",
+        "type": "function",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {"name": "singleton", "type": "address"},
+            {"name": "initializer", "type": "bytes"},
+            {"name": "saltNonce", "type": "uint256"},
+        ],
+        "outputs": [{"name": "proxy", "type": "address"}],
+    },
+]
+
+SAFE_PROXY_CREATION_TOPIC = keccak(text="ProxyCreation(address,address)")
+CREATE_PROXY_WITH_NONCE_SELECTOR = keccak(text="createProxyWithNonce(address,bytes,uint256)")[:4]
+SAFE_SETUP_SELECTOR = keccak(text="setup(address[],uint256,address,bytes,address,address,uint256,address)")[:4]
+SAFE_SETUP_TYPES = ["address[]", "uint256", "address", "bytes", "address", "address", "uint256", "address"]
+
+# ethereum_access values that let the holder claim and later move the funds
+ETHEREUM_ACCESS_OK = ("safe_deployed", "safe_deployable")
+
+
+def read_safe(w3: Web3, address: str):
+    safe = w3.eth.contract(address=address, abi=ISAFE_ABI).functions
+    try:
+        return {
+            "version": safe.VERSION().call(),
+            "owners": [to_checksum_address(o) for o in safe.getOwners().call()],
+            "threshold": safe.getThreshold().call(),
+        }
+    except (ContractLogicError, BadFunctionCallOutput, ValueError):
+        return None
+
+
+def quorum_held(owners: List[str], threshold: int, signers: List[str]) -> bool:
+    return len({o.lower() for o in owners} & {s.lower() for s in signers}) >= threshold
+
+
+def first_code_block(w3: Web3, address: str) -> int:
+    """Block in which `address` got its code: binary search over archive state."""
+    lo, hi = 0, w3.eth.block_number
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if w3.eth.get_code(address, block_identifier=mid):
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+
+
+def safe_proxy_address(factory: str, proxy_creation_code: bytes, singleton: str, initializer: bytes, salt_nonce: int) -> str:
+    """CREATE2 address of SafeProxyFactory.createProxyWithNonce (1.3.0 and 1.4.1)."""
+    salt = keccak(keccak(initializer) + salt_nonce.to_bytes(32, "big"))
+    init_code = proxy_creation_code + abi_encode(["address"], [singleton])
+    return to_checksum_address(keccak(b"\xff" + bytes.fromhex(factory[2:]) + salt + keccak(init_code))[12:])
+
+
+def safe_creation(mezo_w3: Web3, address: str):
+    """The createProxyWithNonce call that deployed the Safe at `address` on mezo, None if it was created otherwise."""
+    block = first_code_block(mezo_w3, address)
+    logs = mezo_w3.eth.get_logs({"fromBlock": block, "toBlock": block, "topics": ["0x" + SAFE_PROXY_CREATION_TOPIC.hex()]})
+    for log in logs:
+        topics = [bytes(t) for t in log["topics"]]
+        proxy = topics[1][-20:] if len(topics) > 1 else bytes(log["data"])[12:32]  # indexed since 1.4.1
+        if to_checksum_address(proxy) != address:
+            continue
+
+        factory = to_checksum_address(log["address"])
+        proxy_creation_code = mezo_w3.eth.contract(address=factory, abi=ISAFE_PROXY_FACTORY_ABI).functions.proxyCreationCode().call()
+        calldata = bytes(mezo_w3.eth.get_transaction(log["transactionHash"])["input"])
+        # a direct factory call or one wrapped in a multisend / multicall: the CREATE2 address proves the right one
+        start = calldata.find(CREATE_PROXY_WITH_NONCE_SELECTOR)
+        while start != -1:
+            try:
+                singleton, initializer, salt_nonce = abi_decode(["address", "bytes", "uint256"], calldata[start + 4:])
+            except DecodingError:
+                singleton = None
+            if singleton and safe_proxy_address(factory, proxy_creation_code, singleton, initializer, salt_nonce) == address:
+                return {
+                    "factory": factory,
+                    "singleton": to_checksum_address(singleton),
+                    "initializer": initializer,
+                    "salt_nonce": salt_nonce,
+                    "proxy_creation_code": proxy_creation_code,
+                    "tx": "0x" + bytes(log["transactionHash"]).hex(),
+                }
+            start = calldata.find(CREATE_PROXY_WITH_NONCE_SELECTOR, start + 1)
+    return None
+
+
+def replay_safe_creation(eth_w3: Web3, creation: Dict, address: str, state_override: Dict = None):
+    """Why the mezo creation cannot be replayed on ethereum to the same address, None if it can."""
+    factory = creation["factory"]
+    if not eth_w3.eth.get_code(factory):
+        return f"factory {factory} is not deployed on ethereum"
+    factory_contract = eth_w3.eth.contract(address=factory, abi=ISAFE_PROXY_FACTORY_ABI).functions
+    if factory_contract.proxyCreationCode().call() != creation["proxy_creation_code"]:
+        return f"factory {factory} has a different proxy creation code on ethereum"
+    # the dry run also executes setup(): singleton, fallback handler and setup modules have to exist on ethereum too
+    try:
+        proxy = factory_contract.createProxyWithNonce(
+            creation["singleton"], creation["initializer"], creation["salt_nonce"]
+        ).call({"from": ZERO_ADDRESS}, "latest", state_override)
+    except (ContractLogicError, BadFunctionCallOutput, ValueError) as e:
+        return f"createProxyWithNonce reverts on ethereum: {e}"
+    if to_checksum_address(proxy) != address:
+        return f"createProxyWithNonce on ethereum deploys {proxy}"
+    return None
+
+
+def contract_holder_access(mezo_w3: Web3, eth_w3: Web3, address: str) -> Dict:
+    mezo_safe = read_safe(mezo_w3, address)
+    if mezo_safe is None:
+        return {"status": "not_safe"}
+    signers = mezo_safe["owners"]
+    out = {"version": mezo_safe["version"], "mezo_owners": signers, "mezo_threshold": mezo_safe["threshold"]}
+
+    if eth_w3.eth.get_code(address):
+        eth_safe = read_safe(eth_w3, address)
+        if eth_safe is None:
+            return {"status": "address_taken", **out}
+        out.update(ethereum_owners=eth_safe["owners"], ethereum_threshold=eth_safe["threshold"])
+        held = quorum_held(eth_safe["owners"], eth_safe["threshold"], signers)
+        return {"status": "safe_deployed" if held else "safe_no_quorum", **out}
+
+    creation = safe_creation(mezo_w3, address)
+    if creation is None:
+        return {"status": "safe_not_deployable", "reason": "not created by SafeProxyFactory.createProxyWithNonce", **out}
+    out.update(factory=creation["factory"], singleton=creation["singleton"], salt_nonce=str(creation["salt_nonce"]),
+               creation_tx=creation["tx"])
+
+    if creation["initializer"][:4] != SAFE_SETUP_SELECTOR:
+        return {"status": "safe_not_deployable", "reason": "initializer is not Safe.setup", **out}
+    initial_owners, initial_threshold = abi_decode(SAFE_SETUP_TYPES, creation["initializer"][4:])[:2]
+    initial_owners = [to_checksum_address(o) for o in initial_owners]
+    out.update(initial_owners=initial_owners, initial_threshold=initial_threshold)
+
+    reason = replay_safe_creation(eth_w3, creation, address)
+    if reason:
+        return {"status": "safe_not_deployable", "reason": reason, **out}
+    held = quorum_held(initial_owners, initial_threshold, signers)
+    return {"status": "safe_deployable" if held else "safe_no_quorum", **out}
+
+
+def check_contract_holders(mezo_w3: Web3, eth_w3: Web3, symbol: str, cache: Dict) -> None:
+    """Adds `ethereum_access` (+ `safe` details) to every CONTRACT holder in mezo_holders.json."""
+    path = ROOT_PATH.joinpath(symbol, "mezo_holders.json")
+    doc = json.loads(path.read_text())
+
+    print(f"\n=== contract holders on ethereum: {symbol} ===")
+    for account, entry in doc["holders"].items():
+        if entry.get("type") != AcctType.CONTRACT:
+            continue
+        if account not in cache:
+            cache[account] = contract_holder_access(mezo_w3, eth_w3, account)
+        result = dict(cache[account])
+        entry["ethereum_access"] = result.pop("status")
+        entry["safe"] = result
+        mark = "ok" if entry["ethereum_access"] in ETHEREUM_ACCESS_OK else "CHECK"
+        print(f"  [{mark}] {account} shares {entry['shares']}: {entry['ethereum_access']} {result.get('reason', '')}")
+
+    path.write_text(json.dumps(doc, indent=2))
+    print(f"wrote: {path}")
 
 
 def etherscan_tx_counts(addresses: List[str], timeout: int = 30) -> Dict[str, int]:
@@ -859,7 +1619,7 @@ def read_mezo_price(mezo_w3: Web3, share_manager: Dict) -> Dict:
     if price_d18 == 0:
         raise SystemExit(f"oracle {oracle_address} has no price for asset {price_asset}")
     if is_suspicious:
-        print(f"WARNING: oracle report for {price_asset} is flagged suspicious")
+        raise SystemExit(f"oracle report for {price_asset} is flagged suspicious")
 
     return {
         "vault": vault,
@@ -884,107 +1644,179 @@ def shares_to_assets(shares: int, price_d18: int, asset_decimals: int, reward_de
     return assets // 10 ** (asset_decimals - reward_decimals)
 
 
-def build_return_claims(w3: Web3, symbol: str, share_manager: Dict, price: Dict, reward_decimals: int) -> Dict:
+def allocate_pro_rata(amount: int, shares: Dict[str, int]) -> Dict[str, int]:
+    """
+    Splits `amount` exactly by `shares`: everyone gets floor(amount * shares / total), then the few units left
+    go one each to the largest fractional parts (ties by address), so the allocations add up to `amount`.
+    """
+    total = sum(shares.values())
+    allocation = {a: amount * s // total for a, s in shares.items()}
+    leftover = amount - sum(allocation.values())  # < len(shares)
+    by_fraction = sorted(shares, key=lambda a: (-(amount * shares[a] % total), a.lower()))
+    for account in by_fraction[:leftover]:
+        allocation[account] += 1
+    return allocation
+
+
+def read_urd_balance(w3: Web3, share_manager: Dict, reward_token: str):
+    """(urd, balance of the payout token) — (None, 0) while the URD is not deployed or not configured."""
+    urd = share_manager.get("eth_urd")
+    if not urd:
+        return None, 0
+    urd = to_checksum_address(urd)
+    if not w3.eth.get_code(urd):
+        raise SystemExit(f"eth_urd {urd} has no code on ethereum")
+    token = w3.eth.contract(address=reward_token, abi=ISHARE_MANAGER_EXTRA_ABI)
+    return urd, token.functions.balanceOf(urd).call()
+
+
+def build_return_claims(symbol: str, share_manager: Dict, amount: int, reward_decimals: int) -> Dict:
     reward_token = to_checksum_address(share_manager["eth_asset"])
     mezo_holders = read_holders_map(symbol, "mezo_holders.json")
+    shares = {to_checksum_address(a): int(e["shares"]) for a, e in mezo_holders.items()}
 
-    items = sorted(mezo_holders.items(), key=lambda kv: kv[0].lower())
-
-    accounts: List[str] = []
-    shares: List[int] = []
-    amounts: List[int] = []
-    dropped: Dict[str, str] = {}
-
-    for holder, entry in items:
-        account = to_checksum_address(holder)
-        holder_shares = int(entry["shares"])
-        amount = shares_to_assets(holder_shares, price["price_d18"], price["asset_decimals"], reward_decimals)
-        if amount == 0:
-            # would be an unclaimable leaf: keep it out of the tree entirely
-            dropped[account] = str(holder_shares)
-            continue
-        accounts.append(account)
-        shares.append(holder_shares)
-        amounts.append(amount)
-
+    allocation = allocate_pro_rata(amount, shares)
+    accounts = sorted((a for a, amt in allocation.items() if amt > 0), key=str.lower)
+    # a zero amount would be an unclaimable leaf: keep it out of the tree entirely
+    dropped = {a: str(shares[a]) for a in sorted(allocation, key=str.lower) if allocation[a] == 0}
     if not accounts:
-        raise SystemExit(f"no claimable accounts for {symbol} after conversion")
+        raise SystemExit(f"no claimable accounts for {symbol}")
 
-    total_shares = sum(int(v["shares"]) for v in mezo_holders.values())
-    total_assets = sum(amounts)
-    total_converted = shares_to_assets(total_shares, price["price_d18"], price["asset_decimals"], reward_decimals)
-    if total_assets > total_converted:
-        raise SystemExit(f"per-holder assets {total_assets} exceed converted total {total_converted}")
-
-    leaves = [urd_leaf(a, reward_token, amt) for a, amt in zip(accounts, amounts)]
+    leaves = [urd_leaf(a, reward_token, allocation[a]) for a in accounts]
     layers = build_layers(leaves)
-    root = layers[-1][0]
 
     codes = batch_get_code(accounts, rpc_url=RPC_URL)
 
+    # the URD pays the same address on ethereum: a mezo contract with no code there may have no owner
+    no_eth_code = sorted(
+        (a for a in accounts if mezo_holders[a]["type"] == AcctType.CONTRACT and codes[a] == "0x"),
+        key=str.lower,
+    )
+
     claims: Dict[str, Dict[str, object]] = {}
-    for i, (account, holder_shares, amount) in enumerate(zip(accounts, shares, amounts)):
+    for i, account in enumerate(accounts):
         claims[account] = {
-            "shares": str(holder_shares),
-            "amount": str(amount),
+            "shares": str(shares[account]),
+            "amount": str(allocation[account]),
             "proof": ["0x" + p.hex() for p in proof_for_index(layers, i)],
             "type": classify_by_code_hex(codes[account]),
             "recipient": account,
         }
+        if mezo_holders[account]["type"] == AcctType.CONTRACT:
+            # set by `mezo-contracts`; missing means the check has not been run on this snapshot
+            claims[account]["ethereum_access"] = mezo_holders[account].get("ethereum_access", "unchecked")
 
     return {
         "direction": "mezo->ethereum",
+        "leaf": "keccak256(bytes.concat(keccak256(abi.encode(account, rewardToken, claimable))))",
         "rewardToken": reward_token,
         "rewardTokenDecimals": reward_decimals,
         "mezoShareManager": to_checksum_address(share_manager["mezo_share_manager"]),
-        "mezoVault": price["vault"],
-        "mezoOracle": price["oracle"],
-        "priceAsset": price["asset"],
-        "priceD18": str(price["price_d18"]),
-        "priceTimestamp": price["timestamp"],
-        "priceSuspicious": price["is_suspicious"],
-        "priceMezoBlock": price["block"],
-        "mezoAssetDecimals": price["asset_decimals"],
-        "totalShares": str(total_shares),
-        "totalAssets": str(total_assets),
-        "roundingRemainder": str(total_converted - total_assets),
+        "totalShares": str(sum(shares.values())),
+        "totalAssets": str(amount),
         "droppedZeroAmount": dropped,
-        "root": "0x" + root.hex(),
+        "mezoContractsWithoutEthCode": no_eth_code,
+        "root": "0x" + layers[-1][0].hex(),
         "claims": claims,
     }
 
 
-def generate_return_proofs(w3: Web3, mezo_w3: Web3, symbol: str, share_manager: Dict) -> None:
+def verify_return_proofs(out: Dict, holders: Dict[str, Dict[str, str]]) -> None:
+    """Re-derives everything in `out` from the holders snapshot alone: tree, amounts, totals."""
+    root = bytes.fromhex(out["root"][2:])
+    token = out["rewardToken"]
+    amount = int(out["totalAssets"])
+    shares = {to_checksum_address(a): int(e["shares"]) for a, e in holders.items()}
+    total_shares = sum(shares.values())
+    errors = []
+
+    if int(out["totalShares"]) != total_shares:
+        errors.append(f"totalShares {out['totalShares']} != snapshot {total_shares}")
+    if set(out["claims"]) | set(out["droppedZeroAmount"]) != set(shares) or set(out["claims"]) & set(out["droppedZeroAmount"]):
+        errors.append("claims + dropped do not partition the snapshot holders")
+    if sum(int(c["amount"]) for c in out["claims"].values()) != amount:
+        errors.append("sum of claims != totalAssets")
+
+    for account, claim in out["claims"].items():
+        claimable = int(claim["amount"])
+        exact_floor = amount * shares[account] // total_shares
+        if claimable <= 0 or not exact_floor <= claimable <= exact_floor + 1:
+            errors.append(f"{account}: amount {claimable} is not its pro-rata share {exact_floor}(+1)")
+        node = urd_leaf(account, token, claimable)
+        for sibling in claim["proof"]:
+            node = hash_pair(node, bytes.fromhex(sibling[2:]))
+        if node != root:
+            errors.append(f"{account}: proof does not reach the root")
+    for account in out["droppedZeroAmount"]:
+        if amount * shares[account] // total_shares != 0:
+            errors.append(f"{account}: dropped with a non-zero pro-rata share")
+
+    if errors:
+        raise SystemExit("proof verification failed:\n  " + "\n  ".join(errors[:20]))
+    print(f"verified: {len(out['claims'])} proofs reach the root, amounts are the exact pro-rata split of {amount}")
+
+
+def generate_return_proofs(w3: Web3, mezo_w3: Web3, symbol: str, share_manager: Dict, test_amount: str = None) -> None:
+    """
+    Pays out what the URD actually holds, split by the snapshot shares. Until the URD is funded there is
+    nothing to split: the tree is then built for a test amount only (--test-amount in token units, else the
+    oracle estimate) and marked `amountSource: test_amount`, which ReturnDeploy refuses to set or claim.
+    """
     if not share_manager.get("eth_asset"):
         raise SystemExit(
             f"eth_asset not set for {symbol} — fill in the payout ERC20 in SHARE_MANAGERS first"
         )
 
     reward_token = to_checksum_address(share_manager["eth_asset"])
+    reward_decimals = get_decimals(w3, reward_token)
     print(f"\n=== return proofs (mezo -> ethereum): {symbol} ===")
 
+    # informational: what the snapshot is worth at the vault's own price, next to what the URD actually holds
     price = read_mezo_price(mezo_w3, share_manager)
-    reward_decimals = get_decimals(w3, reward_token)
+    holders = read_holders_map(symbol, "mezo_holders.json")
+    total_shares = sum(int(e["shares"]) for e in holders.values())
+    oracle_estimate = shares_to_assets(total_shares, price["price_d18"], price["asset_decimals"], reward_decimals)
 
-    out = build_return_claims(w3, symbol, share_manager, price, reward_decimals)
+    urd, balance = read_urd_balance(w3, share_manager, reward_token)
+    if balance > 0:
+        amount, source = balance, "urd_balance"
+    else:
+        if test_amount is not None:
+            amount = int(Decimal(test_amount) * 10**reward_decimals)
+        else:
+            amount = oracle_estimate
+        source = "test_amount"
+        print(f"URD {urd or '(not set)'} holds no {reward_token}: skipping the real tree, building a TEST tree")
 
-    total_from_claims = sum(int(c["amount"]) for c in out["claims"].values())
-    if int(out["totalAssets"]) != total_from_claims:
-        raise SystemExit(
-            f"totalAssets mismatch: top-level={out['totalAssets']} != sum(claims.amount)={total_from_claims}"
-        )
+    out = build_return_claims(symbol, share_manager, amount, reward_decimals)
+    out = {
+        "amountSource": source,
+        "urd": urd,
+        **out,
+        "oracleEstimate": str(oracle_estimate),
+        "mezoVault": price["vault"],
+        "mezoOracle": price["oracle"],
+        "priceAsset": price["asset"],
+        "priceD18": str(price["price_d18"]),
+        "priceTimestamp": price["timestamp"],
+        "priceMezoBlock": price["block"],
+    }
+    verify_return_proofs(out, holders)
 
     out_path = ROOT_PATH.joinpath(symbol, "mezo_proofs.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out, indent=2) + "\n")
 
     print(f"reward token: {reward_token} ({reward_decimals} decimals)")
-    print(f"price asset: {price['asset']} ({price['asset_decimals']} decimals)")
-    print(f"priceD18: {price['price_d18']} (report ts {price['timestamp']}, mezo block {price['block']})")
-    print(f"claims: {len(out['claims'])} (dropped as zero after conversion: {len(out['droppedZeroAmount'])})")
-    print(f"totalShares: {out['totalShares']}")
-    print(f"totalAssets: {out['totalAssets']} (verified == sum of claims; fund the URD with this)")
-    print(f"rounding remainder kept by funder: {out['roundingRemainder']}")
+    print(f"amount source: {source}" + (f" (URD {urd})" if urd and source == "urd_balance" else ""))
+    print(f"distributed: {amount}  oracle estimate: {oracle_estimate} (priceD18 {price['price_d18']})")
+    print(f"claims: {len(out['claims'])} (dropped as zero: {len(out['droppedZeroAmount'])})")
+    for account in out["mezoContractsWithoutEthCode"]:
+        print(f"WARNING: {account} is a contract on mezo with no code on ethereum, check who controls it there")
+    for account, claim in out["claims"].items():
+        access = claim.get("ethereum_access")
+        if access is not None and access not in ETHEREUM_ACCESS_OK:
+            print(f"WARNING: contract holder {account} ethereum_access={access} (run mezo-contracts / check manually)")
     print(f"root: {out['root']}")
     print(f"wrote: {out_path}")
 
@@ -1086,7 +1918,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build holders and Merkle proofs for share managers")
     parser.add_argument(
         "action",
-        choices=["holders", "proofs", "mezo-holders", "mezo-diff", "return-proofs"],
+        choices=["holders", "proofs", "mezo-check", "mezo-holders", "mezo-contracts", "mezo-diff", "return-proofs"],
         help="Action to perform",
     )
     parser.add_argument(
@@ -1094,12 +1926,18 @@ def parse_args() -> argparse.Namespace:
         choices=sorted(SHARE_MANAGERS.keys()) + ["all"],
         help="Share manager symbol key, or `all`",
     )
+    parser.add_argument(
+        "--test-amount",
+        default=None,
+        help="return-proofs: payout (in token units) for the test tree built while the URD holds nothing; "
+        "defaults to the oracle estimate",
+    )
     return parser.parse_args()
 
 def main() -> None:
     args = parse_args()
 
-    mezo_action = args.action in ("mezo-holders", "mezo-diff")
+    mezo_action = args.action in ("mezo-check", "mezo-holders", "mezo-contracts", "mezo-diff")
 
     if mezo_action:
         if args.manager == "all":
@@ -1112,12 +1950,26 @@ def main() -> None:
             )
 
         mezo_w3 = connect_mezo()
+        if args.action == "mezo-contracts":
+            if not RPC_URL:
+                raise SystemExit("RPC_URL missing (set it in env or .env)")
+            eth_w3 = Web3(Web3.HTTPProvider(RPC_URL, request_kwargs={"timeout": 120}))
+            safes: Dict[str, Dict] = {}  # the same Safe can hold both vaults
+        not_ready = []
         for symbol in symbols:
             share_manager = SHARE_MANAGERS[symbol]
+            if args.action == "mezo-check":
+                blockers, _ = check_mezo_vault(mezo_w3, symbol, share_manager)
+                if blockers:
+                    not_ready.append(symbol)
             if args.action == "mezo-holders":
                 generate_mezo_holders(mezo_w3, symbol, share_manager)
+            if args.action == "mezo-contracts":
+                check_contract_holders(mezo_w3, eth_w3, symbol, safes)
             if args.action == "mezo-diff":
                 diff_mezo_holders(mezo_w3, symbol, share_manager)
+        if not_ready:
+            raise SystemExit(f"\nNOT READY: {', '.join(not_ready)}")
         return
 
     if args.action == "return-proofs":
@@ -1139,7 +1991,7 @@ def main() -> None:
 
         mezo_w3 = connect_mezo()
         for symbol in symbols:
-            generate_return_proofs(w3, mezo_w3, symbol, SHARE_MANAGERS[symbol])
+            generate_return_proofs(w3, mezo_w3, symbol, SHARE_MANAGERS[symbol], args.test_amount)
         return
 
     if not RPC_URL:
