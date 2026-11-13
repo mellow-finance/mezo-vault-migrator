@@ -167,8 +167,8 @@ contract MezoFreezeTest is Test {
             }
         }
 
-        // the payout uses active shares (balanceOf); the only way they move is the holder's own deposit claim,
-        // i.e. claimable shares turning active, and those are settled on mezo
+        // the payout uses sharesOf (active + claimable); a holder's own deposit claim only turns claimable into
+        // active, so sharesOf stays put and the active balance grows by exactly the claimable part
         for (uint256 i = 0; i < accounts.length; i++) {
             string memory account = vm.toString(accounts[i]);
             assertEq(shareManager.sharesOf(accounts[i]), sharesBefore[i], string.concat("sharesOf moved for ", account));

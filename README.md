@@ -59,9 +59,11 @@ Both URDs have the same settings:
 
 ### What gets paid
 
-**Who is in the snapshot.** It holds only **active shares** (`balanceOf`) of every holder on the Mezo share manager. Two kinds of shares are left out because they are settled on Mezo:
-- claimable deposit shares (`allocatedShares`), which depositors claim on Mezo;
-- shares locked by pending redeem requests (the share manager's own balance), which are redeemed on Mezo. They are recorded under `excludedPendingRedeem`.
+**Who is in the snapshot.** Every holder's `sharesOf` on the Mezo share manager.
+- That is the active balance plus deposit shares that were allocated to the holder but never claimed. The assets of those deposits are in the vault and travel to Ethereum with everything else, so the depositors are paid like everyone else.
+- Claim-only depositors have no `Transfer` event, so they are found through `DepositRequested`. Their entries carry `claimable`, the not-yet-minted part of `shares`.
+- Left out: shares locked by pending redeem requests (the share manager's own balance). Those are redeemed on Mezo, and their assets wait in the redeem queue. They are recorded under `excludedPendingRedeem`.
+- Invariant: `totalShares == snapshot + locked + allocation dust`. The dust is a few wei of per-claim rounding.
 
 **How the payout is split.** The payout is whatever the URD actually holds.
 - Each holder gets `floor(balance × shares / totalShares)`.
@@ -102,7 +104,7 @@ Only `safe_deployed` and `safe_deployable` are safe to pay. `return-proofs` prin
 
 | Step | Writes / checks |
 |---|---|
-| `mezo:holders` | `data/<symbol>/mezo_holders.json`: active-share snapshot at the latest block. Fails unless `activeShares == snapshot + locked` |
+| `mezo:holders` | `data/<symbol>/mezo_holders.json`: `sharesOf` snapshot at the latest block. Fails unless `totalShares == snapshot + locked + allocation dust` |
 | `mezo:contracts` | Adds `ethereum_access` and `safe` details to every contract holder |
 | `return:proofs` | `data/<symbol>/mezo_proofs.json`: URD balance split by shares, URD Merkle tree, verified |
 | `mezo:check` | Queues paused, nothing pending, and the snapshot still matches the chain |
@@ -137,8 +139,8 @@ Rerun the whole build whenever `mezo:check` reports the snapshot as stale, or wh
 ### Data files
 
 `mezo_holders.json`:
-- `holders`: `{address: {shares, recipient, type, code, ethereum_access?, safe?}}`;
-- totals: `totalShares`, `activeShares`, `snapshotShares`, `excludedAllocatedShares`;
+- `holders`: `{address: {shares, claimable?, recipient, type, code, ethereum_access?, safe?}}`;
+- totals: `totalShares`, `activeShares`, `snapshotShares`, `claimableShares`, `allocationDust`;
 - `excludedPendingRedeem`: the total, plus shares per requester.
 
 `mezo_proofs.json`:

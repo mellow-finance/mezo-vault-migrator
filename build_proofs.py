@@ -247,6 +247,7 @@ ISHARE_MANAGER_EXTRA_ABI = [
 ]
 
 IDEPOSIT_QUEUE_ABI = [
+    view_fn("claimableOf", ("address",)),
     view_fn("unclaimedRequests"),
 ]
 
@@ -339,6 +340,11 @@ IRISK_MANAGER_ABI = [
 ]
 
 REDEEM_REQUESTED_TOPIC = keccak(text="RedeemRequested(address,uint256,uint256)")
+DEPOSIT_REQUESTED_TOPIC = keccak(text="DepositRequested(address,address,uint224,uint32)")
+
+# allocatedShares minus the per-user claimables: every deposit report floors each claim separately,
+# so a few wei stay allocated forever. Anything bigger means a claimable holder was missed.
+MAX_ALLOCATION_DUST = 10**6
 REDEEM_REQUESTS_LIMIT = 1000  # requestsOf page size; one request per (account, block timestamp)
 DEFAULT_ADMIN_ROLE = b"\x00" * 32
 
@@ -868,15 +874,18 @@ def get_logs_with_retry(w3: Web3, params: Dict, attempts: int = 5):
 
 def scan_mezo_accounts(mezo_w3: Web3, vault: Dict, start_block: int):
     """
-    One pass over the share manager and redeem queue logs, same request count as a share-manager-only scan:
+    One pass over the share manager and queue logs, same request count as a share-manager-only scan:
     - Transfer `to` on the share manager: everyone who ever held active shares;
+    - DepositRequested on deposit queues: depositors whose shares may still be claimable only
+      (allocated shares are minted on claim, so a depositor who never claimed has no Transfer);
     - RedeemRequested on redeem queues: accounts whose shares got locked in the share manager.
     """
     manager = vault["share_manager"]
+    deposit_queues = set(queues_of_kind(vault, "deposit"))
     redeem_queues = set(queues_of_kind(vault, "redeem"))
     transfer_topic = event_abi_to_log_topic(TRANSFER_EVENT_ABI)
 
-    recipients, requesters = set(), set()
+    recipients, depositors, requesters = set(), set(), set()
 
     current = start_block
     end_block = mezo_w3.eth.block_number
@@ -884,10 +893,10 @@ def scan_mezo_accounts(mezo_w3: Web3, vault: Dict, start_block: int):
         to_block = min(current + MEZO_BATCH_BLOCKS - 1, end_block)
 
         logs = get_logs_with_retry(mezo_w3, {
-            "address": [manager, *sorted(redeem_queues)],
+            "address": [manager, *sorted(deposit_queues), *sorted(redeem_queues)],
             "fromBlock": current,
             "toBlock": to_block,
-            "topics": [["0x" + t.hex() for t in (transfer_topic, REDEEM_REQUESTED_TOPIC)]],
+            "topics": [["0x" + t.hex() for t in (transfer_topic, DEPOSIT_REQUESTED_TOPIC, REDEEM_REQUESTED_TOPIC)]],
         })
         print(f"Scanning blocks {current} → {to_block} logs found: {len(logs)}")
 
@@ -896,13 +905,27 @@ def scan_mezo_accounts(mezo_w3: Web3, vault: Dict, start_block: int):
             topic0 = bytes(log["topics"][0])
             if emitter == manager and topic0 == transfer_topic:
                 recipients.add(topic_address(log["topics"][2]))
+            elif emitter in deposit_queues and topic0 == DEPOSIT_REQUESTED_TOPIC:
+                depositors.add(topic_address(log["topics"][1]))
             elif emitter in redeem_queues and topic0 == REDEEM_REQUESTED_TOPIC:
                 requesters.add(topic_address(log["topics"][1]))
 
         current = to_block + 1
 
     recipients.discard(to_checksum_address(ZERO_ADDRESS))
-    return recipients, requesters
+    return recipients, depositors, requesters
+
+
+def claimable_shares(mezo_w3: Web3, deposit_queues: List[str], depositors: set) -> Dict[str, int]:
+    """Allocated-but-unminted shares per depositor over every deposit queue: what sharesOf adds on top of balanceOf."""
+    accounts = sorted(depositors, key=str.lower)
+    out = {a: 0 for a in accounts}
+    for queue in deposit_queues:
+        q = mezo_w3.eth.contract(address=queue, abi=IDEPOSIT_QUEUE_ABI)
+        calls = [(queue, q.functions.claimableOf(a)._encode_transaction_data()) for a in accounts]
+        for account, amount in zip(accounts, multicall_uint256(mezo_w3, calls)):
+            out[account] += amount
+    return {a: v for a, v in out.items() if v}
 
 
 def pending_redeem_shares(mezo_w3: Web3, redeem_queues: List[str], requesters: set) -> Dict[str, int]:
@@ -934,9 +957,9 @@ def queue_asset_balance(w3: Web3, queue: str, asset: str) -> int:
 
 def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> None:
     """
-    Active shares only (balanceOf). Left out, both settled on mezo:
-    - claimable deposit shares (allocatedShares): depositors claim them on mezo;
-    - shares locked by pending redeems (the share manager's own balance): redeemed on mezo.
+    Every holder's sharesOf: active balance plus deposit shares allocated to them but not claimed yet (the deposited
+    assets are in the vault, so they travel to ethereum with everything else). Left out: shares locked by pending
+    redeems (the share manager's own balance), which are redeemed on mezo.
     """
     manager_address = to_checksum_address(share_manager["mezo_share_manager"])
     mgr = share_manager_contract(mezo_w3, manager_address)
@@ -950,13 +973,14 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
     print(f"\n=== fetch mezo holders: {symbol} ({manager_address}) ===")
 
     vault = read_mezo_vault(mezo_w3, share_manager)
+    deposit_queues = queues_of_kind(vault, "deposit")
     redeem_queues = queues_of_kind(vault, "redeem")
 
-    recipients, requesters = scan_mezo_accounts(mezo_w3, vault, share_manager["mezo_start_block"])
+    recipients, depositors, requesters = scan_mezo_accounts(mezo_w3, vault, share_manager["mezo_start_block"])
 
-    accounts = sorted(recipients, key=str.lower)
-    calls = [(manager_address, mgr.functions.balanceOf(a)._encode_transaction_data()) for a in accounts]
-    balances = {a: amt for a, amt in zip(accounts, multicall_uint256(mezo_w3, calls)) if amt}
+    accounts = sorted(recipients | depositors, key=str.lower)
+    amounts = fetch_shares_multicall3(mezo_w3, MULTICALL3, manager_address, accounts, BATCH_SIZE)
+    balances = {a: amt for a, amt in zip(accounts, amounts) if amt}
 
     # Shares sitting on the vault, a subvault or a queue would have no owner on ethereum.
     protocol = {vault["vault"], *vault["subvaults"], *(q["address"] for q in vault["queues"])}
@@ -964,6 +988,7 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
     if stray:
         raise SystemExit(f"protocol addresses hold {symbol} shares: {stray}")
     locked = balances.pop(manager_address, 0)
+    claimables = claimable_shares(mezo_w3, deposit_queues, depositors)
 
     codes = batch_get_code(list(balances), rpc_url=MEZO_RPC_URL)
     holders: Dict[str, Dict[str, str]] = {}
@@ -974,6 +999,8 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
             "type": str(classify_by_code_hex(codes[acct])),
             "code": holder_code_hint(codes[acct]),
         }
+        if claimables.get(acct):
+            holders[acct]["claimable"] = str(claimables[acct])  # part of `shares` still unminted on mezo
 
     # Pending redeems: locked in the share manager, not priced yet. Not paid on ethereum, recorded for the team.
     total_pending = 0
@@ -994,14 +1021,17 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
             f"share manager balance {locked}"
         )
 
-    # Completeness: activeShares is the sum of every balance, so the snapshot plus the locked shares must match it.
+    # Completeness: every share is in the snapshot, locked, or allocation rounding dust.
     active_shares = mgr.functions.activeShares().call()
     total_shares = mgr.functions.totalShares().call()
     allocated = mgr.functions.allocatedShares().call()
     snapshot_shares = sum(balances.values())
-    if snapshot_shares + locked != active_shares:
+    dust = allocated - sum(claimables.values())
+    if not 0 <= dust <= MAX_ALLOCATION_DUST:
+        raise SystemExit(f"allocatedShares {allocated} vs sum(claimableOf) {sum(claimables.values())}: dust {dust}")
+    if total_shares - snapshot_shares - locked != dust:
         raise SystemExit(
-            f"snapshot {snapshot_shares} + locked {locked} != activeShares {active_shares}: "
+            f"totalShares {total_shares} - snapshot {snapshot_shares} - locked {locked} != allocation dust {dust}: "
             f"holders are missing, or shares moved during the scan (rerun)"
         )
 
@@ -1014,7 +1044,8 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
             "totalShares": str(total_shares),
             "activeShares": str(active_shares),
             "snapshotShares": str(snapshot_shares),
-            "excludedAllocatedShares": str(allocated),
+            "claimableShares": str(sum(claimables.values())),
+            "allocationDust": str(dust),
             "excludedPendingRedeem": {
                 "total": str(locked),
                 "requesters": {a: str(s) for a, s in sorted(excluded.items(), key=lambda kv: kv[0].lower())},
@@ -1022,12 +1053,13 @@ def generate_mezo_holders(mezo_w3: Web3, symbol: str, share_manager: Dict) -> No
         },
     )
 
-    print(f"mezo holders with non-zero active shares: {len(holders)}")
-    print(f"sum(shares): {snapshot_shares}")
+    claimable_only = sum(1 for a, c in claimables.items() if a in holders and int(holders[a]["shares"]) == c)
+    print(f"mezo holders: {len(holders)} ({len(claimables)} with claimable deposit shares, {claimable_only} claimable only)")
+    print(f"sum(shares): {snapshot_shares} (claimable included: {sum(claimables.values())})")
     print(f"onchain activeShares(): {active_shares}  totalShares(): {total_shares}")
     print(f"excluded pending-redeem shares (locked in share manager): {locked} from {len(excluded)} requesters")
-    print(f"excluded claimable deposit shares (allocatedShares): {allocated}")
-    print(f"invariant ok: activeShares == snapshot + locked")
+    print(f"allocation dust: {dust}")
+    print(f"invariant ok: totalShares == snapshot + locked + dust")
     print(f"wrote: {holders_path}")
 
 
@@ -1081,15 +1113,18 @@ def check_snapshot_freshness(mezo_w3: Web3, symbol: str, share_manager: Dict, mg
     """
     changes = []
     holders_path = ROOT_PATH.joinpath(symbol, "mezo_holders.json")
+    if not holders_path.exists():
+        print("  no mezo_holders.json / mezo_proofs.json yet: npm run return:build")
+        return changes
     if holders_path.exists():
         doc = json.loads(holders_path.read_text())
-        if "activeShares" not in doc:
-            return ["mezo_holders.json is in the old format: regenerate it"]
+        if "claimableShares" not in doc:
+            return ["mezo_holders.json predates claimable shares in the snapshot: regenerate it"]
         now = {
-            "activeShares": mgr.functions.activeShares().call(),
+            "totalShares": mgr.functions.totalShares().call(),
             "excludedPendingRedeem": mgr.functions.balanceOf(mgr.address).call(),
         }
-        then = {"activeShares": int(doc["activeShares"]), "excludedPendingRedeem": int(doc["excludedPendingRedeem"]["total"])}
+        then = {"totalShares": int(doc["totalShares"]), "excludedPendingRedeem": int(doc["excludedPendingRedeem"]["total"])}
         changes += [f"{k} {then[k]} -> {now[k]}" for k in now if now[k] != then[k]]
 
     proofs_path = ROOT_PATH.joinpath(symbol, "mezo_proofs.json")
@@ -1174,8 +1209,6 @@ def check_mezo_vault(mezo_w3: Web3, symbol: str, share_manager: Dict) -> Tuple[L
         pending_assets = risk.functions.pendingAssets(asset).call()
         if pending_assets:
             blockers.append(f"riskManager.pendingAssets({asset}) = {pending_assets}")
-    if allocated:
-        warnings.append(f"{allocated} claimable deposit shares are excluded from the payout (claimed on mezo)")
 
     # --- oracle ---
     print("\n[oracle]")

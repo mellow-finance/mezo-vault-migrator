@@ -1,0 +1,1152 @@
+{
+  "amountSource": "urd_balance",
+  "urd": "0x0746C70Ec99248Ccc1d6e29010e03C9fa5503653",
+  "direction": "mezo->ethereum",
+  "leaf": "keccak256(bytes.concat(keccak256(abi.encode(account, rewardToken, claimable))))",
+  "rewardToken": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+  "rewardTokenDecimals": 8,
+  "mezoShareManager": "0x8FB0EB4BB6CA5cf3883E83734BD5bD77a87CC20E",
+  "totalShares": "1467874035653805724",
+  "totalAssets": "146692044",
+  "droppedZeroAmount": {},
+  "mezoContractsWithoutEthCode": [],
+  "root": "0xcde889468a801fd0185bf0c85bdcccb5c04d16fd7633a41a9fda058510e42be5",
+  "claims": {
+    "0x03f8AA4E1A90E713Dc212f97d9931D3bf4236339": {
+      "shares": "5430000000000",
+      "amount": "543",
+      "proof": [
+        "0x1bffd3dbdcb5214f8cee744bd0fede9b49e2e8a611939083aea743351bce5eee",
+        "0x88a3775f660a58305c733badeaf96ca393f1f3a8c9a09395181c35504cc35a94",
+        "0x2beb4fab51a8f4fbd7bdfb18f443a447a8f79284ea5f20f2de5ef0fe3a91431e",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x03f8AA4E1A90E713Dc212f97d9931D3bf4236339"
+    },
+    "0x05d2F8935a55D25c840aC3dA6cCb3C1efD8389cC": {
+      "shares": "1003946190000000000",
+      "amount": "100329398",
+      "proof": [
+        "0x97e6f1b301fe56f06021c769947606ed04ff397d6529262668011f7f669a8031",
+        "0x88a3775f660a58305c733badeaf96ca393f1f3a8c9a09395181c35504cc35a94",
+        "0x2beb4fab51a8f4fbd7bdfb18f443a447a8f79284ea5f20f2de5ef0fe3a91431e",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x05d2F8935a55D25c840aC3dA6cCb3C1efD8389cC"
+    },
+    "0x0A8d9Ba501b848091D8aCc5eB62891548A42537E": {
+      "shares": "330000000000",
+      "amount": "33",
+      "proof": [
+        "0x787cfa7bc75ae55fbf81ee570c3ce80804d20f7c19dff8c3fbbe2ee512a03607",
+        "0x0443e9eb6ced81a1b2202ab76df0883a8c6a05e93b8d3284ef14350e14d97c03",
+        "0x2beb4fab51a8f4fbd7bdfb18f443a447a8f79284ea5f20f2de5ef0fe3a91431e",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x0A8d9Ba501b848091D8aCc5eB62891548A42537E"
+    },
+    "0x0C848fE7368D5a92E7d52a733a2D759F1c4e12EB": {
+      "shares": "1030704074050",
+      "amount": "103",
+      "proof": [
+        "0x3903c1dd0ccb83bbeb81a4d6a249b6528e94e57b40df2e1a8639c0ed434390cb",
+        "0x0443e9eb6ced81a1b2202ab76df0883a8c6a05e93b8d3284ef14350e14d97c03",
+        "0x2beb4fab51a8f4fbd7bdfb18f443a447a8f79284ea5f20f2de5ef0fe3a91431e",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x0C848fE7368D5a92E7d52a733a2D759F1c4e12EB"
+    },
+    "0x0e36828b63A7d1c0D78f59aF0A6592f2F80b65BC": {
+      "shares": "16700000000000",
+      "amount": "1669",
+      "proof": [
+        "0xd02775d3093791c1091de3ce9bcb1bf5844a556313b269fd24ea93bdaa9363eb",
+        "0xd34ad45a7abdfa5dc1663b49386e82d761b13aa173e259bc7c4b9c223dbf5a45",
+        "0x6135467507dd460e60787275abf66d1157eda47571fc80603d444d17f003e2a6",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x0e36828b63A7d1c0D78f59aF0A6592f2F80b65BC"
+    },
+    "0x0ec1f47A4874A717D12d02B4966e6a4b2d94683c": {
+      "shares": "46790000000000",
+      "amount": "4676",
+      "proof": [
+        "0x7a34c8c76dad2e9da355d99d23c771d9031f6890d23bb9531af7edab03672e10",
+        "0xd34ad45a7abdfa5dc1663b49386e82d761b13aa173e259bc7c4b9c223dbf5a45",
+        "0x6135467507dd460e60787275abf66d1157eda47571fc80603d444d17f003e2a6",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x0ec1f47A4874A717D12d02B4966e6a4b2d94683c"
+    },
+    "0x1262656546866f1B735F8E66b8626Ee466ee6b2B": {
+      "shares": "4390000000000",
+      "amount": "439",
+      "proof": [
+        "0x744fe0e31fbd9bea0d4e377bec9ea7bb5b4ba470b7bc49bfba735fba72fd2331",
+        "0x2615de3808c0d11b512832864adb6e01093aeff0521a401123bc7c08ce2e5b8c",
+        "0x6135467507dd460e60787275abf66d1157eda47571fc80603d444d17f003e2a6",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x1262656546866f1B735F8E66b8626Ee466ee6b2B"
+    },
+    "0x12fb54BA691f1C79Be2e868C7a254d499A7D3aD5": {
+      "shares": "15000000000000",
+      "amount": "1499",
+      "proof": [
+        "0xad0b7fa15033f7693332609d91dfb4f2c02309eab4e049ff6f920f135ae92cb5",
+        "0x2615de3808c0d11b512832864adb6e01093aeff0521a401123bc7c08ce2e5b8c",
+        "0x6135467507dd460e60787275abf66d1157eda47571fc80603d444d17f003e2a6",
+        "0x35e560e8769a26e96407e0e5c503a0095bc9eb324649e44018d347a286722380",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x12fb54BA691f1C79Be2e868C7a254d499A7D3aD5"
+    },
+    "0x176987A76d999BF117377aaaA6c2E54c44FCF6f7": {
+      "shares": "4220000000000",
+      "amount": "422",
+      "proof": [
+        "0x17276850752697b053728c4e88724f93615645181e198e5476a3830bf6d72d3f",
+        "0x581f1d85feb2b64e5cb8f283cd54162ea5c78f94a43c2f27b21039d83d84141c",
+        "0x1fd46bd1a3af7e52f22d57c51750db73cb6f7ee2734e97e06f489bf3770676f6",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x176987A76d999BF117377aaaA6c2E54c44FCF6f7"
+    },
+    "0x176B36C9F53884954A591A243d7Ed584190f80b0": {
+      "shares": "11970000000000",
+      "amount": "1196",
+      "proof": [
+        "0xcfb50cc13868e77a129e1f8e2b9a9fcc13bec51d66bad75c3b92496f1d3d0a18",
+        "0x581f1d85feb2b64e5cb8f283cd54162ea5c78f94a43c2f27b21039d83d84141c",
+        "0x1fd46bd1a3af7e52f22d57c51750db73cb6f7ee2734e97e06f489bf3770676f6",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x176B36C9F53884954A591A243d7Ed584190f80b0"
+    },
+    "0x22aBD116427aEE4fbDE638EA21EF03E42EaBA052": {
+      "shares": "999666344786",
+      "amount": "100",
+      "proof": [
+        "0x9f1d46e5b82f789baba9b5f051a380e8fd991c431ffccad465ca46dffe8cd46a",
+        "0x3a522fcbf4e1f68e4ae06b5992707203b122b5c28dbc5eb829d8ed8d3c9c9c3d",
+        "0x1fd46bd1a3af7e52f22d57c51750db73cb6f7ee2734e97e06f489bf3770676f6",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x22aBD116427aEE4fbDE638EA21EF03E42EaBA052"
+    },
+    "0x22b908c2FeA7a1e6043FfcDBc77D660D4D326961": {
+      "shares": "23316760000000000",
+      "amount": "2330161",
+      "proof": [
+        "0xb65cd8a93a0959512de1dea21c42506a8819d85feb905e048495e86be1e113ba",
+        "0x3a522fcbf4e1f68e4ae06b5992707203b122b5c28dbc5eb829d8ed8d3c9c9c3d",
+        "0x1fd46bd1a3af7e52f22d57c51750db73cb6f7ee2734e97e06f489bf3770676f6",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x22b908c2FeA7a1e6043FfcDBc77D660D4D326961"
+    },
+    "0x2aDE36b300A279C89003A1DCf6378Dd1d585bFB3": {
+      "shares": "11846046185720",
+      "amount": "1184",
+      "proof": [
+        "0x373741eaad441c807e39ef8c33526e565c13a9c3c8ad0678a7ed1cf3661b6d93",
+        "0x51cca7a67b3b65346a2ea9448aaaecfbc262c9f57d5eeab68bbf2b08a518b650",
+        "0x63e2c1d545293c1cb262c996200e11f1d8afcceee3b90627ab94a0bdc4089eb3",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x2aDE36b300A279C89003A1DCf6378Dd1d585bFB3"
+    },
+    "0x3006E2EEa20371ad25EA6689d0fC345CB297F78b": {
+      "shares": "3310000000000",
+      "amount": "331",
+      "proof": [
+        "0x5ed918daf5e2b31f26eb84f196803797a9ae7ab93b07f265e667ef8495bc0dda",
+        "0x51cca7a67b3b65346a2ea9448aaaecfbc262c9f57d5eeab68bbf2b08a518b650",
+        "0x63e2c1d545293c1cb262c996200e11f1d8afcceee3b90627ab94a0bdc4089eb3",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x3006E2EEa20371ad25EA6689d0fC345CB297F78b"
+    },
+    "0x30e045e5932F5D668592BC334F2d6AD0B23cACDC": {
+      "shares": "20000000000000",
+      "amount": "1999",
+      "proof": [
+        "0x752af3e489c8d2460f6fbd74b733ec4ca72f4cffb9ccccbf67dcb02abc75cfb3",
+        "0xccdd3f6bec7d79870352c3cd4f27573f2870b68d3e4922b0cdd71e08f514be04",
+        "0x63e2c1d545293c1cb262c996200e11f1d8afcceee3b90627ab94a0bdc4089eb3",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x30e045e5932F5D668592BC334F2d6AD0B23cACDC"
+    },
+    "0x318c05426c431cF6B10ad2E4480F7299F5Ca1C56": {
+      "shares": "29545696159003163",
+      "amount": "2952650",
+      "proof": [
+        "0x7d752b2883412205f229b3051ef5e9174a014e9b3188ce1eee53a304c6479b07",
+        "0xccdd3f6bec7d79870352c3cd4f27573f2870b68d3e4922b0cdd71e08f514be04",
+        "0x63e2c1d545293c1cb262c996200e11f1d8afcceee3b90627ab94a0bdc4089eb3",
+        "0x8458f990abe231df2824742493f7a05408f715053a6b8ee8ee876e4d2592117b",
+        "0x9b705f3a5b826fe76b557f664009c69efd6c2b055a09f99aa581efe68874a36c",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "CONTRACT",
+      "recipient": "0x318c05426c431cF6B10ad2E4480F7299F5Ca1C56",
+      "ethereum_access": "safe_deployed"
+    },
+    "0x31a9389E439b7D38249806d2dd64c978541517De": {
+      "shares": "52810000000000",
+      "amount": "5277",
+      "proof": [
+        "0xd729fde2c90e2ee36e7f521f2ca60378e4556700426000faa37898aa5bc48d78",
+        "0x68b7429179e6e28af028d573d82a58ad0d28817be67ae07aae44bfdbaa25e11c",
+        "0x276d6a8b69ea162ce026475ab506783395ff115add87651a060a98ca7bb4a81f",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x31a9389E439b7D38249806d2dd64c978541517De"
+    },
+    "0x33a7A26d9C6C799a02E4870137dE647674371FfC": {
+      "shares": "215210000000000",
+      "amount": "21507",
+      "proof": [
+        "0xbd019318e5363cfda98523b66b8faa21b4432f30fb6d65e21f3d33f14bb4cb34",
+        "0x68b7429179e6e28af028d573d82a58ad0d28817be67ae07aae44bfdbaa25e11c",
+        "0x276d6a8b69ea162ce026475ab506783395ff115add87651a060a98ca7bb4a81f",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x33a7A26d9C6C799a02E4870137dE647674371FfC"
+    },
+    "0x34e86e8bC3550e291905BF192D6261f4443D797E": {
+      "shares": "10001950896209",
+      "amount": "999",
+      "proof": [
+        "0xa3c3a56fab291280dfe402e19669b3c926675b1b2de891f06ddb552d30b8ef82",
+        "0x2590a78c6fd360524e743615604751e00ea013b3f588b96f46e8aafbdd6e7508",
+        "0x276d6a8b69ea162ce026475ab506783395ff115add87651a060a98ca7bb4a81f",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x34e86e8bC3550e291905BF192D6261f4443D797E"
+    },
+    "0x35c5CA06d2EfFD7e5AE9c869ffF47843Ce1AeBdc": {
+      "shares": "16590000000000",
+      "amount": "1658",
+      "proof": [
+        "0x8f7f4660d7066f94919f1960c459c9e5cdda0f55f443eee33e48538cebe56f86",
+        "0x2590a78c6fd360524e743615604751e00ea013b3f588b96f46e8aafbdd6e7508",
+        "0x276d6a8b69ea162ce026475ab506783395ff115add87651a060a98ca7bb4a81f",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x35c5CA06d2EfFD7e5AE9c869ffF47843Ce1AeBdc"
+    },
+    "0x3d8639C4214cb4f31142b95e24799b88B61F54dd": {
+      "shares": "999266029382",
+      "amount": "100",
+      "proof": [
+        "0x2cd4bb97fd948fd3d2feedacedc36e25a4467b9e3c4c4a732c2f5c7bf962d4fb",
+        "0x7449e58c2b83167f925e9b0ba16e93727a90148c43f4cf48d6ccb3483e49e594",
+        "0xc8eff3c376ee30482faf9d1cef06bc45b8aa2f3e9732157f97f03a8c57dab2be",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x3d8639C4214cb4f31142b95e24799b88B61F54dd"
+    },
+    "0x3E7d81B7B1FAe155201D1A2a6F73b66c97dEde76": {
+      "shares": "1082940000000000",
+      "amount": "108224",
+      "proof": [
+        "0x3eff31b30f9abb4fce33db4bfd06054dc749a3b85d78d325205b4786e6ecfcc3",
+        "0x7449e58c2b83167f925e9b0ba16e93727a90148c43f4cf48d6ccb3483e49e594",
+        "0xc8eff3c376ee30482faf9d1cef06bc45b8aa2f3e9732157f97f03a8c57dab2be",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x3E7d81B7B1FAe155201D1A2a6F73b66c97dEde76"
+    },
+    "0x41A85377aD28eB78A09d7c3B4e5F70f4D53D963f": {
+      "shares": "531230299992",
+      "amount": "53",
+      "proof": [
+        "0xfde2b00da8c305f277a770454a775bb2893b9935f187b998ed7e583cb2bcb654",
+        "0x4012a7b7d610537bad580c557c96bdf2e75c09fc097c8ff9fc34548dc1868513",
+        "0xc8eff3c376ee30482faf9d1cef06bc45b8aa2f3e9732157f97f03a8c57dab2be",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x41A85377aD28eB78A09d7c3B4e5F70f4D53D963f"
+    },
+    "0x44787215a625Bc51CE8268Fe8fE29Ab7c1CC23AE": {
+      "shares": "1010157335304",
+      "amount": "101",
+      "proof": [
+        "0xbebcd39fc21643a993d2a2875b1a5643c9175cae9892652d4eae562a6cb0ef09",
+        "0x4012a7b7d610537bad580c557c96bdf2e75c09fc097c8ff9fc34548dc1868513",
+        "0xc8eff3c376ee30482faf9d1cef06bc45b8aa2f3e9732157f97f03a8c57dab2be",
+        "0x4d737ae799b5049a8dc2fad6f3798e337b52764c372f74aed7f9abba082db48a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x44787215a625Bc51CE8268Fe8fE29Ab7c1CC23AE"
+    },
+    "0x45d993393f7B3Fe781935e1155118C7f830d4415": {
+      "shares": "142650000000000",
+      "amount": "14256",
+      "proof": [
+        "0x76b966c32fd9272a5612305427496bd0b7587aa5aa29c29b75ff25e6460cf6c5",
+        "0x9a722a5ad8f84d2c167672031da2f23591f3e9ce4cbf88bd268762cf9a567bc8",
+        "0x088afcf281242fc3ded000e2ac48271d450cfc9f7c28d84538d3d1f46433bf4e",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x45d993393f7B3Fe781935e1155118C7f830d4415"
+    },
+    "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda": {
+      "shares": "35100000000000",
+      "amount": "3508",
+      "proof": [
+        "0x3c9d78ed5ab5893ac79dd9176cca16a481b9342e3d28eb1fb7c0c96959ec5a03",
+        "0x9a722a5ad8f84d2c167672031da2f23591f3e9ce4cbf88bd268762cf9a567bc8",
+        "0x088afcf281242fc3ded000e2ac48271d450cfc9f7c28d84538d3d1f46433bf4e",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x4d551d74e851Bd93Ce44D5F588Ba14623249CDda"
+    },
+    "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09": {
+      "shares": "110690000000000",
+      "amount": "11062",
+      "proof": [
+        "0x0ab0095093604a43d43972fd41dbe1a3d17354f5c473ced95c02634f318338a3",
+        "0xf4e2a2abdec4b080fe5ef944dbf24f7896617630a76851fe098acb5d76f84272",
+        "0x088afcf281242fc3ded000e2ac48271d450cfc9f7c28d84538d3d1f46433bf4e",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x4e1062CC667020Ea4e0a7aF355E6a049A7dC6D09"
+    },
+    "0x52a9D93179eD86cb1be116E40172F918c788278c": {
+      "shares": "8480000000000",
+      "amount": "847",
+      "proof": [
+        "0x91ef1490af9637c898b4fe0eae5a27035036044f3dd435951bc77674494caa98",
+        "0xf4e2a2abdec4b080fe5ef944dbf24f7896617630a76851fe098acb5d76f84272",
+        "0x088afcf281242fc3ded000e2ac48271d450cfc9f7c28d84538d3d1f46433bf4e",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x52a9D93179eD86cb1be116E40172F918c788278c"
+    },
+    "0x530E48Cf7288cBd3e64C07f8467Be0eabfe4E3A5": {
+      "shares": "31110000000000",
+      "amount": "3109",
+      "proof": [
+        "0x769673685a0094fbd7f34b1a1391c1f0cd42013c1f47d53b83a5b753f3e9e239",
+        "0x11e4140bdcf93f3a417548b60c9b84c9b9887e763ab30ee126f206fa629c6e4d",
+        "0x93f8fe2ef8e28ae5f032b7084dc755592f51a476c094c33c023cd7d47df2a88a",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x530E48Cf7288cBd3e64C07f8467Be0eabfe4E3A5"
+    },
+    "0x57314e2e475C2d1B70AD2422cf6A649e6709D69b": {
+      "shares": "1310000000000",
+      "amount": "131",
+      "proof": [
+        "0x2dba3137c697d71d82bbd65651ed7f813c553c787b16a296339e9092c0f5b71f",
+        "0x11e4140bdcf93f3a417548b60c9b84c9b9887e763ab30ee126f206fa629c6e4d",
+        "0x93f8fe2ef8e28ae5f032b7084dc755592f51a476c094c33c023cd7d47df2a88a",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x57314e2e475C2d1B70AD2422cf6A649e6709D69b"
+    },
+    "0x591e862e73B09Ee692bAFA0Da6fe1df5C9B365aE": {
+      "shares": "999666344786",
+      "amount": "100",
+      "proof": [
+        "0x8e3a881d7afae8590f72432b2a3147a71283e7fb5fa13f809132a0e7dfd4b668",
+        "0xb81965032c2ac195ca3ec21bb1d455ab5bb3416c517b631883a8922e9c570c39",
+        "0x93f8fe2ef8e28ae5f032b7084dc755592f51a476c094c33c023cd7d47df2a88a",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x591e862e73B09Ee692bAFA0Da6fe1df5C9B365aE"
+    },
+    "0x5C660fDa2Fb669c174dd6D4cA626e9619896620d": {
+      "shares": "2690000000000",
+      "amount": "269",
+      "proof": [
+        "0xdeede28eaa820280a735f81b89ab130df6c88fdd9359206f5350845185b91535",
+        "0xb81965032c2ac195ca3ec21bb1d455ab5bb3416c517b631883a8922e9c570c39",
+        "0x93f8fe2ef8e28ae5f032b7084dc755592f51a476c094c33c023cd7d47df2a88a",
+        "0x33ab31626ffbfccc096d1cc6126da0fbacc443aa8aa9c9f9b61a51b402c59d8a",
+        "0x7c07d281828dd2cbaa000fe8f97bfd0c09a3b1d4aee8dd57d0d7f0978c401070",
+        "0x0dcce65ab729949b8281419dbcffa83bb37efb67334f3e8edd5e10eae07f6944",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x5C660fDa2Fb669c174dd6D4cA626e9619896620d"
+    },
+    "0x609076BbA6f0a303a5Cac58e900C8ac611cb15b5": {
+      "shares": "20860000000000",
+      "amount": "2085",
+      "proof": [
+        "0x6c717cfc88ee6b89ab2ed126082318d4f05547eed3075c789348ae210ca16baa",
+        "0x17eb5692efdc5b687f59e929299bb6d7a86e20ffe1602935cc02b0c0b2145e84",
+        "0x3c077e0818a673627af90069d602c0d14c7f4c5daf15742de563a9721158ecd0",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x609076BbA6f0a303a5Cac58e900C8ac611cb15b5"
+    },
+    "0x640AF57EB6d96780c5265c66Bd0351F47b09a0ad": {
+      "shares": "100000000000000",
+      "amount": "9993",
+      "proof": [
+        "0xf32983f0d44ba9364018298ad3b6e00c3ba233ece7a017ae83d521456c06ea5a",
+        "0x17eb5692efdc5b687f59e929299bb6d7a86e20ffe1602935cc02b0c0b2145e84",
+        "0x3c077e0818a673627af90069d602c0d14c7f4c5daf15742de563a9721158ecd0",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x640AF57EB6d96780c5265c66Bd0351F47b09a0ad"
+    },
+    "0x6636170d906F1f5558fE3a1ae5a6C37a2B499d1C": {
+      "shares": "1027519076888",
+      "amount": "103",
+      "proof": [
+        "0x7d22548acf49abfb38b6da9d77c71ff1c3eda1ff2ad4142c6eed2fdba88dbf5f",
+        "0x054147290ce5091a1e0f256a8ae550607e003f42f0b2dd2adda63b77ca6db9be",
+        "0x3c077e0818a673627af90069d602c0d14c7f4c5daf15742de563a9721158ecd0",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x6636170d906F1f5558fE3a1ae5a6C37a2B499d1C"
+    },
+    "0x6d07Ce8F8E80aD48b80d527B2c20cC8f8B0AED3f": {
+      "shares": "17230000000000",
+      "amount": "1722",
+      "proof": [
+        "0x5330c1e6ad5995823c921e6aee9fbbdf87061c9c55e611dc98f035346b4795a5",
+        "0x054147290ce5091a1e0f256a8ae550607e003f42f0b2dd2adda63b77ca6db9be",
+        "0x3c077e0818a673627af90069d602c0d14c7f4c5daf15742de563a9721158ecd0",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x6d07Ce8F8E80aD48b80d527B2c20cC8f8B0AED3f"
+    },
+    "0x7885e11FA19c58B76125Fc0bA5C4807651c10F40": {
+      "shares": "586586953486",
+      "amount": "59",
+      "proof": [
+        "0x9a127e7963bd394ed93511b4a8be2c3a0821e641892777b248bf7ea48d8903e0",
+        "0x608c4d04b8842aaed811a49f7f29dd7caa2cfc564b97e3f2d68f84f2d03ffe47",
+        "0x25d74bb68f8a748a0afbc06ba730bc4d9a1547dfd48e6fbb9d665d96a61b06fb",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x7885e11FA19c58B76125Fc0bA5C4807651c10F40"
+    },
+    "0x7bBbCD731CBa881F624e05A00D1A9cC2a9C9eA87": {
+      "shares": "30660000000000",
+      "amount": "3064",
+      "proof": [
+        "0xf63124524d3c937f60421c3f7bbd550936330a1ea8ce0226456c6e7bcc8e5d6e",
+        "0x608c4d04b8842aaed811a49f7f29dd7caa2cfc564b97e3f2d68f84f2d03ffe47",
+        "0x25d74bb68f8a748a0afbc06ba730bc4d9a1547dfd48e6fbb9d665d96a61b06fb",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x7bBbCD731CBa881F624e05A00D1A9cC2a9C9eA87"
+    },
+    "0x7C5d9942cE476386435258BC48d57d966593178D": {
+      "shares": "10050000000000",
+      "amount": "1004",
+      "proof": [
+        "0x9b8add6659f4e73edb80302dfda414906f7835bd37b49fcfb6261865075c4bb0",
+        "0x29d947f929cdcdca59f987bc1529dba3868d622e6feaf26c87bd0682c672a1d9",
+        "0x25d74bb68f8a748a0afbc06ba730bc4d9a1547dfd48e6fbb9d665d96a61b06fb",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x7C5d9942cE476386435258BC48d57d966593178D"
+    },
+    "0x83E94B08a2BD98F886F9A3dAEE94899d600FcEAe": {
+      "shares": "2020892879971",
+      "amount": "202",
+      "proof": [
+        "0x83450adfbf16599988aa942aafb591d09b5d8437893a6d8e69e2052bc755ac4e",
+        "0x29d947f929cdcdca59f987bc1529dba3868d622e6feaf26c87bd0682c672a1d9",
+        "0x25d74bb68f8a748a0afbc06ba730bc4d9a1547dfd48e6fbb9d665d96a61b06fb",
+        "0x8ad28cbfec96f853bc5f054e5207287476e8361bd3d2e77fdea6afedce108c4d",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x83E94B08a2BD98F886F9A3dAEE94899d600FcEAe"
+    },
+    "0x869CB8d82359696073a0CfFe4ceAE63D5726B9B4": {
+      "shares": "12950000000000",
+      "amount": "1294",
+      "proof": [
+        "0x8e39dcc64c1a39949963fa7895adc16969b1df4b7f7642e0b8937ead1db36e8e",
+        "0x61b3c68b31208f7ce94fb0df88d1c68717f5f812e87b6aee19de8c8809f8ab84",
+        "0x38ccb7098dedca379b76df7aaced2a078bcb59d00bb99f04817a8ed2d3cfb03f",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x869CB8d82359696073a0CfFe4ceAE63D5726B9B4"
+    },
+    "0x8716eCA6Ac4a59DaB9aBbD95a4a47cCA5334063a": {
+      "shares": "1096070000000000",
+      "amount": "109536",
+      "proof": [
+        "0x4688c596f00c1a641b665fad3410325865f7950f0f7358a8228da0a3b5dac306",
+        "0x61b3c68b31208f7ce94fb0df88d1c68717f5f812e87b6aee19de8c8809f8ab84",
+        "0x38ccb7098dedca379b76df7aaced2a078bcb59d00bb99f04817a8ed2d3cfb03f",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x8716eCA6Ac4a59DaB9aBbD95a4a47cCA5334063a"
+    },
+    "0x88538AEacb6Ff69CA046e83Fd8599dB8422aD3BB": {
+      "shares": "2019556583984",
+      "amount": "202",
+      "proof": [
+        "0xe157a0c77149032b419e6a5bc319ab1436dda07c1dab43073ff51709f4773e7c",
+        "0x4b2f6cb780a0ea308f244c25759ab1a4142a03558e1b2af303cb9a2df37bd325",
+        "0x38ccb7098dedca379b76df7aaced2a078bcb59d00bb99f04817a8ed2d3cfb03f",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x88538AEacb6Ff69CA046e83Fd8599dB8422aD3BB"
+    },
+    "0x8D4Fbf807AEfECFfc824AaEf7d738703B6CF24eb": {
+      "shares": "1155364355319",
+      "amount": "115",
+      "proof": [
+        "0x36ed6deb3202a0eca6e256dce1d238f8e91064970f9e3192f860e10b26680d10",
+        "0x4b2f6cb780a0ea308f244c25759ab1a4142a03558e1b2af303cb9a2df37bd325",
+        "0x38ccb7098dedca379b76df7aaced2a078bcb59d00bb99f04817a8ed2d3cfb03f",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x8D4Fbf807AEfECFfc824AaEf7d738703B6CF24eb"
+    },
+    "0x8EB832f6b2A5Ff3f1b2ee3eb5f2a1C39997f3646": {
+      "shares": "941548287976",
+      "amount": "94",
+      "proof": [
+        "0xe25a50205b7b54a69da67ceb5c58a7645ab7393bac3165184c54e6600fb7f55b",
+        "0x0a78a9257961f7b8caf33b343d48242af6291ffa5329525b53a84eb89355f7bf",
+        "0x2c7915ba498b2a218424bbe4f00bab0a48906f69e6743c8a1792eb45b9df4b7d",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0x8EB832f6b2A5Ff3f1b2ee3eb5f2a1C39997f3646"
+    },
+    "0x9d2E4bDc1E980e576A3a194f6f5eEda0EBd6DCA1": {
+      "shares": "999666344786",
+      "amount": "100",
+      "proof": [
+        "0x878a7904b632a639a38872206bb5c769b0da1e31042e58dfe91b29d080012819",
+        "0x0a78a9257961f7b8caf33b343d48242af6291ffa5329525b53a84eb89355f7bf",
+        "0x2c7915ba498b2a218424bbe4f00bab0a48906f69e6743c8a1792eb45b9df4b7d",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0x9d2E4bDc1E980e576A3a194f6f5eEda0EBd6DCA1"
+    },
+    "0xa0154B50af957DbD1c2a709B57245B8462284E11": {
+      "shares": "35530000000000",
+      "amount": "3551",
+      "proof": [
+        "0x2d3b1a412b76751a8977365cfe4e84fa3905d64018fb4d64cd443eb22d8bdda3",
+        "0xb12ed90e44b6604c31ea458bbc5644282434b1d49b214b43870d8291347bb142",
+        "0x2c7915ba498b2a218424bbe4f00bab0a48906f69e6743c8a1792eb45b9df4b7d",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xa0154B50af957DbD1c2a709B57245B8462284E11"
+    },
+    "0xA6390b7538FD485De114b7E0F9323B66d0fEA917": {
+      "shares": "20801290000000000",
+      "amount": "2078778",
+      "proof": [
+        "0x48d5994fe805af619dc62703663ce605da9075bc7e0205154a3aacefb9b9d3ad",
+        "0xb12ed90e44b6604c31ea458bbc5644282434b1d49b214b43870d8291347bb142",
+        "0x2c7915ba498b2a218424bbe4f00bab0a48906f69e6743c8a1792eb45b9df4b7d",
+        "0x5184cd91c7d4568c5d055f2178d6d5c597191b4fd0a12833b8821dc8fceb9617",
+        "0x46fb5de1caf000ee1df79fb15bbc330d96f99fc45215666fb452ece206a9f440",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xA6390b7538FD485De114b7E0F9323B66d0fEA917"
+    },
+    "0xA94474a98bAe85688fCB69FC060043c11d6AD30B": {
+      "shares": "9238413389999",
+      "amount": "923",
+      "proof": [
+        "0xe9e97df4e963d9ff20038ffd6d63667605dc186e1f95572232b40bf2213a8624",
+        "0xdb22973c62dc9d671efba6f3e872118c24003a45da7aa4834727ce63d714a1d0",
+        "0x41e321b8b0b80b864f16735c4aa1f24466bda33b7dcc9aa860921b092c1bcde7",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xA94474a98bAe85688fCB69FC060043c11d6AD30B"
+    },
+    "0xA948A0517BF9507362F5b7FeE31701f8261AEc88": {
+      "shares": "360016440000000000",
+      "amount": "35978256",
+      "proof": [
+        "0x5aa7e8383bc41af70133aee51d00354b5f28e3ed9c494d54005a5f198339d12c",
+        "0xdb22973c62dc9d671efba6f3e872118c24003a45da7aa4834727ce63d714a1d0",
+        "0x41e321b8b0b80b864f16735c4aa1f24466bda33b7dcc9aa860921b092c1bcde7",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xA948A0517BF9507362F5b7FeE31701f8261AEc88"
+    },
+    "0xAA09f1D74Af017639035fb141dea56db2946e3b2": {
+      "shares": "20150000000000",
+      "amount": "2014",
+      "proof": [
+        "0x76da16571b553992d3e74f1d7572189c8ca1520a1a0d90ad8ae5644c87e2e735",
+        "0x4520d5e029facee49bbd16515ef9c351195d57270ce79e22ccb3604af323ab45",
+        "0x41e321b8b0b80b864f16735c4aa1f24466bda33b7dcc9aa860921b092c1bcde7",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xAA09f1D74Af017639035fb141dea56db2946e3b2"
+    },
+    "0xB175F15E985b2a1Aa2F345672e7f7f85B941e60D": {
+      "shares": "1030295665129",
+      "amount": "103",
+      "proof": [
+        "0x0a3ecbe7df149dc4dc4cefa8c35b208bae85c86832931b6c77015c06ad2ff0cd",
+        "0x4520d5e029facee49bbd16515ef9c351195d57270ce79e22ccb3604af323ab45",
+        "0x41e321b8b0b80b864f16735c4aa1f24466bda33b7dcc9aa860921b092c1bcde7",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xB175F15E985b2a1Aa2F345672e7f7f85B941e60D"
+    },
+    "0xb537a079e27B6c006B36BF9E6ED88a44036a28C2": {
+      "shares": "1099632979265",
+      "amount": "110",
+      "proof": [
+        "0x2e73e04aa9fc3c9df7fc0fb2435b3f6a8dee190d009f74ccfcdcc0ab7e58206c",
+        "0x410d3e1df5d91d6faa3311ba0da828dd768383f7f4841613e83f4b11adc5bc1d",
+        "0xe4948b2564951ae0e1829f8f67f999d9c96593c20b29dcc79b3ff62949c19c15",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xb537a079e27B6c006B36BF9E6ED88a44036a28C2"
+    },
+    "0xB763B04A876a45838509CD4d6CA4C63271dA1DB4": {
+      "shares": "13601900000000000",
+      "amount": "1359306",
+      "proof": [
+        "0x61e3df2194d14745f059757291857f76c207742a40d0b892c9b7e9a942783fd2",
+        "0x410d3e1df5d91d6faa3311ba0da828dd768383f7f4841613e83f4b11adc5bc1d",
+        "0xe4948b2564951ae0e1829f8f67f999d9c96593c20b29dcc79b3ff62949c19c15",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xB763B04A876a45838509CD4d6CA4C63271dA1DB4"
+    },
+    "0xb7b2ee53731Fc80080ED2906431e08452BC58786": {
+      "shares": "2842230365251315",
+      "amount": "284038",
+      "proof": [
+        "0x1f9bfc3a56553f0885df015904a3774e4e188303b5fd422f19b37a3a672a3e09",
+        "0x7063e6b9be68926324dad0b0b4025a5ba4a52419192da8349ec1c8a3adae7866",
+        "0xe4948b2564951ae0e1829f8f67f999d9c96593c20b29dcc79b3ff62949c19c15",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "CONTRACT",
+      "recipient": "0xb7b2ee53731Fc80080ED2906431e08452BC58786",
+      "ethereum_access": "safe_deployed"
+    },
+    "0xb8a5344Bd9B99ACE185580c15d80cC916c83e2Cc": {
+      "shares": "1120000000000",
+      "amount": "112",
+      "proof": [
+        "0x1edeb0a2f2b09c16d635645e84cb79873bdb65a648a84bf0c6cb75cefa335181",
+        "0x7063e6b9be68926324dad0b0b4025a5ba4a52419192da8349ec1c8a3adae7866",
+        "0xe4948b2564951ae0e1829f8f67f999d9c96593c20b29dcc79b3ff62949c19c15",
+        "0x4b7da80f0dce0431b70563783291e41b2b572139a096ff02cb3135a29787efdc",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xb8a5344Bd9B99ACE185580c15d80cC916c83e2Cc"
+    },
+    "0xBBF5a035239183918839094eC012c69eeFE67836": {
+      "shares": "165090000000000",
+      "amount": "16498",
+      "proof": [
+        "0x644855d17fe913ca0cf5200ca999848018f75b575297830458cd83e72ec105e3",
+        "0xd4ada71b5ef9d13b2454d064fda6d26cc547421f372157f487ec84f63dce809d",
+        "0x1c05ef2c90071c67f7d0e7f200b04f787353625000c2f5f88f1a60739a2d9269",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xBBF5a035239183918839094eC012c69eeFE67836"
+    },
+    "0xBEd25FA007D0a30Cb04f1B50750d599E89b1A8Ce": {
+      "shares": "330000000000",
+      "amount": "33",
+      "proof": [
+        "0xc104cf03ac2ccc803ffb27e0214193acd2921fb4e783287ef9497f8c17dfb9c4",
+        "0xd4ada71b5ef9d13b2454d064fda6d26cc547421f372157f487ec84f63dce809d",
+        "0x1c05ef2c90071c67f7d0e7f200b04f787353625000c2f5f88f1a60739a2d9269",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xBEd25FA007D0a30Cb04f1B50750d599E89b1A8Ce"
+    },
+    "0xc634D9CF17A1352b9D0b5395aD20c4117c16CAaA": {
+      "shares": "98620000000000",
+      "amount": "9855",
+      "proof": [
+        "0x557a1175b75bcb0272ed788c12362d75e1e8b1298fbdb98997d6b9c29eae9061",
+        "0xdd9d9d87abcdadbd0b8693182b8dea0ddad27ca5cd30a8dbb2d7465fbf607214",
+        "0x1c05ef2c90071c67f7d0e7f200b04f787353625000c2f5f88f1a60739a2d9269",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xc634D9CF17A1352b9D0b5395aD20c4117c16CAaA"
+    },
+    "0xc7D22cf64F994eCcAFD7caf614bCb70C4D3a5804": {
+      "shares": "1130009536423",
+      "amount": "113",
+      "proof": [
+        "0xd06e8df7a9181541a59dc93041ead88bb59b19a7b5b1f81d36dbaf870ce8b609",
+        "0xdd9d9d87abcdadbd0b8693182b8dea0ddad27ca5cd30a8dbb2d7465fbf607214",
+        "0x1c05ef2c90071c67f7d0e7f200b04f787353625000c2f5f88f1a60739a2d9269",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xc7D22cf64F994eCcAFD7caf614bCb70C4D3a5804"
+    },
+    "0xC8D46eb7881975F9aE15216FeEBa2ff58E55803c": {
+      "shares": "648000000000000",
+      "amount": "64758",
+      "proof": [
+        "0x55bcc686ffff7a822e3654aa465bc138dc301537aaa2b761f6e984d963b1df4f",
+        "0x4a69e7366a85cec3aeb07ca32529bf4799b9fde66849b655e8f3651720a0279d",
+        "0xdcd9dcf7c971eb0319078bac69ad5c336c81da1007bfe59cf1b9a2b8b54a3df2",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EOA",
+      "recipient": "0xC8D46eb7881975F9aE15216FeEBa2ff58E55803c"
+    },
+    "0xca7CF16C69317689CC73fB3792031cE97a642d1f": {
+      "shares": "1260000000000",
+      "amount": "126",
+      "proof": [
+        "0xea9f3fd23896d3bcf33e51a7f194e2a1ba28a23ec3202664ff5855b291d4a915",
+        "0x4a69e7366a85cec3aeb07ca32529bf4799b9fde66849b655e8f3651720a0279d",
+        "0xdcd9dcf7c971eb0319078bac69ad5c336c81da1007bfe59cf1b9a2b8b54a3df2",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xca7CF16C69317689CC73fB3792031cE97a642d1f"
+    },
+    "0xcbdcB14D4963a045d6517A89AaB07a097230C9BC": {
+      "shares": "10910000000000",
+      "amount": "1090",
+      "proof": [
+        "0x7d1f080b6539be34a4a60eb55c2b83d82445d5cb14eb459398713f3dbf5da0ff",
+        "0xf258bd6952d390a5cf0541bb3cb196d34c43d11471f8be09da31c07a3b51f7ac",
+        "0xdcd9dcf7c971eb0319078bac69ad5c336c81da1007bfe59cf1b9a2b8b54a3df2",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xcbdcB14D4963a045d6517A89AaB07a097230C9BC"
+    },
+    "0xCC15AF2aF9c0086d52430AdE7ba969628E7B02b8": {
+      "shares": "16002547997729",
+      "amount": "1599",
+      "proof": [
+        "0x303cec083f59228ac5b476b9db4081a19ea96d87ec384f99990b86ba50b1ae5a",
+        "0xf258bd6952d390a5cf0541bb3cb196d34c43d11471f8be09da31c07a3b51f7ac",
+        "0xdcd9dcf7c971eb0319078bac69ad5c336c81da1007bfe59cf1b9a2b8b54a3df2",
+        "0x6d652ff42a2d2bded8bce4abd4ddf9436b7bf4ff9be5fddf47f9df4374f21c6e",
+        "0xe5dcac6041d09582604a1d12ede2d198469d750a270260d66bfbc25ea4a8699d",
+        "0x7cda4217afbe4a29f3567424d9abf1efa0d2374f6844bcb7a54f52446886e196",
+        "0x284972727161a063ef3861e42e1b98d1f079c2ca33d5a95a27b1dceb991f812b"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xCC15AF2aF9c0086d52430AdE7ba969628E7B02b8"
+    },
+    "0xd0C0338BaaC9cE09C1d1caAb88B4360507061e37": {
+      "shares": "5343050000000000",
+      "amount": "533958",
+      "proof": [
+        "0x8f05919a79bfa38e24de00204342f019fac341f4003fe95e0d6ec1e601278da9",
+        "0x5fbd6693e72c24e5f12772d656e0ab1d95f1bf0b9f290f7eb20bb5e02c362131",
+        "0x3bb81bdfced1b45955f448ef553d44043f3392ac8ce613dd0c30bf11c71796f0",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xd0C0338BaaC9cE09C1d1caAb88B4360507061e37"
+    },
+    "0xd609D6CAB84F3D85F2EE602B31D9F5aE373cA923": {
+      "shares": "1009075300490",
+      "amount": "101",
+      "proof": [
+        "0x63cac34ab9571ce164fe55549da48de77c3aa384d084760f3424d3eb0ef119f7",
+        "0x5fbd6693e72c24e5f12772d656e0ab1d95f1bf0b9f290f7eb20bb5e02c362131",
+        "0x3bb81bdfced1b45955f448ef553d44043f3392ac8ce613dd0c30bf11c71796f0",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xd609D6CAB84F3D85F2EE602B31D9F5aE373cA923"
+    },
+    "0xdA3CB1F73fE9E478556956D71d24eD726e8F9162": {
+      "shares": "574410000000000",
+      "amount": "57404",
+      "proof": [
+        "0xcd4b0efff0d0ca5d6e41c0ae137121e82446d54846856a0ac673bc5b0174893a",
+        "0x5acf17c04a25cc57fdaf81f5ee5c03daa4e108b36937fcad7170e5ec21430bf4",
+        "0x3bb81bdfced1b45955f448ef553d44043f3392ac8ce613dd0c30bf11c71796f0",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xdA3CB1F73fE9E478556956D71d24eD726e8F9162"
+    },
+    "0xDC02781Bd75Fa9102E00440A7E6176985430074D": {
+      "shares": "206600000000000",
+      "amount": "20646",
+      "proof": [
+        "0x21a240349085ccfab89c2b0b486097aa3702b81841b0b3d3914c1b5f1a0ce594",
+        "0x5acf17c04a25cc57fdaf81f5ee5c03daa4e108b36937fcad7170e5ec21430bf4",
+        "0x3bb81bdfced1b45955f448ef553d44043f3392ac8ce613dd0c30bf11c71796f0",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xDC02781Bd75Fa9102E00440A7E6176985430074D"
+    },
+    "0xdc64ffb5c6C5bB032244A656c95C6a1296B6953a": {
+      "shares": "581030000000000",
+      "amount": "58065",
+      "proof": [
+        "0x23da52baa5291f946458d8fa27005b17d04bcef698550cf0c2463f28f4e468eb",
+        "0xa25ccb13aa655f196bfd489bdf05b56aa3384ea9aa05ef47e9bf26b34e6a733c",
+        "0xc0b8436cb7d804230b0de79d08d1429991467a4fbd4446af90de729920053b43",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xdc64ffb5c6C5bB032244A656c95C6a1296B6953a"
+    },
+    "0xE5cF73F96F57d56d6E44BD82D8AF95727A2FAb04": {
+      "shares": "270000000000000",
+      "amount": "26982",
+      "proof": [
+        "0x8cb2e4c00b726e5bcea538afe56fb286a052e2ee244d4daeb24e0a77dde12c62",
+        "0xa25ccb13aa655f196bfd489bdf05b56aa3384ea9aa05ef47e9bf26b34e6a733c",
+        "0xc0b8436cb7d804230b0de79d08d1429991467a4fbd4446af90de729920053b43",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EIP7702",
+      "recipient": "0xE5cF73F96F57d56d6E44BD82D8AF95727A2FAb04"
+    },
+    "0xe74bc1aA5CB89C3fD6f66763fe433953BeD19746": {
+      "shares": "999666344786",
+      "amount": "100",
+      "proof": [
+        "0xad2781cb70b4316a5b4b59f46a6a7e18face283d73650cb87a2c115252e6da45",
+        "0x42f53d00b26551d7c8075736956e4438bc6a45b013c7c0622fafdd92b6db5e53",
+        "0xc0b8436cb7d804230b0de79d08d1429991467a4fbd4446af90de729920053b43",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xe74bc1aA5CB89C3fD6f66763fe433953BeD19746"
+    },
+    "0xEbCa8b5C9A3BDfb9DdF6bE4cA807aD20fD5274e1": {
+      "shares": "999666344786",
+      "amount": "100",
+      "proof": [
+        "0x9450ff412c1bea5f80784bbac838cd9aef3016ecd1a351bf90f63d8676e992a1",
+        "0x42f53d00b26551d7c8075736956e4438bc6a45b013c7c0622fafdd92b6db5e53",
+        "0xc0b8436cb7d804230b0de79d08d1429991467a4fbd4446af90de729920053b43",
+        "0xc17132ac6c269fd15a0859198d8b742ea904c49394e60fe9d56bf4d3726a3be2",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xEbCa8b5C9A3BDfb9DdF6bE4cA807aD20fD5274e1"
+    },
+    "0xEc0A13c8688D022D2aF08d664b70Cf14d956C373": {
+      "shares": "2000000000000",
+      "amount": "200",
+      "proof": [
+        "0x15467e2931655f961046ade0cfb0af1dad05bef920ad57c21cb10f7c3930dbc1",
+        "0xf463937ee77010329f676774e7905d106da4db12755bf0b51f1015af5d3760c4",
+        "0xfe5ac13492caf0f68382b9214792172ee0f34e56cd6260ac76cdb33ba559ee59",
+        "0xc812e69193eda97e48951aefe32a070b28485af5819da9b1731792293a7e0779",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xEc0A13c8688D022D2aF08d664b70Cf14d956C373"
+    },
+    "0xeeDb07ae31191e8E803685887Bf653754f2f6F52": {
+      "shares": "64140000000000",
+      "amount": "6410",
+      "proof": [
+        "0x67b66ca6c8fc4c11dca3ffb0e1ff5ee6950a144605800dad3a60d5a98601a4bf",
+        "0xf463937ee77010329f676774e7905d106da4db12755bf0b51f1015af5d3760c4",
+        "0xfe5ac13492caf0f68382b9214792172ee0f34e56cd6260ac76cdb33ba559ee59",
+        "0xc812e69193eda97e48951aefe32a070b28485af5819da9b1731792293a7e0779",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xeeDb07ae31191e8E803685887Bf653754f2f6F52"
+    },
+    "0xF12BD23F179435169C4bfCCe7dA2a39F229CE9f0": {
+      "shares": "92100000000000",
+      "amount": "9204",
+      "proof": [
+        "0xe5a28f0310ba67dc450a89aa89875b2f39b5ff1379591637cdd884d68da9af39",
+        "0x27d6c1ffb6bba84ac0e68a8cebf2bf3fdd1d1ac0e9751d2b32b12f512fc2496b",
+        "0xfe5ac13492caf0f68382b9214792172ee0f34e56cd6260ac76cdb33ba559ee59",
+        "0xc812e69193eda97e48951aefe32a070b28485af5819da9b1731792293a7e0779",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xF12BD23F179435169C4bfCCe7dA2a39F229CE9f0"
+    },
+    "0xF495C8BEca7016674F67BE25e485DbF41dc5A151": {
+      "shares": "2472760000000000",
+      "amount": "247115",
+      "proof": [
+        "0x50120523f93c908b563e24ab1e07920df7e5098326473376625c4618044ee3e4",
+        "0x27d6c1ffb6bba84ac0e68a8cebf2bf3fdd1d1ac0e9751d2b32b12f512fc2496b",
+        "0xfe5ac13492caf0f68382b9214792172ee0f34e56cd6260ac76cdb33ba559ee59",
+        "0xc812e69193eda97e48951aefe32a070b28485af5819da9b1731792293a7e0779",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xF495C8BEca7016674F67BE25e485DbF41dc5A151"
+    },
+    "0xFd69A5D0b8330dC86e266304B3D1ABE3F57b9D09": {
+      "shares": "33210000000000",
+      "amount": "3319",
+      "proof": [
+        "0xd73dd0505cc1482162ce332f550bbf81353a7249e53f046f710f1871ff91aded",
+        "0xc812e69193eda97e48951aefe32a070b28485af5819da9b1731792293a7e0779",
+        "0x07270a30425b2d835aa2cc80a40b50be059617b30eca2654e3a56557cce0a4d2"
+      ],
+      "type": "EOA",
+      "recipient": "0xFd69A5D0b8330dC86e266304B3D1ABE3F57b9D09"
+    }
+  },
+  "oracleEstimate": "146697444",
+  "mezoVault": "0x06ED1E2167AA7FBf2476c5A2D220Bf702559Dcf8",
+  "mezoOracle": "0x06886f9F737999c592e306Aa0090F2d8C2a01C13",
+  "priceAsset": "0x6a7CD8E1384d49f502b4A4CE9aC9eb320835c5d7",
+  "priceD18": "10006132297213646240622695484",
+  "priceTimestamp": 1791431268,
+  "priceMezoBlock": 13198710
+}
