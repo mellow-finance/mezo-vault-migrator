@@ -149,6 +149,7 @@ contract ReturnURDTest is Test {
         address rewardToken;
         uint256 totalAssets;
         string[] claimKeys;
+        uint256[] balancesBefore; // reward token balance of each claimKeys[i] before the claims
     }
 
     function _fundSetRootClaim(string memory symbol) internal {
@@ -217,6 +218,11 @@ contract ReturnURDTest is Test {
             }
         }
 
+        c.balancesBefore = new uint256[](c.claimKeys.length);
+        for (uint256 i = 0; i < c.claimKeys.length; i++) {
+            c.balancesBefore[i] = IERC20(c.rewardToken).balanceOf(vm.parseAddress(c.claimKeys[i]));
+        }
+
         for (uint256 start = 0; start < c.claimKeys.length; start += BATCH_SIZE) {
             uint256 end = start + BATCH_SIZE < c.claimKeys.length ? start + BATCH_SIZE : c.claimKeys.length;
             uint256 gasUsed = _multicallGas(c, start, end);
@@ -226,12 +232,18 @@ contract ReturnURDTest is Test {
         }
     }
 
-    /// @dev 4. drained exactly, every leaf marked claimed, nothing can be claimed twice
+    /// @dev 4. drained exactly, every recipient received its amount, every leaf marked claimed, nothing can be claimed twice
     function _assertDrained(Case memory c) internal {
         assertEq(IERC20(c.rewardToken).balanceOf(address(c.urd)), 0, "URD did not drain");
         for (uint256 i = 0; i < c.claimKeys.length; i++) {
+            address recipient = vm.parseAddress(c.claimKeys[i]);
             uint256 amount = c.raw.readUint(string.concat('$.claims["', c.claimKeys[i], '"].amount'));
-            assertEq(c.urd.claimed(vm.parseAddress(c.claimKeys[i]), c.rewardToken), amount, "claimed mismatch");
+            assertEq(c.urd.claimed(recipient, c.rewardToken), amount, "claimed mismatch");
+            assertEq(
+                IERC20(c.rewardToken).balanceOf(recipient) - c.balancesBefore[i],
+                amount,
+                string.concat("recipient balance ", c.claimKeys[i])
+            );
         }
 
         (address account, uint256 firstAmount, bytes32[] memory proof) = _claimAt(c.raw, c.claimKeys[0]);
